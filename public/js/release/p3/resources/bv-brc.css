@@ -34,7 +34,7 @@
 #bv-brc-header-container {
   display: flex;
   justify-content: space-between;
-  max-width: 1220px;
+  
   margin: 0 auto;
 }
 .nav-logo-link {
@@ -63,11 +63,13 @@
   display: flex;
 }
 #bv-brc-header-container .nav-links a {
-  padding: 0 10px;
+  padding: 0px 10px;
   align-self: center;
+  align-items: center;
   color: #ffffff;
   text-transform: uppercase;
   transition: all .15s;
+  margin-top: 6px;
 }
 #bv-brc-header-container .nav-links a:hover,
 #bv-brc-header-container .nav-links a:focus {
