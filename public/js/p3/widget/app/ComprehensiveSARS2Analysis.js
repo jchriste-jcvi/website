@@ -3,8 +3,8 @@
  *
  * Responsible for control of submission form.
  *
- * Ex params
- *    SARA Run aAccession: ERR4208068
+ * Ex params:
+ *    SARA Run Accession: ERR4208068
  *    Taxon Id: 2697049
  *    My label: test1
  *    Output Folder: <anything>
@@ -26,12 +26,12 @@ define([
 
   return declare([AppBase], {
     baseClass: 'App',
-    pageTitle: 'SARS-CoV-2 Genome Analysis',
+    pageTitle: 'SARS-CoV-2 Genome Annotation and Analysis',
     templateString: Template,
     applicationName: 'ComprehensiveSARS2Analysis',
     requireAuth: true,
-    applicationLabel: 'SARS-CoV-2 Genome Analysis',
-    applicationDescription: 'The SARS-CoV-2 Genome Analysis Service provides a streamlined "meta-service" that accepts raw reads and performs a comprehensive analysis, including genome assembly, annotation, variation analysis, identification of nearest isolates from the same outbreak, and construction of phylogenetic tree. ',
+    applicationLabel: 'SARS-CoV-2 Genome Annotation and Analysis',
+    applicationDescription: 'The SARS-CoV-2 Genome Annotation and Analysis Service provides a streamlined "meta-service" that accepts raw reads and performs a comprehensive analysis, including genome assembly, annotation, variation analysis, identification of nearest isolates from the same outbreak, and construction of phylogenetic tree. ',
     applicationHelp: 'user_guides/services/SARS-CoV-2-Genome-Analysis.html',
     tutorialLink: 'tutorial/SARS-CoV-2-Genome-Analysis/SARS-CoV-2-Genome-Analysis.html',
     libraryData: null,
@@ -334,7 +334,6 @@ define([
                     catch (e) {
                       console.error('could not get title from SRA record');
                     }
-                    this.srr_accession.set('disabled', false);
                     var lrec = { _type: 'srr_accession', title: title };
                     var chkPassed = this.ingestAttachPoints(['srr_accession'], lrec);
                     if (chkPassed) {
@@ -344,9 +343,15 @@ define([
                       this.addLibraryRow(lrec, infoLabels, 'srrdata');
                     }
                     this.srr_accession_validation_message.innerHTML = '';
+                    this.srr_accession.set('disabled', false);
                   }));
               }
+              else {
+                throw new Error('No ids returned from esearch');
+              }
             } catch (e) {
+              console.error(e);
+              this.srr_accession.set('disabled', false);
               this.srr_accession_validation_message.innerHTML = ' Your input ' + accession + ' is not valid';
               this.srr_accession.set('value', '');
             }
