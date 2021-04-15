@@ -135,10 +135,6 @@ define([
         title: 'Genome Browser',
         id: this.viewer.id + '_jbrowse'
       })
-      this.structure = new VariantProteinStructure({
-        title: 'Protein Structure',
-        id: this.viewer.id + '_structure'
-      })
 
       /*
       this.structure = new VariantStructure({
