@@ -3,5 +3,5 @@ cd public/js/
 rm -rf ./jbrowse.repo
 ln -sf ../../node_modules/jbrowse ./jbrowse.repo
 cd ./jbrowse.repo/plugins/
-ln -s ../../../node_modules/MultiBigWig .
+ln -sf ../../../node_modules/MultiBigWig .
 

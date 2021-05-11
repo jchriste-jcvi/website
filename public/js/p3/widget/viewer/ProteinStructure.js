@@ -5,11 +5,6 @@ define([
   'dojo/ready',
   '../proteinStructure/ProteinStructureState',
   '../proteinStructure/ProteinStructure',
-  '../proteinStructure/ProteinStructureDisplayControl',
-  '../proteinStructure/EpitopeHighlights',
-  '../proteinStructure/LigandHighlights',
-  '../proteinStructure/StructureHighlight',
-  '../proteinStructure/SARS2FeatureHighlights',
   'dojo/data/ItemFileReadStore',
   'dojo/store/DataStore',
   './Base',
@@ -25,11 +20,6 @@ function (
   ready,
   ProteinStructureState,
   ProteinStructureDisplay,
-  ProteinStructureDisplayControl,
-  EpitopeHighlights,
-  LigandHighlights,
-  StructureHighlights,
-  SARS2FeatureHighlights,
   ItemFileReadStore,
   DataStore,
   Base,
@@ -61,88 +51,7 @@ function (
         id: this.id + '_structure',
       });
 
-      domConstruct.place(this.jsmol.getViewerHTML(), this.contentDisplay.containerNode);
-
-      this.displayControl = new ProteinStructureDisplayControl({
-        id: this.id + '_displayControl',
-        displayTypeStore: this.displayTypeStore,
-        proteinStore: this.proteinStore,
-        region: 'left'
-      });
-
-      this.displayControl.watch('accessionId', lang.hitch(this, function (attr, oldValue, newValue) {
-        if (oldValue != newValue) {
-          // console.log('%s.accessionId changed from %s to %s', this.displayControl.id, oldValue, newValue);
-          // if the accession changes we keep all view state values but highlights
-          this.getAccessionInfo(newValue).then(record => {
-            var newState = new ProteinStructureState({});
-            newState.set('displayType', this.viewState.get('displayType'));
-            newState.set('effect', this.viewState.get('effect'));
-            newState.set('accession', record);
-            this.set('viewState', newState);
-          });
-        }
-      }));
-
-      this.displayControl.watch('scriptText', lang.hitch(this, function (attr, oldValue, newValue) {
-        this.jsmol.executeScript(newValue);
-      }));
-      this.displayControl.watch('effect', lang.hitch(this, function (attr, oldValue, newValue) {
-        this.get('viewState').set('effect', newValue);
-      }));
-      this.displayControl.watch('zoomLevel', lang.hitch(this, function (attr, oldValue, newValue) {
-        this.get('viewState').set('zoomLevel', newValue);
-      }));
-      this.displayControl.watch('displayType', lang.hitch(this, function (attr, oldValue, newValue) {
-        // console.log('control displayType changed from ' + oldValue + ' to ' + newValue);
-        this.getDisplayTypeInfo(newValue).then(record => {
-          this.get('viewState').set('displayType', record);
-          this.displayControl.set('displayTypeInfo', record);
-        });
-      }));
-      domConstruct.place(this.displayControl.domNode, this.displayControls);
-
-      // console.log('finished ' + this.id + '.postCreate');
-
-      this.ligandHighlight = new LigandHighlights({
-        id: this.id + '_ligands',
-        color: '#00ff00'
-      });
-      this.highlighters.addChild(this.ligandHighlight);
-      this.ligandHighlight.watch('positions', lang.hitch(this, function (attr, oldValue, newValue) {
-        let highlights = new Map(this.viewState.get('highlights'));
-        highlights.set('ligands', new Map(newValue));
-        this.get('viewState').set('highlights', highlights);
-      }));
-
-      // this.structureHighlighter = new StructureHighlights({});
-      // this.highlighters.addChild(this.structureHighlighter);
-
-      this.featureHighlights = new SARS2FeatureHighlights({
-      });
-      this.featureHighlights.watch('positions', lang.hitch(this, function (attr, oldValue, newValue) {
-        // console.log('old highlights %s new highlights %s',  JSON.stringify(oldValue), JSON.stringify(newValue));
-        // console.log('viewState.highlights is ' + JSON.stringify(this.get('viewState').get('highlights')));
-        let highlights = new Map(this.viewState.get('highlights'));
-        highlights.set('features', new Map(newValue));
-        this.get('viewState').set('highlights', highlights);
-      }));
-      this.highlighters.addChild(this.featureHighlights);
-
-      // TODO highlighters need to be dependent on proteins and what's available in the database
-      this.epitopeHighlight = new EpitopeHighlights({
-        id: this.id + '_epitopes',
-        color: '#ffff00'
-      });
-      this.highlighters.addChild(this.epitopeHighlight);
-
-      this.epitopeHighlight.watch('positions', lang.hitch(this, function (attr, oldValue, newValue) {
-        // console.log('old highlights %s new highlights %s',  JSON.stringify(oldValue), JSON.stringify(newValue));
-        // console.log('viewState.highlights is ' + JSON.stringify(this.get('viewState').get('highlights')));
-        let highlights = new Map(this.viewState.get('highlights'));
-        highlights.set('epitopes', new Map(newValue));
-        this.get('viewState').set('highlights', highlights);
-      }));
+      domConstruct.place(this.jsmol.getViewerHTML(), this.contentDisplay);
 
       this.watch('viewState', lang.hitch(this, function (attr, oldValue, newValue) {
         this.onViewStateChange(newValue);
@@ -169,20 +78,7 @@ function (
       this.updateFromViewState(viewState);
     },
     updateFromViewState: function (viewState) {
-      this.displayControl.set('displayTypeInfo', viewState.get('displayType'));
-      this.displayControl.set('zoomLevel', viewState.get('zoomLevel'));
-      this.displayControl.set('accessionId', viewState.get('accession').id);
-      this.epitopeHighlight.set('positions', viewState.get('highlights').get('epitopes'));
-      this.featureHighlights.set('accessionId', viewState.get('accession').id);
-      this.epitopeHighlight.set('accessionId', viewState.get('accession').id);
       this.jsmol.set('viewState', viewState);
-      this.updateAccessionInfo(viewState.get('accession'));
-    },
-    updateAccessionInfo: function (accessionInfo) {
-      // console.log('running ' + this.id + '.updateAccessionInfo with ' + JSON.stringify(accessionInfo) );
-      domConstruct.empty(this.accessionTitle.containerNode);
-      domConstruct.place('<span class="searchField" style="font-size: large;">' + accessionInfo.label + '</span>', this.accessionTitle.containerNode);
-      domConstruct.place('<div>' + accessionInfo.description + '</div>', this.accessionTitle.containerNode);
     },
     viewDefaults: new Map([
       ['accession', '6VXX'],
