@@ -148,7 +148,7 @@ define([
     // TODO this assumes loading from PDB
     loadAccession: function (accession) {
       if (accession) {
-        this.runScript('load async "=' + accession + '"');
+        this.runScript('load async "/js/p3/resources/jsmol/' + accession + '.pdb"');
       }
     },
     animFrameCallback: function (appletId, frameIndex, fileNumber, frameNumber) {
