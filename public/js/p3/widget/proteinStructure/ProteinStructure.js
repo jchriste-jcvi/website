@@ -27,8 +27,8 @@ define([
     jmol: Jmol,
     jmolInfo: {
       use: 'HTML5',
-      height: '100%',
-      width: '100%',
+      height: '500',
+      width: '500',
       j2sPath: '/js/jsmol/j2s',
       deferApplet: false,
       disableJ2SLoadMonitor: true,
