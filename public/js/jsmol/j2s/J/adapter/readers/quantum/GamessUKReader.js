@@ -1,11 +1,11 @@
 Clazz.declarePackage ("J.adapter.readers.quantum");
-Clazz.load (["J.adapter.readers.quantum.GamessReader"], "J.adapter.readers.quantum.GamessUKReader", ["java.lang.Float", "JU.Lst", "$.PT"], function () {
+Clazz.load (["J.adapter.readers.quantum.GamessReader"], "J.adapter.readers.quantum.GamessUKReader", ["java.lang.Float", "JU.List", "J.adapter.smarter.AtomSetCollectionReader"], function () {
 c$ = Clazz.decorateAsClass (function () {
 this.symmetries = null;
 this.occupancies = null;
 Clazz.instantialize (this, arguments);
 }, J.adapter.readers.quantum, "GamessUKReader", J.adapter.readers.quantum.GamessReader);
-Clazz.overrideMethod (c$, "checkLine", 
+$_V(c$, "checkLine", 
 function () {
 if (this.line.indexOf ("BASIS OPTIONS") >= 0) {
 this.readBasisInfo ();
@@ -18,7 +18,7 @@ this.readGaussianBasis ("======================================================"
 return false;
 }if (this.line.indexOf ("molecular geometry") >= 0) {
 if (!this.doGetModel (++this.modelNumber, null)) return this.checkLastModel ();
-this.atomNames =  new JU.Lst ();
+this.atomNames =  new JU.List ();
 this.readAtomsInBohrCoordinates ();
 return true;
 }if (!this.doProcessLines) return true;
@@ -35,43 +35,50 @@ this.setOrbitalSymmetryAndOccupancy ();
 return false;
 }return this.checkNboLine ();
 });
-Clazz.overrideMethod (c$, "readAtomsInBohrCoordinates", 
+$_V(c$, "readAtomsInBohrCoordinates", 
 function () {
 this.discardLinesUntilContains ("*****");
 this.discardLinesUntilContains ("atom");
 this.discardLinesUntilContains ("*****");
-this.asc.newAtomSet ();
-while (this.rd () != null && this.line.indexOf ("*****") < 0) {
+this.atomSetCollection.newAtomSet ();
+while (this.readLine () != null && this.line.indexOf ("*****") < 0) {
 if (this.line.charAt (14) == ' ') continue;
 var tokens = this.getTokens ();
+var atomName = tokens[1];
 var atomicNumber = Clazz.floatToInt (this.parseFloatStr (tokens[2]));
-var atom = this.setAtomCoordScaled (null, tokens, 3, 0.5291772);
+var x = this.parseFloatStr (tokens[3]);
+var y = this.parseFloatStr (tokens[4]);
+var z = this.parseFloatStr (tokens[5]);
+if (Float.isNaN (x) || Float.isNaN (y) || Float.isNaN (z)) break;
+var atom = this.atomSetCollection.addNewAtom ();
+atom.atomName = atomName;
+this.setAtomCoordXYZ (atom, x * 0.5291772, y * 0.5291772, z * 0.5291772);
 atom.elementSymbol = J.adapter.smarter.AtomSetCollectionReader.getElementSymbol (atomicNumber);
-this.atomNames.addLast (atom.atomName = tokens[1]);
+this.atomNames.addLast (atomName);
 }
 });
-Clazz.overrideMethod (c$, "fixShellTag", 
+$_V(c$, "fixShellTag", 
 function (tag) {
 return tag.substring (1).toUpperCase ();
 }, "~S");
-Clazz.defineMethod (c$, "readOrbitalSymmetryAndOccupancy", 
- function () {
+$_M(c$, "readOrbitalSymmetryAndOccupancy", 
+($fz = function () {
 this.readLines (4);
-this.symmetries =  new JU.Lst ();
-this.occupancies =  new JU.Lst ();
-while (this.rd () != null && this.line.indexOf ("====") < 0) {
-var tokens = JU.PT.getTokens (this.line.substring (20));
+this.symmetries =  new JU.List ();
+this.occupancies =  new JU.List ();
+while (this.readLine () != null && this.line.indexOf ("====") < 0) {
+var tokens = J.adapter.smarter.AtomSetCollectionReader.getTokensStr (this.line.substring (20));
 this.symmetries.addLast (tokens[0] + " " + tokens[1]);
 this.occupancies.addLast (Float.$valueOf (this.parseFloatStr (tokens[5])));
 }
-});
-Clazz.defineMethod (c$, "setOrbitalSymmetryAndOccupancy", 
- function () {
+}, $fz.isPrivate = true, $fz));
+$_M(c$, "setOrbitalSymmetryAndOccupancy", 
+($fz = function () {
 if (this.symmetries.size () < this.orbitals.size ()) return;
 for (var i = this.orbitals.size (); --i >= 0; ) {
 var mo = this.orbitals.get (i);
 mo.put ("symmetry", this.symmetries.get (i));
 mo.put ("occupancy", this.occupancies.get (i));
 }
-});
+}, $fz.isPrivate = true, $fz));
 });

@@ -1,7 +1,7 @@
-Clazz.load(["java.lang.IllegalStateException"],"java.util.FormatterClosedException",null,function(){
-c$=Clazz.declareType(java.util,"FormatterClosedException",IllegalStateException,java.io.Serializable);
-Clazz.makeConstructor(c$,
+$_L(["java.lang.IllegalStateException"],"java.util.FormatterClosedException",null,function(){
+c$=$_T(java.util,"FormatterClosedException",IllegalStateException,java.io.Serializable);
+$_K(c$,
 function(){
-Clazz.superConstructor(this,java.util.FormatterClosedException,[]);
+$_R(this,java.util.FormatterClosedException,[]);
 });
 });

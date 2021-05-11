@@ -1,3 +1,3 @@
-Clazz.load(["java.lang.RuntimeException"],"java.util.EmptyStackException",null,function(){
-c$=Clazz.declareType(java.util,"EmptyStackException",RuntimeException);
+$_L(["java.lang.RuntimeException"],"java.util.EmptyStackException",null,function(){
+c$=$_T(java.util,"EmptyStackException",RuntimeException);
 });

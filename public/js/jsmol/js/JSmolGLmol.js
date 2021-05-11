@@ -1,12 +1,13 @@
 // JSmolGLmol.js -- Jmol GLmol  extension	 author: Bob Hanson, hansonr@stolaf.edu	4/16/2012
 //                                                       biochem_fan 6/12/2012
 
-// BH 2/9/2014 6:34:17 PM updated for integration of org.jmol.exportjs into org.jmol.export
-
+// update 3/27/2013 6:14:21 PM -- broken implementing  Jmol.$
 // This library requires
 //
-//  JSmol.min.js
-//  JSmolThree.js
+//	JmolCore.js
+//  JmolApplet.js
+//	jQuery.min.js
+//  Three49custom.js
 //
 // prior to JmolGlmol.js
 
@@ -16,7 +17,7 @@ BH: added drawSphere and getMat methods
 
 
  GLmol - Molecular Viewer on WebGL/Javascript (0.44)
-	(C) Copyright 2011-2012, biochem_fan
+  (C) Copyright 2011-2012, biochem_fan
 		License: dual license of MIT or LGPL3
 
 	 This program uses
@@ -26,9 +27,9 @@ BH: added drawSphere and getMat methods
 		jQuery
 			http://jquery.org/
 			Copyright (c) 2011 John Resig
-
-	// ParseXYZ by Bob Hanson hansonr@stolaf.edu 6/12/2012
-
+			
+  // ParseXYZ by Bob Hanson hansonr@stolaf.edu 6/12/2012
+  
  */
 
 (function(THREE) {
@@ -37,177 +38,94 @@ THREE.ShaderLib.lambert.fragmentShader = THREE.ShaderLib.lambert.fragmentShader.
 THREE.ShaderLib.lambert.vertexShader = THREE.ShaderLib.lambert.vertexShader.replace(/\}$/, "#ifdef DOUBLE_SIDED\n if (transformedNormal.z < 0.0) vLightFront = vLightBack;\n #endif\n }");
 })(THREE);
 
+//(function(){
 
-;(function(Jmol) {
+
+GLmol = (function() {
 
 Jmol._Canvas3D = function(id, Info, type, checkOnly){
-	this._uniqueId = ("" + Math.random()).substring(3);
+	this._syncId = ("" + Math.random()).substring(3);
 	this._id = id;
 	this._is2D = false;
-	this._isJava = false;
-  this._rendered = false;
+  this._isJava = false;
 	this._jmolType = "Jmol._Canvas3D (Jmol/GLmol)";
 	this._platform = "J.awtjs.Platform";
 	if (checkOnly)
 		return this;
 	window[id] = this;
-	this._createCanvas(id, Info, new Jmol.GLmol);
-	if (!Jmol._document || this._deferApplet)
-		return this;
-	this._init();
+	this._createCanvas(id, Info, new GLmol);
+  if (!Jmol._document || this._deferApplet)
+    return this;
+  this._init();
 	return this;
 };
 
-Jmol.GLmol = function() {
-	return this;
+
+Jmol._refresh = function(applet, mode, strWhy, data) {
+	// just the orientation/scaling -- JSmol-GLmol
+  if (applet && applet._refresh) {
+ 		applet._refresh(mode, strWhy, data)
+  }
 };
 
-;(function(GLmol) {
+
+function GLmol() {
+	return true;
+};
 
 
-GLmol.extendApplet = function(applet) {
+GLmol.setRefresh = function(proto) {
+    /**
+     * @j2sNative
+     * if ((mode == 2 || mode == 7) && typeof Jmol != "undefined") {
+     *   this.transformManager.finalizeTransformParameters();
+     *   Jmol.refresh(this.htmlName);
+     * }
+     */
+		proto._refresh = function() {
 
-	applet._refresh = function() {
-	
-		// Called by org.jmol.Viewer.viewer.refresh
-			
-		// pixelsPerAngstrom can be used to calculate the new camera position.
-		// modelRadius is half the distance across the screen. 
-		// 100% implies that camera Z position is 3.5 * modelRadius, with a field of view of 16.24 degrees (2 * atan(1/7))
-		
-		if (!this._applet)
-			return
-			
-		var view = this._applet.getGLmolView();
-		var gl = this._GLmol;
-		var rg = gl.rotationGroup;
-		if (!rg)
-			return
-		var mg = gl.modelGroup;
-		var rQ = view.quaternion;
-		rg.quaternion = new THREE.Quaternion(-rQ.q3, -rQ.q0, rQ.q1, rQ.q2);
-		// cameraDistance is in units of screenPixelCount; distance is to front of scene, not to the center.
-		// scaled linearly by zoom
-		var sppa = view.scale;
-		rg.position.z = gl.CAMERA_Z + (view.cameraDistance+view.pixelCount*0.5)/sppa;
-		//model "position" is moved such that {0 0 0} is the fixedRotationCenter 
-		mg.position.x = -view.center.x; 
-		mg.position.y = -view.center.y;
-		mg.position.z = -view.center.z; 
-		//there is also the fixedTranslation to worry about (from CTRL-ALT-drag)
-		if (view.perspective) {
-			gl.camera = gl.perspectiveCamera;
-			gl.camera.fov = gl.fov;
-		} else {
-			gl.camera = gl.orthoscopicCamera;
-			gl.camera.right = view.width * 0.5 / sppa;
-			gl.camera.left = -gl.camera.right;
-			gl.camera.top = view.height * 0.5 / sppa;
-			gl.camera.bottom = -gl.camera.top;
-		}
-		gl.camera.updateProjectionMatrix();
-		var me = this;
-		requestAnimationFrame(function() {me._GLmol.show();});
-	}
-	return applet;
-}
+	// pixelsPerAngstrom can be used to calculate the new camera position.
+	// modelRadius is half the distance across the screen. 
+	// 100% implies that camera Z position is 3.5 * modelRadius, with a field of view of 16.24 degrees (2 * atan(1/7))
+	// Since Jmol changes the size of the model, not the camera position, I should change the way this is all reported.
+	// First I need to see a model!
 
-GLmol.extendJSExporter = function(exporter){
-
-	// This method will be called just after org.jmol.export.JSExporter has loaded,
-	//  as one of its static calls.  
-	
-	// exporter is org.jmol.export.JSExporter.protothpe
-	
-	// What we are doing here is overriding methods of org.jmol.export.JSExporter.
-	// These methods are called by that general class and implemened here usring
-	// GLmol and THREE.  
-	
-				
-	exporter.jsInitExport = function(applet) {
-		applet._GLmol.initializeJmolExport();
-	}
-
-	exporter.jsSphere = function(applet, id, found, pt, o) {
-		applet._GLmol.addJmolSphere(pt, o[0], o[1]);
-	}
-	exporter.jsCylinder = function(applet, id, found, pt1, pt2, o) {
-		applet._GLmol.addJmolCylinder(pt1, pt2, o[0], o[1], o[2])
-	}
-
-	exporter.jsTriangle = function(applet, color, pt1, pt2, pt3) {
-		applet._GLmol.addJmolTriangle(color, pt1, pt2, pt3)
-	}
-
-	exporter.jsEndExport = function(applet) {
-		applet._GLmol.finalizeJmolExport();
-		applet._refresh();
-	}
-
-	exporter.jsSurface = function(applet, vertices, normals, indices, 
-			nVertices, nPolygons, nFaces, bsPolygons, faceVertexMax,
-			color, vertexColors, polygonColors) {
-	// notes: Color is only used if both vertexColors and polygonColors are null.
-	//        Only one of vertexColors or polygonColors will NOT be null.
-	//        Int facevertexMax is either 3 or 4; indices may have MORE than that number
-	//        of vertex indices, because the last one may be a flag indicating which 
-	//        edges to display when just showing mesh edges. When there are quadrilaterals,
-	//        then nPolygons != nFaces, and you need to create both 3-sides and 4-sided faces
-	//				based on the length of the individual indices[i] array.  
-
-	// nFaces was determined as follows:
-
-	//    boolean isAll = (bsPolygons == null);
-	//    if (isAll) {
-	//      for (int i = nPolygons; --i >= 0;)
-	//        nFaces += (faceVertexMax == 4 && indices[i].length == 4 ? 2 : 1);    
-	//    } else {
-	//      for (int i = bsPolygons.nextSetBit(0); i >= 0; i = bsPolygons.nextSetBit(i + 1))
-	//        nFaces += (faceVertexMax == 4 && indices[i].length == 4 ? 2 : 1);      
-
-
-		var params = {};
-		if (vertexColors != null) {
-			params.vertexColors = THREE.VertexColors;
-			var vc = new Array(vertexColors.length);
-			for (var i = vertexColors.length; --i >= 0;)
-				vc[i] = new THREE.Color(vertexColors[i]);
-		} else if (polygonColors != null) {
-			params.vertexColors = THREE.FaceColors;
-		} else {
-			params.color = color;
-		}
-		var geo = new THREE.Geometry();
-		for (var i = 0; i < nVertices; i++)
-			geo.vertices.push(new THREE.Vector3(vertices[i].x, vertices[i].y, vertices[i].z));
-		for (var i = 0; i < nPolygons; i++) {
-			var h = indices[i][0], k = indices[i][1], l = indices[i][2];
-			var m = indices[i][3];
-			var is3 = (faceVertexMax == 3 || indices[i].length == 3);
-			var f = (is3 ? new THREE.Face3(h, k, l) : new THREE.Face4(h, k, l, m));
-			// we can use the normals themselves, because they have .x .y .z
-			f.vertexNormals[0] = normals[h];
-			f.vertexNormals[1] = normals[k];
-			f.vertexNormals[2] = normals[l];
-			if (is3) {
-				if (vertexColors != null)
-					f.vertexColors = [vc[h], vc[k], vc[l]];
+			if (!this._applet || !this._applet.viewer)
+				return
+			var gl = this._GLmol;
+			var rg = gl.rotationGroup;
+			if (!rg)
+				return
+			var mg = gl.modelGroup;
+			var tm = this._applet.viewer.transformManager;
+			var rQ = tm.getRotationQuaternion();
+			rg.quaternion = new THREE.Quaternion(-rQ.q3, -rQ.q0, rQ.q1, rQ.q2);
+			// cameraDistance is in units of screenPixelCount; distance is to front of scene, not to the center.
+			// scaled linearly by zoom
+			var sppa = tm.scalePixelsPerAngstrom;
+			rg.position.z = gl.CAMERA_Z 
+				+ (tm.cameraDistance+tm.screenPixelCount*0.5)/sppa;
+			//model "position" is moved such that {0 0 0} is the fixedRotationCenter 
+			mg.position.x = -tm.fixedRotationCenter.x; 
+			mg.position.y = -tm.fixedRotationCenter.y;
+			mg.position.z = -tm.fixedRotationCenter.z; 
+			//there is also the fixedTranslation to worry about (from CTRL-ALT-drag)
+			if (tm.perspectiveDepth) {
+				gl.camera = gl.perspectiveCamera;
+				gl.camera.fov = gl.fov;
 			} else {
-				f.vertexNormals[3] = normals[m];
+				gl.camera = gl.orthoscopicCamera;
+				gl.camera.right = tm.width * 0.5 / sppa;
+				gl.camera.left = -gl.camera.right;
+				gl.camera.top = tm.height * 0.5 / sppa;
+				gl.camera.bottom = -gl.camera.top;
 			}
-
-			if (polygonColors != null)
-				f.color = new THREE.Color(polygonColors[i]);
-			geo.faces.push(f);
+			gl.camera.updateProjectionMatrix();
+		  var me = this;
+		  requestAnimationFrame(function() {me._GLmol.show();});
 		}
-
-		var obj = new THREE.Mesh(geo, new THREE.MeshLambertMaterial(params));
-		obj.doubleSided = true; // generally?
-	  //obj.material.wireframe = true;
-		applet._GLmol.modelGroup.add(obj);
-	}
-
 }
+
 
 GLmol.getMat = function(me, color) {
 	if (!me._mat || me._matColor != color) {
@@ -217,31 +135,21 @@ GLmol.getMat = function(me, color) {
 	return me._mat;
 };
 
-GLmol.setPt = function(p,q) {p.x = q.x;p.y=q.y;p.z=q.z;};
-
-
-// The GLmol object is defined by the following functions: 
-
-;(function(gp){
-
-gp.create = function() {
+GLmol.prototype.create = function() {
 	this.container = Jmol.$(this.applet, "appletdiv");
-	this.WIDTH = this.container.width(), this.HEIGHT = this.container.height();
+  this.WIDTH = this.container.width(), this.HEIGHT = this.container.height();
 	this.ASPECT = this.WIDTH / this.HEIGHT;
 	this.NEAR = 1, FAR = 800;
 	this.CAMERA_Z = -150;
 
 	this.applet.aaScale = 2;
-	this.renderer = new THREE.WebGLRenderer({
-    antialias: true,
-    preserveDrawingBuffer: true 
-  });
+	this.renderer = new THREE.WebGLRenderer({antialias: true});
 	var canvas = this.renderer.domElement;
 	canvas.width = this.container.width();
 	canvas.height = this.container.height();
 	canvas.applet = this.applet;
 	Jmol._jsSetMouse(canvas);
-	this.applet._canvas = canvas;
+  this.applet._canvas = canvas;
 	canvas.style.width = "100%";
 	canvas.style.height = "100%";
 	canvas.id = this.id+"_canvas";
@@ -256,15 +164,15 @@ gp.create = function() {
 	this.orthoscopicCamera.position.z = this.CAMERA_Z;
 	this.orthoscopicCamera.lookAt(new THREE.Vector3(0, 0, 0));
 
-	var me = this;
+	var self = this;
 	Jmol.$resize(function() { // only window can capture resize event
-		me.WIDTH = me.container.width();
-		me.HEIGHT = me.container.height();
-		me.ASPECT = me.WIDTH / me.HEIGHT;
-		me.renderer.setSize(me.WIDTH, me.HEIGHT);
-		me.camera.aspect = me.ASPECT;
-		me.camera.updateProjectionMatrix();
-		me.show();
+		self.WIDTH = self.container.width();
+		self.HEIGHT = self.container.height();
+		self.ASPECT = self.WIDTH / self.HEIGHT;
+		self.renderer.setSize(self.WIDTH, self.HEIGHT);
+		self.camera.aspect = self.ASPECT;
+		self.camera.updateProjectionMatrix();
+		self.show();
 	});
 
 	this.scene = null;
@@ -283,14 +191,14 @@ gp.create = function() {
  
 };
 
-gp.getView = function() {
+GLmol.prototype.getView = function() {
 	if (!this.modelGroup) return [0, 0, 0, 0, 0, 0, 0, 1];
 	var pos = this.modelGroup.position;
 	var q = this.rotationGroup.quaternion;
 	return [pos.x, pos.y, pos.z, this.rotationGroup.position.z, q.x, q.y, q.z, q.w];
 };
 
-gp.setView = function(arg) {
+GLmol.prototype.setView = function(arg) {
 	if (!this.modelGroup || !this.rotationGroup) return;
 	this.modelGroup.position.x = arg[0];
 	this.modelGroup.position.y = arg[1];
@@ -303,14 +211,14 @@ gp.setView = function(arg) {
 	this.show();
 };
 
-gp.setBackground = function(hex, a) {
+GLmol.prototype.setBackground = function(hex, a) {
 	a = a | 1.0;
 	this.bgColor = hex;
 	this.renderer.setClearColorHex(hex, a);
 	this.scene.fog.color = new THREE.Color(hex);
 };
 
-gp.setupLights = function(scene) {
+GLmol.prototype.setupLights = function(scene) {
 	var directionalLight =  new THREE.DirectionalLight(0xFFFFFF);
 	directionalLight.position = new THREE.Vector3(1, 1, -2.5).normalize();
 	directionalLight.intensity = 1.0;
@@ -319,7 +227,7 @@ gp.setupLights = function(scene) {
 	scene.add(ambientLight);
 };
 
-gp.setSlabAndFog = function() {
+GLmol.prototype.setSlabAndFog = function() {
 	var center = this.rotationGroup.position.z - this.camera.position.z;
 	if (center < 1) center = 1;
 	this.camera.near = center + this.slabNear;
@@ -332,7 +240,7 @@ gp.setSlabAndFog = function() {
 	this.camera.updateProjectionMatrix();
 };
 
-gp.initializeScene = function() {
+GLmol.prototype.initializeScene = function() {
 	// CHECK: Should I explicitly call scene.deallocateObject?
 	this.scene = new THREE.Scene();
 	this.scene.fog = new THREE.Fog(this.bgColor, 100, 200);
@@ -347,46 +255,43 @@ gp.initializeScene = function() {
 	this.setupLights(this.scene);
 };
 
-gp.show = function() {
+
+GLmol.prototype.show = function() {
 	if (!this.scene) return;
 	var time = new Date();
 	this.setSlabAndFog();
 	this.renderer.render(this.scene, this.camera);
-  if (!this._rendered) {
-    this._rendered = true;
-    Jmol._hideLoadingSpinner(this.applet);
-  }
-	//console.log("rendered in " + (+new Date() - time) + "ms");
+	console.log("rendered in " + (+new Date() - time) + "ms");
 };
 
-gp.initializeJmolExport = function() {
+GLmol.prototype.initializeJmolExport = function() {
 	this._view = this.getView();
 	this.initializeScene();
 	this.tpt1 = new THREE.Vector3();
 	this.tpt2 = new THREE.Vector3();
 	this._m = new THREE.Matrix4();
-	this._geoTriangles = null;	
+	this._geoTriangles = null;
 	if (!this.sphereGeometry) {
 		this.sphereGeometry = new THREE.SphereGeometry(1, this.sphereQuality, this.sphereQuality); // r, seg, ring
 		this.sphereGeometry0 = new THREE.SphereGeometry(1, this.sphereQuality / 4, this.sphereQuality / 4); // r, seg, ring
-		var cg = this.cylinderGeometry = {};
-		cg['c'] = new THREE.CylinderGeometry(1, 1, 1, this.cylinderQuality, 1, true);
-		cg['c'].faceUvs = [];
-		cg['c'].faceVertexUvs = [];
-		cg['c0'] = new THREE.CylinderGeometry(1, 1, 1, this.cylinderQuality/4, 1, true);
-		cg['c0'].faceUvs = [];
-		cg['c0'].faceVertexUvs = [];
-		cg['n'] = new THREE.CylinderGeometry(1, 1, 1, this.cylinderQuality, 1, false);
-		cg['n'].faceUvs = [];
-		cg['n'].faceVertexUvs = [];
-		cg['n0'] = new THREE.CylinderGeometry(1, 1, 1, this.cylinderQuality/4, 1, false);
-		cg['n0'].faceUvs = [];
-		cg['n0'].faceVertexUvs = [];
+		this.cylinderGeometry = {};
+		this.cylinderGeometry['c'] = new THREE.CylinderGeometry(1, 1, 1, this.cylinderQuality, 1, true);
+		this.cylinderGeometry['c'].faceUvs = [];
+		this.cylinderGeometry['c'].faceVertexUvs = [];
+		this.cylinderGeometry['c0'] = new THREE.CylinderGeometry(1, 1, 1, this.cylinderQuality/4, 1, true);
+		this.cylinderGeometry['c0'].faceUvs = [];
+		this.cylinderGeometry['c0'].faceVertexUvs = [];
+		this.cylinderGeometry['n'] = new THREE.CylinderGeometry(1, 1, 1, this.cylinderQuality, 1, false);
+		this.cylinderGeometry['n'].faceUvs = [];
+		this.cylinderGeometry['n'].faceVertexUvs = [];
+		this.cylinderGeometry['n0'] = new THREE.CylinderGeometry(1, 1, 1, this.cylinderQuality/4, 1, false);
+		this.cylinderGeometry['n0'].faceUvs = [];
+		this.cylinderGeometry['n0'].faceVertexUvs = [];
 	}
 };
 
-gp.drawSphere = function(group, pt, color, radius) {
-	var isRough = (radius < 0.05); // typical mesh dot
+GLmol.prototype.drawSphere = function(group, pt, color, radius) {
+  var isRough = (radius < 0.05); // typical mesh dot
 	var geom = (isRough ? this.sphereGeometry0 : this.sphereGeometry);
 	var sphere = new THREE.Mesh(geom, GLmol.getMat(this, color));
 	group.add(sphere);
@@ -395,18 +300,20 @@ gp.drawSphere = function(group, pt, color, radius) {
 	sphere.position.y = pt.y;
 	sphere.position.z = pt.z;
 }
-
-gp.addJmolSphere = function(pt, color, radius) {
+		
+GLmol.prototype.addJmolSphere = function(pt, color, radius) {
 	this.drawSphere(this.modelGroup, pt, color, radius);
 }
 
-gp.addJmolCylinder = function(pt1, pt2, color, length, radius) {
+GLmol.setPt = function(p,q) {p.x = q.x;p.y=q.y;p.z=q.z;};
+
+GLmol.prototype.addJmolCylinder = function(pt1, pt2, color, length, radius) {
 	GLmol.setPt(this.tpt1,pt1);
 	GLmol.setPt(this.tpt2,pt2);
 	this.drawCylinder(this.modelGroup, this.tpt1, this.tpt2, 0 + radius, color, true);
 };
-
-gp.addJmolTriangle = function(color, pt1, pt2, pt3) {
+			
+GLmol.prototype.addJmolTriangle = function(color, pt1, pt2, pt3) {
 	var geo = this._geoTriangles;
 	if (!geo)
 		geo = this._geoTriangles = new THREE.Geometry();
@@ -418,25 +325,27 @@ gp.addJmolTriangle = function(color, pt1, pt2, pt3) {
 	geo.faces.push(f);
 };
 
-gp.finalizeJmolExport = function() {	
+
+GLmol.prototype.finalizeJmolExport = function() {	
 
 	if (this._geoTriangles) {
 		var geo = this._geoTriangles;
 		geo.computeFaceNormals();
 		var params = {vertexColors: THREE.FaceColors};
-		var obj = new THREE.Mesh(geo, new THREE.MeshLambertMaterial(params));
-		obj.doubleSided = true; // generally?
+    var obj = new THREE.Mesh(geo, new THREE.MeshLambertMaterial(params));
+    obj.doubleSided = true; // generally?
 //			    obj.material.wireframe = true;
-		this.modelGroup.add(obj);
+    this.modelGroup.add(obj);
+
 	}
 	this.setView(this._view);
 };
 
-gp.drawCylinder = function(group, from, to, radius, color, cap) {
+GLmol.prototype.drawCylinder = function(group, from, to, radius, color, cap) {
 	if (!from || !to) return;
 
 	midpoint = new THREE.Vector3().add(from, to).multiplyScalar(0.5);
-
+	
 	var isRough = (radius < 0.05);
 	var geom = this.cylinderGeometry[(cap ? "c" : "n") + (isRough ? "0" : "")];
 	var cylinder = new THREE.Mesh(geom, GLmol.getMat(this, color));
@@ -448,10 +357,112 @@ gp.drawCylinder = function(group, from, to, radius, color, cap) {
 	group.add(cylinder);
 };
 
-})(GLmol.prototype);
+  GLmol.addExportHook = function(applet) {
+  			J.exportjs.JSExporter.prototype.jsInitExport = function(applet) {
+  				applet._GLmol.initializeJmolExport();
+  			}
+  
+  			J.exportjs.JSExporter.prototype.jsSphere = function(applet, id, found, pt, o) {
+        
+        //alert(arguments.callee.caller.caller)
 
-})(Jmol.GLmol);
+  				applet._GLmol.addJmolSphere(pt, o[0], o[1]);
+  			}
+  			J.exportjs.JSExporter.prototype.jsCylinder = function(applet, id, found, pt1, pt2, o) {
+   				applet._GLmol.addJmolCylinder(pt1, pt2, o[0], o[1], o[2])
+  			}
+  			
+  			J.exportjs.JSExporter.prototype.jsTriangle = function(applet, color, pt1, pt2, pt3) {
+   				applet._GLmol.addJmolTriangle(color, pt1, pt2, pt3)
+  			}
+  			
+  			J.exportjs.JSExporter.prototype.jsEndExport = function(applet) {
+  				applet._GLmol.finalizeJmolExport();
+  				applet._refresh();
+  			}
+  			
+  //  private void jsSurface(Point3f[] vertices, Vector3f[] normals,
+  //                         int[][] indices, int nVertices, int nPolygons,
+  //                         int nFaces, BitSet bsPolygons, int faceVertexMax,
+  //                         int color, int[] vertexColors, int[] polygonColors) {
+  //    // JavaScript only    
+  //  }
+  			
+  			J.exportjs.JSExporter.prototype.jsSurface = function(applet, vertices, normals, indices, 
+  					nVertices, nPolygons, nFaces, bsPolygons, faceVertexMax,
+  					color, vertexColors, polygonColors) {
+  			// notes: Color is only used if both vertexColors and polygonColors are null.
+  			//        Only one of vertexColors or polygonColors will NOT be null.
+  			//        Int facevertexMax is either 3 or 4; indices may have MORE than that number
+  			//        of vertex indices, because the last one may be a flag indicating which 
+  			//        edges to display when just showing mesh edges. When there are quadrilaterals,
+  			//        then nPolygons != nFaces, and you need to create both 3-sides and 4-sided faces
+  			//				based on the length of the individual indices[i] array.  
+  			
+  			// nFaces was determined as follows:
+  			
+  			//    boolean isAll = (bsPolygons == null);
+  			//    if (isAll) {
+  			//      for (int i = nPolygons; --i >= 0;)
+  			//        nFaces += (faceVertexMax == 4 && indices[i].length == 4 ? 2 : 1);    
+  			//    } else {
+  			//      for (int i = bsPolygons.nextSetBit(0); i >= 0; i = bsPolygons.nextSetBit(i + 1))
+  			//        nFaces += (faceVertexMax == 4 && indices[i].length == 4 ? 2 : 1);      
+  			
+  			
+  			    var params = {};
+  			    if (vertexColors != null) {
+              params.vertexColors = THREE.VertexColors;
+              var vc = new Array(vertexColors.length);
+              for (var i = vertexColors.length; --i >= 0;)
+                vc[i] = new THREE.Color(vertexColors[i]);
+            } else if (polygonColors != null) {
+              params.vertexColors = THREE.FaceColors;
+            } else {
+              params.color = color;
+            }
+  			    var geo = new THREE.Geometry();
+  			    for (var i = 0; i < nVertices; i++) {
+      				geo.vertices.push(new THREE.Vector3(vertices[i].x, vertices[i].y, vertices[i].z));
+  			    }
+  				for (var i = 0; i < nPolygons; i++) {
+  				  var h = indices[i][0], k = indices[i][1], l = indices[i][2];
+            var m = indices[i][3];
+  				  var is3 = (faceVertexMax == 3 || indices[i].length == 3);
+  				  var f = (is3 ? new THREE.Face3(h, k, l) : new THREE.Face4(h, k, l, m));
+  				  // we can use the normals themselves, because they have .x .y .z
+  			    f.vertexNormals[0] = normals[h];
+  			    f.vertexNormals[1] = normals[k];
+  			    f.vertexNormals[2] = normals[l];
+  			    if (is3) {
+    			    if (vertexColors != null) {
+                f.vertexColors = [vc[h], vc[k], vc[l]];
+              }
+  			    } else {
+  				    f.vertexNormals[3] = normals[m];
+  			    }
+  
+            if (polygonColors != null) {
+              f.color = new THREE.Color(polygonColors[i]);
+            }
+  
+  				  geo.faces.push(f);
+  				}
+  
+  			    var obj = new THREE.Mesh(geo, new THREE.MeshLambertMaterial(params));
+  			    obj.doubleSided = true; // generally?
+  //			    obj.material.wireframe = true;
+  			    applet._GLmol.modelGroup.add(obj);
+  
+  //			    console.log(obj);
+  			}
+  }
 
-})(Jmol);
+return GLmol;
+}()); // GLmol = ....
 
- 
+//})();
+
+
+
+

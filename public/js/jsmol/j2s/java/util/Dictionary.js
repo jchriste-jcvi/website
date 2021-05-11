@@ -1,4 +1,4 @@
-c$=Clazz.declareType(java.util,"Dictionary");
-Clazz.makeConstructor(c$,
+c$=$_T(java.util,"Dictionary");
+$_K(c$,
 function(){
 });

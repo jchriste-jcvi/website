@@ -1,2 +1,2 @@
-Clazz.declarePackage("java.util.regex");
-Clazz.declareInterface(java.util.regex,"MatchResult");
+$_J("java.util.regex");
+$_I(java.util.regex,"MatchResult");

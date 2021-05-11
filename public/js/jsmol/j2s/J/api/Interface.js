@@ -1,31 +1,26 @@
 Clazz.declarePackage ("J.api");
-Clazz.load (null, "J.api.Interface", ["JU.Logger"], function () {
+Clazz.load (null, "J.api.Interface", ["J.util.Logger"], function () {
 c$ = Clazz.declareType (J.api, "Interface");
-c$.getInterface = Clazz.defineMethod (c$, "getInterface", 
-function (name, vwr, state) {
+c$.getOptionInterface = $_M(c$, "getOptionInterface", 
+function (name) {
+return J.api.Interface.getInterface ("J." + name);
+}, "~S");
+c$.getApplicationInterface = $_M(c$, "getApplicationInterface", 
+function (name) {
+return J.api.Interface.getInterface ("org.openscience.jmol.app." + name);
+}, "~S");
+c$.getInterface = $_M(c$, "getInterface", 
+function (name) {
 try {
-var x = null;
-x = Clazz._4Name (name);
+var x = Class.forName (name);
 return (x == null ? null : x.newInstance ());
 } catch (e) {
 if (Clazz.exceptionOf (e, Exception)) {
-JU.Logger.error ("Interface.java Error creating instance for " + name + ": \n" + e);
+J.util.Logger.error ("Interface.java Error creating instance for " + name + ": \n" + e);
 return null;
 } else {
 throw e;
 }
 }
-}, "~S,JV.Viewer,~S");
-c$.getOption = Clazz.defineMethod (c$, "getOption", 
-function (className, vwr, state) {
-return J.api.Interface.getInterface ("J." + className, vwr, state);
-}, "~S,JV.Viewer,~S");
-c$.getUtil = Clazz.defineMethod (c$, "getUtil", 
-function (name, vwr, state) {
-return J.api.Interface.getInterface ("JU." + name, vwr, state);
-}, "~S,JV.Viewer,~S");
-c$.getSymmetry = Clazz.defineMethod (c$, "getSymmetry", 
-function (vwr, state) {
-return J.api.Interface.getInterface ("JS.Symmetry", vwr, state);
-}, "JV.Viewer,~S");
+}, "~S");
 });

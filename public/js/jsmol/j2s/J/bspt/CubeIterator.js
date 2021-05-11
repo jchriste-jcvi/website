@@ -20,12 +20,12 @@ Clazz.makeConstructor (c$,
 function (bspt) {
 this.set (bspt);
 }, "J.bspt.Bspt");
-Clazz.defineMethod (c$, "set", 
+$_M(c$, "set", 
 function (bspt) {
 this.bspt = bspt;
 this.stack =  new Array (bspt.treeDepth);
 }, "J.bspt.Bspt");
-Clazz.defineMethod (c$, "initialize", 
+$_M(c$, "initialize", 
 function (center, radius, hemisphereOnly) {
 this.radius = radius;
 this.tHemisphere = false;
@@ -33,17 +33,16 @@ this.cx = center.x;
 this.cy = center.y;
 this.cz = center.z;
 this.leaf = null;
-if (this.stack.length < this.bspt.treeDepth) this.set (this.bspt);
 this.stack[0] = this.bspt.eleRoot;
 this.sp = 1;
 this.findLeftLeaf ();
 this.tHemisphere = hemisphereOnly;
-}, "JU.T3,~N,~B");
-Clazz.defineMethod (c$, "release", 
+}, "JU.P3,~N,~B");
+$_M(c$, "release", 
 function () {
 this.set (this.bspt);
 });
-Clazz.defineMethod (c$, "hasMoreElements", 
+$_M(c$, "hasMoreElements", 
 function () {
 while (this.leaf != null) {
 for (; this.leafIndex < this.leaf.count; ++this.leafIndex) if (this.isWithinRadius (this.leaf.tuples[this.leafIndex])) return true;
@@ -52,16 +51,16 @@ this.findLeftLeaf ();
 }
 return false;
 });
-Clazz.defineMethod (c$, "nextElement", 
+$_M(c$, "nextElement", 
 function () {
 return this.leaf.tuples[this.leafIndex++];
 });
-Clazz.defineMethod (c$, "foundDistance2", 
+$_M(c$, "foundDistance2", 
 function () {
 return this.dx * this.dx + this.dy * this.dy + this.dz * this.dz;
 });
-Clazz.defineMethod (c$, "findLeftLeaf", 
- function () {
+$_M(c$, "findLeftLeaf", 
+($fz = function () {
 this.leaf = null;
 if (this.sp == 0) return;
 var ele = this.stack[--this.sp];
@@ -94,10 +93,10 @@ ele = this.stack[--this.sp];
 }}
 this.leaf = ele;
 this.leafIndex = 0;
-});
-Clazz.defineMethod (c$, "isWithinRadius", 
- function (t) {
+}, $fz.isPrivate = true, $fz));
+$_M(c$, "isWithinRadius", 
+($fz = function (t) {
 this.dx = t.x - this.cx;
 return ((!this.tHemisphere || this.dx >= 0) && (this.dx = Math.abs (this.dx)) <= this.radius && (this.dy = Math.abs (t.y - this.cy)) <= this.radius && (this.dz = Math.abs (t.z - this.cz)) <= this.radius);
-}, "JU.T3");
+}, $fz.isPrivate = true, $fz), "JU.P3");
 });

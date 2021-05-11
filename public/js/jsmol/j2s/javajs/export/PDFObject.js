@@ -14,38 +14,38 @@ function (index) {
 Clazz.superConstructor (this, javajs["export"].PDFObject, []);
 this.index = index;
 }, "~N");
-Clazz.defineMethod (c$, "getRef", 
+$_M(c$, "getRef", 
 function () {
 return this.index + " 0 R";
 });
-Clazz.defineMethod (c$, "getID", 
+$_M(c$, "getID", 
 function () {
 return this.type.substring (0, 1) + this.index;
 });
-Clazz.defineMethod (c$, "isFont", 
+$_M(c$, "isFont", 
 function () {
 return "Font".equals (this.type);
 });
-Clazz.defineMethod (c$, "setStream", 
+$_M(c$, "setStream", 
 function (stream) {
 this.stream = stream;
 }, "~A");
-Clazz.defineMethod (c$, "getDef", 
+$_M(c$, "getDef", 
 function (key) {
 return this.dictionary.get (key);
 }, "~S");
-Clazz.defineMethod (c$, "addDef", 
+$_M(c$, "addDef", 
 function (key, value) {
 if (this.dictionary == null) this.dictionary =  new java.util.Hashtable ();
 this.dictionary.put (key, value);
 if (key.equals ("Type")) this.type = (value).substring (1);
 }, "~S,~O");
-Clazz.defineMethod (c$, "setAsStream", 
+$_M(c$, "setAsStream", 
 function () {
 this.stream = this.toBytes (0, -1);
 this.setLength (0);
 });
-Clazz.defineMethod (c$, "output", 
+$_M(c$, "output", 
 function (os) {
 if (this.index > 0) {
 var s = this.index + " 0 obj\n";
@@ -75,14 +75,14 @@ this.write (os, "\r\nendstream\r\n".getBytes (), 0);
 }if (this.index > 0) this.write (os, "endobj\n".getBytes (), 0);
 return this.len;
 }, "java.io.OutputStream");
-Clazz.defineMethod (c$, "write", 
- function (os, bytes, nBytes) {
+$_M(c$, "write", 
+($fz = function (os, bytes, nBytes) {
 if (nBytes == 0) nBytes = bytes.length;
 this.len += nBytes;
 os.write (bytes, 0, nBytes);
-}, "java.io.OutputStream,~A,~N");
-Clazz.defineMethod (c$, "getDictionaryText", 
- function (d, nl) {
+}, $fz.isPrivate = true, $fz), "java.io.OutputStream,~A,~N");
+$_M(c$, "getDictionaryText", 
+($fz = function (d, nl) {
 var sb =  new JU.SB ();
 sb.append ("<<");
 if (d.containsKey ("Type")) sb.append ("/Type").appendO (d.get ("Type"));
@@ -99,14 +99,14 @@ if (!s.startsWith ("/")) sb.append (" ");
 sb.appendO (s);
 }
 return (sb.length () > 3 ? sb.append (">>").append (nl).toString () : "");
-}, "java.util.Map,~S");
-Clazz.defineMethod (c$, "createSubdict", 
- function (d0, dict) {
+}, $fz.isPrivate = true, $fz), "java.util.Map,~S");
+$_M(c$, "createSubdict", 
+($fz = function (d0, dict) {
 var d = d0.get (dict);
 if (d == null) d0.put (dict, d =  new java.util.Hashtable ());
 return d;
-}, "java.util.Map,~S");
-Clazz.defineMethod (c$, "addResource", 
+}, $fz.isPrivate = true, $fz), "java.util.Map,~S");
+$_M(c$, "addResource", 
 function (type, key, value) {
 var r = this.createSubdict (this.dictionary, "Resources");
 if (type != null) r = this.createSubdict (r, type);

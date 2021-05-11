@@ -1,1 +1,1 @@
-Clazz.declareInterface(java.lang,"Iterable");
+$_I(java.lang,"Iterable");

@@ -1,6 +1,6 @@
-Clazz.load(["java.io.IOException"],"java.io.InterruptedIOException",null,function(){
-c$=Clazz.decorateAsClass(function(){
+$_L(["java.io.IOException"],"java.io.InterruptedIOException",null,function(){
+c$=$_C(function(){
 this.bytesTransferred=0;
-Clazz.instantialize(this,arguments);
+$_Z(this,arguments);
 },java.io,"InterruptedIOException",java.io.IOException);
 });

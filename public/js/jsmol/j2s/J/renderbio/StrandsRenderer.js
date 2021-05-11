@@ -6,43 +6,43 @@ this.strandSeparation = 0;
 this.baseStrandOffset = 0;
 Clazz.instantialize (this, arguments);
 }, J.renderbio, "StrandsRenderer", J.renderbio.BioShapeRenderer);
-Clazz.overrideMethod (c$, "renderBioShape", 
+$_V(c$, "renderBioShape", 
 function (bioShape) {
 this.renderStrandShape ();
 }, "J.shapebio.BioShape");
-Clazz.defineMethod (c$, "renderStrandShape", 
+$_M(c$, "renderStrandShape", 
 function () {
 if (!this.setStrandCount ()) return;
 this.renderStrands ();
 });
-Clazz.defineMethod (c$, "setStrandCount", 
+$_M(c$, "setStrandCount", 
 function () {
 if (this.wingVectors == null) return false;
-this.strandCount = (Clazz.instanceOf (this.shape, J.shapebio.Strands) ? this.vwr.getStrandCount ((this.shape).shapeID) : 10);
+this.strandCount = (Clazz.instanceOf (this.shape, J.shapebio.Strands) ? this.viewer.getStrandCount ((this.shape).shapeID) : 10);
 this.strandSeparation = (this.strandCount <= 1) ? 0 : 1 / (this.strandCount - 1);
 this.baseStrandOffset = ((this.strandCount & 1) == 0 ? this.strandSeparation / 2 : this.strandSeparation);
 return true;
 });
-Clazz.defineMethod (c$, "renderStrands", 
+$_M(c$, "renderStrands", 
 function () {
 var screens;
 for (var i = this.strandCount >> 1; --i >= 0; ) {
 var f = (i * this.strandSeparation) + this.baseStrandOffset;
-screens = this.calcScreens (f, this.mads);
+screens = this.calcScreens (f);
 this.renderStrand (screens);
-this.vwr.freeTempPoints (screens);
-screens = this.calcScreens (-f, this.mads);
+this.viewer.freeTempScreens (screens);
+screens = this.calcScreens (-f);
 this.renderStrand (screens);
-this.vwr.freeTempPoints (screens);
+this.viewer.freeTempScreens (screens);
 }
 if (this.strandCount % 2 == 1) {
-screens = this.calcScreens (0, this.mads);
+screens = this.calcScreens (0);
 this.renderStrand (screens);
-this.vwr.freeTempPoints (screens);
+this.viewer.freeTempScreens (screens);
 }});
-Clazz.defineMethod (c$, "renderStrand", 
- function (screens) {
+$_M(c$, "renderStrand", 
+($fz = function (screens) {
 for (var i = this.bsVisible.nextSetBit (0); i >= 0; i = this.bsVisible.nextSetBit (i + 1)) this.renderHermiteCylinder (screens, i);
 
-}, "~A");
+}, $fz.isPrivate = true, $fz), "~A");
 });

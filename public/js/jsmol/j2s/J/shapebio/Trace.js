@@ -1,22 +1,23 @@
 Clazz.declarePackage ("J.shapebio");
-Clazz.load (["J.shapebio.BioShapeCollection"], "J.shapebio.Trace", ["J.atomdata.RadiusData", "J.c.VDW"], function () {
+Clazz.load (["J.shapebio.BioShapeCollection"], "J.shapebio.Trace", ["J.atomdata.RadiusData", "J.constant.EnumVdw", "J.modelset.Atom"], function () {
 c$ = Clazz.declareType (J.shapebio, "Trace", J.shapebio.BioShapeCollection);
-Clazz.overrideMethod (c$, "initShape", 
+$_M(c$, "initShape", 
 function () {
+Clazz.superCall (this, J.shapebio.Trace, "initShape", []);
 this.madOn = 600;
 this.madHelixSheet = 1500;
 this.madTurnRandom = 500;
 this.madDnaRna = 1500;
 });
-Clazz.overrideMethod (c$, "setProperty", 
+$_V(c$, "setProperty", 
 function (propertyName, value, bsSelected) {
 if (propertyName === "putty") {
 this.setPutty (value, bsSelected);
 return;
 }this.setPropBSC (propertyName, value, bsSelected);
 }, "~S,~O,JU.BS");
-Clazz.defineMethod (c$, "setPutty", 
- function (info, bsAtoms) {
+$_M(c$, "setPutty", 
+($fz = function (info, bsAtoms) {
 var n = bsAtoms.cardinality ();
 if (n == 0) return;
 var data =  Clazz.newFloatArray (bsAtoms.length (), 0);
@@ -25,7 +26,7 @@ var sumsq = 0.0;
 var min = 3.4028235E38;
 var max = 0;
 for (var i = bsAtoms.nextSetBit (0); i >= 0; i = bsAtoms.nextSetBit (i + 1)) {
-var value = this.atoms[i].atomPropertyFloat (null, 1111492620, null);
+var value = J.modelset.Atom.atomPropertyFloat (null, this.atoms[i], 1112541199);
 sum += value;
 sumsq += (value * value);
 if (value < min) min = value;
@@ -50,7 +51,7 @@ nonlinear = true;
 break;
 }
 for (var i = bsAtoms.nextSetBit (0); i >= 0; i = bsAtoms.nextSetBit (i + 1)) {
-var scale = this.atoms[i].atomPropertyFloat (null, 1111492620, null);
+var scale = J.modelset.Atom.atomPropertyFloat (null, this.atoms[i], 1112541199);
 switch (transform) {
 case 3:
 case 7:
@@ -79,9 +80,9 @@ if ((scale < scale_min) && (scale_min >= 0.0)) scale = scale_min;
 if ((scale > scale_max) && (scale_max >= 0.0)) scale = scale_max;
 data[i] = scale * rad;
 }
-var rd =  new J.atomdata.RadiusData (data, 0, J.atomdata.RadiusData.EnumType.ABSOLUTE, J.c.VDW.AUTO);
+var rd =  new J.atomdata.RadiusData (data, 0, J.atomdata.RadiusData.EnumType.ABSOLUTE, J.constant.EnumVdw.AUTO);
 this.setShapeSizeRD (0, rd, bsAtoms);
-}, "~A,JU.BS");
+}, $fz.isPrivate = true, $fz), "~A,JU.BS");
 Clazz.defineStatics (c$,
 "PUTTY_NormalizedNonlinear", 0,
 "PUTTY_RelativeNonlinear", 1,

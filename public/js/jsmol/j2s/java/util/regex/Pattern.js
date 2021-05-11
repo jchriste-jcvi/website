@@ -1,15 +1,15 @@
-Clazz.declarePackage("java.util.regex");
-Clazz.load(null,"java.util.regex.Pattern",["java.lang.IllegalArgumentException","$.StringBuffer","java.util.regex.Matcher"],function(){
-c$=Clazz.decorateAsClass(function(){
+$_J("java.util.regex");
+$_L(null,"java.util.regex.Pattern",["java.lang.IllegalArgumentException","$.StringBuffer","java.util.regex.Matcher"],function(){
+c$=$_C(function(){
 this.$flags=0;
 this.regexp=null;
-Clazz.instantialize(this,arguments);
+$_Z(this,arguments);
 },java.util.regex,"Pattern",null,java.io.Serializable);
-Clazz.defineMethod(c$,"matcher",
+$_M(c$,"matcher",
 function(cs){
 return new java.util.regex.Matcher(this,cs);
 },"CharSequence");
-Clazz.defineMethod(c$,"split",
+$_M(c$,"split",
 function(input,limit){
 var res=new Array(0);
 var mat=this.matcher(input);
@@ -31,25 +31,25 @@ res.length--;
 }
 }}return res;
 },"CharSequence,~N");
-Clazz.defineMethod(c$,"split",
+$_M(c$,"split",
 function(input){
 return this.split(input,0);
 },"CharSequence");
-Clazz.defineMethod(c$,"pattern",
+$_M(c$,"pattern",
 function(){
 {
 return this.regexp.source;
 }return null;
 });
-Clazz.defineMethod(c$,"toString",
+$_M(c$,"toString",
 function(){
 return this.pattern();
 });
-Clazz.defineMethod(c$,"flags",
+$_M(c$,"flags",
 function(){
 return this.$flags;
 });
-c$.compile=Clazz.defineMethod(c$,"compile",
+c$.compile=$_M(c$,"compile",
 function(regex,flags){
 if((flags!=0)&&((flags|239)!=239)){
 throw new IllegalArgumentException("Illegal flags");
@@ -63,15 +63,15 @@ flagStr+="i";
 pattern.regexp=new RegExp(regex,flagStr);
 }return pattern;
 },"~S,~N");
-c$.compile=Clazz.defineMethod(c$,"compile",
+c$.compile=$_M(c$,"compile",
 function(pattern){
 return java.util.regex.Pattern.compile(pattern,0);
 },"~S");
-c$.matches=Clazz.defineMethod(c$,"matches",
+c$.matches=$_M(c$,"matches",
 function(regex,input){
 return java.util.regex.Pattern.compile(regex).matcher(input).matches();
 },"~S,CharSequence");
-c$.quote=Clazz.defineMethod(c$,"quote",
+c$.quote=$_M(c$,"quote",
 function(s){
 var sb=new StringBuffer().append("\\Q");
 var apos=0;
@@ -82,10 +82,10 @@ apos=k+2;
 }
 return sb.append(s.substring(apos)).append("\\E").toString();
 },"~S");
-Clazz.makeConstructor(c$,
+$_K(c$,
 ($fz=function(){
 },$fz.isPrivate=true,$fz));
-Clazz.defineStatics(c$,
+$_S(c$,
 "UNIX_LINES",1,
 "CASE_INSENSITIVE",2,
 "COMMENTS",4,

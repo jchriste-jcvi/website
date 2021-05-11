@@ -1,18 +1,18 @@
-Clazz.load(["java.util.IllegalFormatException"],"java.util.IllegalFormatPrecisionException",null,function(){
-c$=Clazz.decorateAsClass(function(){
+$_L(["java.util.IllegalFormatException"],"java.util.IllegalFormatPrecisionException",null,function(){
+c$=$_C(function(){
 this.p=0;
-Clazz.instantialize(this,arguments);
+$_Z(this,arguments);
 },java.util,"IllegalFormatPrecisionException",java.util.IllegalFormatException);
-Clazz.makeConstructor(c$,
+$_K(c$,
 function(p){
-Clazz.superConstructor(this,java.util.IllegalFormatPrecisionException,[]);
+$_R(this,java.util.IllegalFormatPrecisionException,[]);
 this.p=p;
 },"~N");
-Clazz.defineMethod(c$,"getPrecision",
+$_M(c$,"getPrecision",
 function(){
 return this.p;
 });
-Clazz.overrideMethod(c$,"getMessage",
+$_V(c$,"getMessage",
 function(){
 return String.valueOf(this.p);
 });

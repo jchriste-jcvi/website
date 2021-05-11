@@ -1,61 +1,61 @@
-Clazz.load(["java.lang.reflect.AnnotatedElement"],"java.lang.reflect.AccessibleObject",null,function(){
-c$=Clazz.declareType(java.lang.reflect,"AccessibleObject",null,java.lang.reflect.AnnotatedElement);
-Clazz.makeConstructor(c$,
+$_L(["java.lang.reflect.AnnotatedElement"],"java.lang.reflect.AccessibleObject",null,function(){
+c$=$_T(java.lang.reflect,"AccessibleObject",null,java.lang.reflect.AnnotatedElement);
+$_K(c$,
 function(){
 });
-Clazz.defineMethod(c$,"isAccessible",
+$_M(c$,"isAccessible",
 function(){
 return false;
 });
-c$.setAccessible=Clazz.defineMethod(c$,"setAccessible",
+c$.setAccessible=$_M(c$,"setAccessible",
 function(objects,flag){
 return;
 },"~A,~B");
-Clazz.defineMethod(c$,"setAccessible",
+$_M(c$,"setAccessible",
 function(flag){
 return;
 },"~B");
-Clazz.overrideMethod(c$,"isAnnotationPresent",
+$_V(c$,"isAnnotationPresent",
 function(annotationType){
 return false;
 },"Class");
-Clazz.overrideMethod(c$,"getDeclaredAnnotations",
+$_V(c$,"getDeclaredAnnotations",
 function(){
 return new Array(0);
 });
-Clazz.overrideMethod(c$,"getAnnotations",
+$_V(c$,"getAnnotations",
 function(){
 return new Array(0);
 });
-Clazz.overrideMethod(c$,"getAnnotation",
+$_V(c$,"getAnnotation",
 function(annotationType){
 return null;
 },"Class");
-c$.marshallArguments=Clazz.defineMethod(c$,"marshallArguments",
+c$.marshallArguments=$_M(c$,"marshallArguments",
 function(parameterTypes,args){
 return null;
 },"~A,~A");
-Clazz.defineMethod(c$,"invokeV",
+$_M(c$,"invokeV",
 function(receiver,args){
 return;
 },"~O,~A");
-Clazz.defineMethod(c$,"invokeL",
+$_M(c$,"invokeL",
 function(receiver,args){
 return null;
 },"~O,~A");
-Clazz.defineMethod(c$,"invokeI",
+$_M(c$,"invokeI",
 function(receiver,args){
 return 0;
 },"~O,~A");
-Clazz.defineMethod(c$,"invokeJ",
+$_M(c$,"invokeJ",
 function(receiver,args){
 return 0;
 },"~O,~A");
-Clazz.defineMethod(c$,"invokeF",
+$_M(c$,"invokeF",
 function(receiver,args){
 return 0.0;
 },"~O,~A");
-Clazz.defineMethod(c$,"invokeD",
+$_M(c$,"invokeD",
 function(receiver,args){
 return 0.0;
 },"~O,~A");

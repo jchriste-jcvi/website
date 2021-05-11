@@ -1,23 +1,23 @@
-Clazz.declarePackage("java.util.regex");
-Clazz.load(["java.lang.IllegalArgumentException"],"java.util.regex.PatternSyntaxException",null,function(){
-c$=Clazz.decorateAsClass(function(){
+$_J("java.util.regex");
+$_L(["java.lang.IllegalArgumentException"],"java.util.regex.PatternSyntaxException",null,function(){
+c$=$_C(function(){
 this.desc=null;
 this.pattern=null;
 this.index=-1;
-Clazz.instantialize(this,arguments);
+$_Z(this,arguments);
 },java.util.regex,"PatternSyntaxException",IllegalArgumentException);
-Clazz.makeConstructor(c$,
+$_K(c$,
 function(desc,pattern,index){
-Clazz.superConstructor(this,java.util.regex.PatternSyntaxException,[]);
+$_R(this,java.util.regex.PatternSyntaxException,[]);
 this.desc=desc;
 this.pattern=pattern;
 this.index=index;
 },"~S,~S,~N");
-Clazz.defineMethod(c$,"getPattern",
+$_M(c$,"getPattern",
 function(){
 return this.pattern;
 });
-Clazz.overrideMethod(c$,"getMessage",
+$_V(c$,"getMessage",
 function(){
 var s=this.desc;
 if(this.index>=0){
@@ -30,11 +30,11 @@ for(var i=0;i<this.index;i++)s+=(' ').charCodeAt(0);
 s+=('^').charCodeAt(0);
 }return s;
 });
-Clazz.defineMethod(c$,"getDescription",
+$_M(c$,"getDescription",
 function(){
 return this.desc;
 });
-Clazz.defineMethod(c$,"getIndex",
+$_M(c$,"getIndex",
 function(){
 return this.index;
 });

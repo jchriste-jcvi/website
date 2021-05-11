@@ -1,1 +1,1 @@
-Clazz.declareInterface(java.lang.reflect,"GenericDeclaration");
+$_I(java.lang.reflect,"GenericDeclaration");

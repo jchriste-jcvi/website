@@ -1,20 +1,20 @@
 Clazz.declarePackage ("JSV.dialog");
-Clazz.load (null, "JSV.dialog.DialogManager", ["java.util.Hashtable", "JU.PT", "JSV.common.JSVFileManager", "$.JSViewer"], function () {
+Clazz.load (null, "JSV.dialog.DialogManager", ["java.util.Hashtable", "JSV.common.JSVFileManager"], function () {
 c$ = Clazz.decorateAsClass (function () {
-this.vwr = null;
+this.viewer = null;
 this.htSelectors = null;
 this.htDialogs = null;
 this.options = null;
 Clazz.instantialize (this, arguments);
 }, JSV.dialog, "DialogManager");
-Clazz.defineMethod (c$, "set", 
+$_M(c$, "set", 
 function (viewer) {
-this.vwr = viewer;
+this.viewer = viewer;
 this.htSelectors =  new java.util.Hashtable ();
 this.htDialogs =  new java.util.Hashtable ();
 return this;
 }, "JSV.common.JSViewer");
-Clazz.defineMethod (c$, "registerDialog", 
+$_M(c$, "registerDialog", 
 function (jsvDialog) {
 var id = jsvDialog.optionKey;
 if (!id.endsWith ("!")) id += " " + ("" + Math.random ()).substring (3);
@@ -22,36 +22,31 @@ if (this.htDialogs.containsKey (id)) this.htDialogs.get (id).dispose ();
 this.htDialogs.put (id, jsvDialog);
 return id;
 }, "JSV.dialog.JSVDialog");
-Clazz.defineMethod (c$, "registerSelector", 
+$_M(c$, "registerSelector", 
 function (selectorName, columnSelector) {
 this.htSelectors.put (columnSelector, selectorName);
 }, "~S,~O");
-Clazz.defineMethod (c$, "getSelectorName", 
+$_M(c$, "getSelectorName", 
 function (selector) {
 return this.htSelectors.get (selector);
 }, "~O");
-Clazz.defineMethod (c$, "showSourceErrors", 
+$_M(c$, "showSourceErrors", 
 function (frame, currentSource) {
 if (currentSource == null) {
 this.showMessageDialog (frame, "Please Select a Spectrum.", "Select Spectrum", 2);
 return;
 }var errorLog = currentSource.getErrorLog ();
-if (errorLog != null && errorLog.length > 0) this.showMessage (frame, errorLog, JSV.dialog.DialogManager.fixTitle (currentSource.getFilePath ()));
+if (errorLog != null && errorLog.length > 0) this.showScrollingText (frame, currentSource.getFilePath (), errorLog);
  else this.showMessageDialog (frame, "No errors found.", "Error Log", 1);
 }, "~O,JSV.source.JDXSource");
-Clazz.defineMethod (c$, "showSource", 
-function (frame, spec) {
-var filePath = spec.getFilePath ();
-if (filePath == null) {
+$_M(c$, "showSource", 
+function (frame, currentSource) {
+if (currentSource == null) {
 this.showMessageDialog (frame, "Please Select a Spectrum", "Select Spectrum", 2);
 return;
-}if (filePath === "[inline]") {
-this.showMessage (null, spec.getInlineData (), "Inline data");
-return;
 }try {
-var s = JSV.common.JSVFileManager.getFileAsString (filePath);
-if (JSV.common.JSViewer.isJS) s = JU.PT.rep (s, "<", "&lt;");
-this.showMessage (null, s, JSV.dialog.DialogManager.fixTitle (filePath));
+var f = currentSource.getFilePath ();
+this.showScrollingText (null, f, JSV.common.JSVFileManager.getFileAsString (f));
 } catch (ex) {
 if (Clazz.exceptionOf (ex, Exception)) {
 this.showMessageDialog (frame, "File Not Found", "SHOWSOURCE", 0);
@@ -59,15 +54,15 @@ this.showMessageDialog (frame, "File Not Found", "SHOWSOURCE", 0);
 throw ex;
 }
 }
-}, "~O,JSV.common.Spectrum");
-Clazz.defineMethod (c$, "processClick", 
+}, "~O,JSV.source.JDXSource");
+$_M(c$, "processClick", 
 function (eventId) {
 var pt = eventId.lastIndexOf ("/");
 var id = eventId.substring (pt + 1);
 var dialog = eventId.substring (0, pt);
 this.dialogCallback (dialog, id, null);
 }, "~S");
-Clazz.defineMethod (c$, "processTableEvent", 
+$_M(c$, "processTableEvent", 
 function (eventId, index1, index2, adjusting) {
 var pt = eventId.lastIndexOf ("/");
 var dialog = eventId.substring (0, pt);
@@ -75,25 +70,21 @@ var selector = eventId.substring (pt + 1);
 var msg = "&selector=" + selector + "&index=" + index1 + (index2 < 0 ? "&adjusting=" + adjusting : "&index2=" + index2);
 this.dialogCallback (dialog, "tableSelect", msg);
 }, "~S,~N,~N,~B");
-Clazz.defineMethod (c$, "processWindowClosing", 
+$_M(c$, "processWindowClosing", 
 function (dialogId) {
 this.dialogCallback (dialogId, "windowClosing", null);
 this.htDialogs.remove (dialogId);
 }, "~S");
-Clazz.defineMethod (c$, "dialogCallback", 
- function (dialogId, id, msg) {
+$_M(c$, "dialogCallback", 
+($fz = function (dialogId, id, msg) {
 var jsvDialog = this.htDialogs.get (dialogId);
 if (jsvDialog != null) jsvDialog.callback (id, msg);
-}, "~S,~S,~S");
-Clazz.defineMethod (c$, "getDialogOptions", 
+}, $fz.isPrivate = true, $fz), "~S,~S,~S");
+$_M(c$, "getDialogOptions", 
 function () {
 if (this.options == null) this.options =  new java.util.Hashtable ();
 return this.options;
 });
-c$.fixTitle = Clazz.defineMethod (c$, "fixTitle", 
-function (title) {
-return (title.length > 50 ? title.substring (0, 50) + "..." : title);
-}, "~S");
 Clazz.defineStatics (c$,
 "PLAIN_MESSAGE", -1,
 "ERROR_MESSAGE", 0,

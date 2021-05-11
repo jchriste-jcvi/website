@@ -1,5 +1,5 @@
 Clazz.declarePackage ("JSV.export");
-Clazz.load (["java.util.Hashtable", "JU.Lst"], "JSV.export.FormContext", ["java.lang.Character", "$.Double", "java.util.Map", "JU.PT", "JSV.common.Coordinate", "JU.Logger"], function () {
+Clazz.load (["java.util.Hashtable", "JU.List"], "JSV.export.FormContext", ["java.lang.Character", "$.Double", "java.util.Map", "JU.PT", "JSV.common.Coordinate", "J.util.Logger"], function () {
 c$ = Clazz.decorateAsClass (function () {
 this.tokens = null;
 this.context = null;
@@ -14,25 +14,25 @@ Clazz.instantialize (this, arguments);
 }, JSV["export"], "FormContext");
 Clazz.prepareFields (c$, function () {
 this.context =  new java.util.Hashtable ();
-this.cmds =  new JU.Lst ();
+this.cmds =  new JU.List ();
 });
 Clazz.makeConstructor (c$, 
 function () {
 });
-Clazz.defineMethod (c$, "put", 
+$_M(c$, "put", 
 function (key, value) {
 if (value == null) value = "";
 this.context.put (key, value);
 }, "~S,~O");
-Clazz.defineMethod (c$, "setTemplate", 
+$_M(c$, "setTemplate", 
 function (template) {
 var errMsg = this.getFormTokens (template);
 if (errMsg != null) return errMsg;
 return null;
 }, "~S");
-Clazz.defineMethod (c$, "getFormTokens", 
- function (template) {
-this.formTokens =  new JU.Lst ();
+$_M(c$, "getFormTokens", 
+($fz = function (template) {
+this.formTokens =  new JU.List ();
 if (template.indexOf ("\r\n") >= 0) template = JU.PT.replaceAllCharacters (template, "\r\n", "\n");
 template = template.$replace ('\r', '\n');
 var lines = template.$plit ("\n");
@@ -61,8 +61,8 @@ continue;
 if (token.length > 0 && this.strError == null) {
 Clazz.innerTypeInstance (JSV["export"].FormContext.FormToken, this, null, token, 0);
 }return this.strError;
-}, "~S");
-Clazz.defineMethod (c$, "merge", 
+}, $fz.isPrivate = true, $fz), "~S");
+$_M(c$, "merge", 
 function (out) {
 var ptr;
 for (var i = 0; i < this.formTokens.size () && this.strError == null; i++) {
@@ -117,8 +117,8 @@ continue;
 }
 return (this.strError != null ? this.strError : out != null ? out.toString () : null);
 }, "JU.OC");
-Clazz.defineMethod (c$, "foreach", 
- function (vt) {
+$_M(c$, "foreach", 
+($fz = function (vt) {
 var data = vt.data;
 data = data.$replace ('(', ' ');
 data = data.$replace (')', ' ');
@@ -127,18 +127,18 @@ if (tokens.length != 4) {
 return;
 }vt.$var = tokens[1].substring (1);
 var vc = this.context.get (tokens[3].substring (1));
-if (Clazz.instanceOf (vc, JU.Lst)) vt.vc = vc;
+if (Clazz.instanceOf (vc, JU.List)) vt.vc = vc;
 vt.cmdPtr = vt.ptr;
 vt.pointCount = -1;
-}, "JSV.export.FormContext.FormToken");
-c$.findOp = Clazz.defineMethod (c$, "findOp", 
- function (op) {
+}, $fz.isPrivate = true, $fz), "JSV.export.FormContext.FormToken");
+c$.findOp = $_M(c$, "findOp", 
+($fz = function (op) {
 for (var i = JSV["export"].FormContext.ops.length; --i >= 0; ) if (JSV["export"].FormContext.ops[i].equals (op)) return i;
 
 return -1;
-}, "~S");
-Clazz.defineMethod (c$, "evaluate", 
- function (data, isIf) {
+}, $fz.isPrivate = true, $fz), "~S");
+$_M(c$, "evaluate", 
+($fz = function (data, isIf) {
 var pt = data.indexOf ("(");
 if (pt < 0) {
 this.strError = "missing ( in " + data;
@@ -149,14 +149,14 @@ if (pt < 0) {
 this.strError = "missing ) in " + data;
 return false;
 }data = data.substring (0, pt);
-data = JU.PT.rep (data, "=", " = ");
-data = JU.PT.rep (data, "!", " ! ");
-data = JU.PT.rep (data, "<", " < ");
-data = JU.PT.rep (data, ">", " > ");
-data = JU.PT.rep (data, "=  =", "==");
-data = JU.PT.rep (data, "<  =", "<=");
-data = JU.PT.rep (data, ">  =", ">=");
-data = JU.PT.rep (data, "!  =", "!=");
+data = JU.PT.simpleReplace (data, "=", " = ");
+data = JU.PT.simpleReplace (data, "!", " ! ");
+data = JU.PT.simpleReplace (data, "<", " < ");
+data = JU.PT.simpleReplace (data, ">", " > ");
+data = JU.PT.simpleReplace (data, "=  =", "==");
+data = JU.PT.simpleReplace (data, "<  =", "<=");
+data = JU.PT.simpleReplace (data, ">  =", ">=");
+data = JU.PT.simpleReplace (data, "!  =", "!=");
 var tokens = JU.PT.getTokens (data);
 var key = tokens[0].substring (1);
 var isNot = false;
@@ -185,25 +185,25 @@ return (value.equals (compare));
 case 1:
 return (!value.equals (compare));
 default:
-JU.Logger.warn ("???? " + key + " " + compare + " " + value);
+J.util.Logger.warn ("???? " + key + " " + compare + " " + value);
 }
 break;
 }
 } catch (e) {
 if (Clazz.exceptionOf (e, Exception)) {
-JU.Logger.warn (e.toString () + " in VelocityContext.merge");
+J.util.Logger.warn (e.toString () + " in VelocityContext.merge");
 } else {
 throw e;
 }
 }
 return isNot ? !x : x;
-}, "~S,~B");
-Clazz.defineMethod (c$, "getValue", 
- function (key) {
+}, $fz.isPrivate = true, $fz), "~S,~B");
+$_M(c$, "getValue", 
+($fz = function (key) {
 return (this.context.containsKey (key) ? this.context.get (key).toString () : "");
-}, "~S");
-Clazz.defineMethod (c$, "fillData", 
- function (data) {
+}, $fz.isPrivate = true, $fz), "~S");
+$_M(c$, "fillData", 
+($fz = function (data) {
 var i = 0;
 var ccData = data.length;
 while (i < ccData) {
@@ -228,9 +228,9 @@ ccData = data.length;
 i += strValue.length;
 }}
 return data;
-}, "~S");
+}, $fz.isPrivate = true, $fz), "~S");
 c$.$FormContext$FormToken$ = function () {
-Clazz.pu$h(self.c$);
+Clazz.pu$h ();
 c$ = Clazz.decorateAsClass (function () {
 Clazz.prepareCallback (this, arguments);
 this.hasVariable = false;
@@ -260,7 +260,7 @@ this.b$["JSV.export.FormContext"].commandLevel--;
 if (this.b$["JSV.export.FormContext"].commandLevel < 0) {
 this.b$["JSV.export.FormContext"].strError = "misplaced #end";
 return;
-}this.cmdPtr = this.b$["JSV.export.FormContext"].cmds.removeItemAt (0).intValue ();
+}this.cmdPtr = this.b$["JSV.export.FormContext"].cmds.remove (0).intValue ();
 this.b$["JSV.export.FormContext"].formTokens.get (this.cmdPtr).endPtr = this.ptr;
 } else {
 this.b$["JSV.export.FormContext"].commandLevel++;
@@ -283,7 +283,7 @@ if (this.b$["JSV.export.FormContext"].cmds.size () == 0) {
 this.b$["JSV.export.FormContext"].strError = "misplaced #elseif";
 return;
 }this.cmdType = 3;
-this.cmdPtr = this.b$["JSV.export.FormContext"].cmds.removeItemAt (0).intValue ();
+this.cmdPtr = this.b$["JSV.export.FormContext"].cmds.remove (0).intValue ();
 var d = this.b$["JSV.export.FormContext"].formTokens.get (this.cmdPtr);
 c = true;
 d.endPtr = this.ptr;
@@ -294,11 +294,11 @@ this.b$["JSV.export.FormContext"].strError = "misplaced #else";
 return;
 }this.cmdType = 2;
 c = true;
-this.cmdPtr = this.b$["JSV.export.FormContext"].cmds.removeItemAt (0).intValue ();
+this.cmdPtr = this.b$["JSV.export.FormContext"].cmds.remove (0).intValue ();
 this.b$["JSV.export.FormContext"].formTokens.get (this.cmdPtr).endPtr = this.ptr;
 this.b$["JSV.export.FormContext"].cmds.add (0,  new Integer (this.ptr));
 } else {
-JU.Logger.warn ("??? " + a);
+J.util.Logger.warn ("??? " + a);
 }if (c) {
 var d = this.b$["JSV.export.FormContext"].formTokens.get (this.cmdPtr);
 if (d.cmdType != 1 && d.cmdType != 3) {
@@ -316,7 +316,7 @@ Clazz.defineStatics (c$,
 "VT_END", 4,
 "VT_FOREACH", 5,
 "VT_SET", 6,
-"ops",  Clazz.newArray (-1, ["==", "!=", "="]),
+"ops", ["==", "!=", "="],
 "OP_EEQ", 0,
 "OP_NE", 1,
 "OP_EQ", 2);

@@ -7,7 +7,7 @@ if (Clazz.supportsNativeObject) {
 		if ("to$tring" == p || "toString" == p || "equals" == p || "hashCode" == p) {
 			continue;
 		}
-		String.prototype[p] = Clazz._O.prototype[p];
+		String.prototype[p] = JavaObject.prototype[p];
 	}
 }
 //Clazz.decorateAsType (String, "String", null, [java.io.Serializable, CharSequence, Comparable]);

@@ -6,17 +6,17 @@ function () {
 Clazz.superConstructor (this, JSV.dialog.MeasurementsDialog, []);
 this.type = JSV.common.Annotation.AType.Measurements;
 });
-Clazz.defineMethod (c$, "addUniqueControls", 
+$_M(c$, "addUniqueControls", 
 function () {
 });
-Clazz.overrideMethod (c$, "getPosXY", 
+$_V(c$, "getPosXY", 
 function () {
 return JSV.dialog.MeasurementsDialog.posXY;
 });
-Clazz.overrideMethod (c$, "callback", 
+$_V(c$, "callback", 
 function (id, msg) {
 return this.callbackAD (id, msg);
 }, "~S,~S");
 Clazz.defineStatics (c$,
-"posXY",  Clazz.newIntArray (-1, [-2147483648, 0]));
+"posXY", [-2147483648, 0]);
 });

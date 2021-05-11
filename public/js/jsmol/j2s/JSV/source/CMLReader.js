@@ -10,7 +10,7 @@ Clazz.makeConstructor (c$,
 function () {
 Clazz.superConstructor (this, JSV.source.CMLReader, []);
 });
-Clazz.overrideMethod (c$, "getXML", 
+$_V(c$, "getXML", 
 function (br) {
 try {
 this.source =  new JSV.source.JDXSource (0, this.filePath);
@@ -21,6 +21,7 @@ this.populateVariables ();
 } catch (pe) {
 if (Clazz.exceptionOf (pe, Exception)) {
 System.err.println ("Error: " + pe);
+pe.printStackTrace ();
 } else {
 throw pe;
 }
@@ -36,7 +37,7 @@ throw e1;
 }
 return this.source;
 }, "java.io.BufferedReader");
-Clazz.overrideMethod (c$, "processTag", 
+$_V(c$, "processTag", 
 function (tagId) {
 switch (tagId) {
 case 4:
@@ -64,77 +65,77 @@ case 12:
 this.processPeakList ();
 return true;
 default:
-System.out.println ("CMLSource not processing tag " + JSV.source.XMLReader.tagNames[tagId]);
+System.out.println ("CMLSource not processing tag " + JSV.source.XMLReader.tagNames[tagId] + "!");
 return false;
 }
 }, "~N");
-Clazz.overrideMethod (c$, "processEndTag", 
+$_V(c$, "processEndTag", 
 function (tagId) {
 }, "~N");
-Clazz.defineMethod (c$, "processSpectrum", 
- function () {
-if (this.attrList.contains ("title")) this.title = this.parser.getAttrValue ("title");
- else if (this.attrList.contains ("id")) this.title = this.parser.getAttrValue ("id");
-if (this.attrList.contains ("type")) this.techname = this.parser.getAttrValue ("type").toUpperCase () + " SPECTRUM";
-});
-Clazz.defineMethod (c$, "processMetadataList", 
- function () {
+$_M(c$, "processSpectrum", 
+($fz = function () {
+if (this.attrList.contains ("title")) this.title = this.reader.getAttrValue ("title");
+ else if (this.attrList.contains ("id")) this.title = this.reader.getAttrValue ("id");
+if (this.attrList.contains ("type")) this.techname = this.reader.getAttrValue ("type").toUpperCase () + " SPECTRUM";
+}, $fz.isPrivate = true, $fz));
+$_M(c$, "processMetadataList", 
+($fz = function () {
 if (this.tagName.equals ("metadata")) {
-this.tagName = this.parser.getAttrValueLC ("name");
+this.tagName = this.reader.getAttrValueLC ("name");
 if (this.tagName.contains (":origin")) {
-if (this.attrList.contains ("content")) this.origin = this.parser.getAttrValue ("content");
- else this.origin = this.parser.thisValue ();
+if (this.attrList.contains ("content")) this.origin = this.reader.getAttrValue ("content");
+ else this.origin = this.reader.thisValue ();
 } else if (this.tagName.contains (":owner")) {
-if (this.attrList.contains ("content")) this.owner = this.parser.getAttrValue ("content");
- else this.owner = this.parser.thisValue ();
+if (this.attrList.contains ("content")) this.owner = this.reader.getAttrValue ("content");
+ else this.owner = this.reader.thisValue ();
 } else if (this.tagName.contains ("observenucleus")) {
-if (this.attrList.contains ("content")) this.obNucleus = this.parser.getAttrValue ("content");
- else this.obNucleus = this.parser.thisValue ();
-}}});
-Clazz.defineMethod (c$, "processParameterList", 
- function () {
+if (this.attrList.contains ("content")) this.obNucleus = this.reader.getAttrValue ("content");
+ else this.obNucleus = this.reader.thisValue ();
+}}}, $fz.isPrivate = true, $fz));
+$_M(c$, "processParameterList", 
+($fz = function () {
 if (this.tagName.equals ("parameter")) {
-var title = this.parser.getAttrValueLC ("title");
+var title = this.reader.getAttrValueLC ("title");
 if (title.equals ("nmr.observe frequency")) {
-this.StrObFreq = this.parser.qualifiedValue ();
+this.StrObFreq = this.reader.qualifiedValue ();
 this.obFreq = Double.parseDouble (this.StrObFreq);
 } else if (title.equals ("nmr.observe nucleus")) {
-this.obNucleus = this.parser.getAttrValue ("value");
+this.obNucleus = this.reader.getAttrValue ("value");
 } else if (title.equals ("spectrometer/data system")) {
-this.modelType = this.parser.getAttrValue ("value");
+this.modelType = this.reader.getAttrValue ("value");
 } else if (title.equals ("resolution")) {
-this.resolution = this.parser.qualifiedValue ();
-}}});
-Clazz.defineMethod (c$, "processConditionList", 
- function () {
+this.resolution = this.reader.qualifiedValue ();
+}}}, $fz.isPrivate = true, $fz));
+$_M(c$, "processConditionList", 
+($fz = function () {
 if (this.tagName.equals ("scalar")) {
-var dictRef = this.parser.getAttrValueLC ("dictRef");
+var dictRef = this.reader.getAttrValueLC ("dictRef");
 if (dictRef.contains (":field")) {
-this.StrObFreq = this.parser.thisValue ();
+this.StrObFreq = this.reader.thisValue ();
 if (this.StrObFreq.charCodeAt (0) > 47 && this.StrObFreq.charCodeAt (0) < 58) this.obFreq = Double.parseDouble (this.StrObFreq);
-}}});
-Clazz.defineMethod (c$, "processSample", 
- function () {
+}}}, $fz.isPrivate = true, $fz));
+$_M(c$, "processSample", 
+($fz = function () {
 if (this.tagName.equals ("formula")) {
-if (this.attrList.contains ("concise")) this.molForm = this.parser.getAttrValue ("concise");
- else if (this.attrList.contains ("inline")) this.molForm = this.parser.getAttrValue ("inline");
+if (this.attrList.contains ("concise")) this.molForm = this.reader.getAttrValue ("concise");
+ else if (this.attrList.contains ("inline")) this.molForm = this.reader.getAttrValue ("inline");
 } else if (this.tagName.equals ("name")) {
-this.casName = this.parser.thisValue ();
-}});
-Clazz.defineMethod (c$, "processSpectrumData", 
- function () {
+this.casName = this.reader.thisValue ();
+}}, $fz.isPrivate = true, $fz));
+$_M(c$, "processSpectrumData", 
+($fz = function () {
 if (this.tagName.equals ("xaxis")) {
-if (this.attrList.contains ("multipliertodata")) this.xFactor = Double.parseDouble (this.parser.getAttrValue ("multiplierToData"));
-this.parser.nextTag ();
-this.tagName = this.parser.getTagName ();
-this.attrList = this.parser.getAttributeList ();
+if (this.attrList.contains ("multipliertodata")) this.xFactor = Double.parseDouble (this.reader.getAttrValue ("multiplierToData"));
+this.reader.nextTag ();
+this.tagName = this.reader.getTagName ();
+this.attrList = this.reader.getAttributeList ();
 if (this.tagName.equals ("array")) {
-this.xUnits = JSV.source.CMLReader.checkUnits (this.parser.getAttrValue ("units"));
-this.npoints = Integer.parseInt (this.parser.getAttrValue ("size"));
+this.xUnits = JSV.source.CMLReader.checkUnits (this.reader.getAttrValue ("units"));
+this.npoints = Integer.parseInt (this.reader.getAttrValue ("size"));
 this.xaxisData =  Clazz.newDoubleArray (this.npoints, 0);
 if (this.attrList.contains ("start")) {
-this.firstX = Double.parseDouble (this.parser.getAttrValue ("start"));
-this.lastX = Double.parseDouble (this.parser.getAttrValue ("end"));
+this.firstX = Double.parseDouble (this.reader.getAttrValue ("start"));
+this.lastX = Double.parseDouble (this.reader.getAttrValue ("end"));
 this.deltaX = (this.lastX - this.firstX) / (this.npoints - 1);
 this.increasing = this.deltaX > 0 ? true : false;
 this.continuous = true;
@@ -145,7 +146,7 @@ var posDelim = 0;
 var jj = -1;
 var tempX = "";
 this.Ydelim = " ";
-this.attrList = this.parser.getCharacters ().$replace ('\n', ' ').$replace ('\r', ' ').trim ();
+this.attrList = this.reader.getCharacters ().$replace ('\n', ' ').$replace ('\r', ' ').trim ();
 do {
 jj++;
 posDelim = this.attrList.indexOf (this.Ydelim);
@@ -168,21 +169,21 @@ this.firstX = this.xaxisData[0];
 this.lastX = this.xaxisData[this.npoints - 1];
 this.continuous = true;
 }}} else if (this.tagName.equals ("yaxis")) {
-if (this.attrList.contains ("multipliertodata")) this.yFactor = Double.parseDouble (this.parser.getAttrValue ("multiplierToData"));
-this.parser.nextTag ();
-this.tagName = this.parser.getTagName ();
-this.attrList = this.parser.getAttributeList ();
+if (this.attrList.contains ("multipliertodata")) this.yFactor = Double.parseDouble (this.reader.getAttrValue ("multiplierToData"));
+this.reader.nextTag ();
+this.tagName = this.reader.getTagName ();
+this.attrList = this.reader.getAttributeList ();
 if (this.tagName.equals ("array")) {
-this.yUnits = JSV.source.CMLReader.checkUnits (this.parser.getAttrValue ("units"));
-var npointsY = Integer.$valueOf (this.parser.getAttrValue ("size"));
+this.yUnits = JSV.source.CMLReader.checkUnits (this.reader.getAttrValue ("units"));
+var npointsY = Integer.$valueOf (this.reader.getAttrValue ("size"));
 if (this.npoints != npointsY.intValue ()) System.err.println ("npoints variation between X and Y arrays");
 this.yaxisData =  Clazz.newDoubleArray (this.npoints, 0);
-this.Ydelim = this.parser.getAttrValue ("delimeter");
+this.Ydelim = this.reader.getAttrValue ("delimeter");
 if (this.Ydelim.equals ("")) this.Ydelim = " ";
 var posDelim = 0;
 var jj = -1;
 var tempY = "";
-this.attrList = this.parser.getCharacters ().$replace ('\n', ' ').$replace ('\r', ' ').trim ();
+this.attrList = this.reader.getCharacters ().$replace ('\n', ' ').$replace ('\r', ' ').trim ();
 do {
 jj++;
 posDelim = this.attrList.indexOf (this.Ydelim);
@@ -203,9 +204,9 @@ this.yaxisData[jj] = Double.parseDouble (this.attrList) * this.yFactor;
 }} while (jj < this.npoints - 1);
 }this.firstY = this.yaxisData[0];
 this.specfound = true;
-}});
-Clazz.defineMethod (c$, "processPeaks", 
- function () {
+}}, $fz.isPrivate = true, $fz));
+$_M(c$, "processPeaks", 
+($fz = function () {
 if (this.specfound) return;
 this.peakData =  new java.util.Vector ();
 this.process (12, true);
@@ -223,23 +224,23 @@ this.lastX = this.xaxisData[this.npoints - 1];
 this.firstY = this.yaxisData[0];
 this.increasing = (this.lastX > this.firstX);
 this.continuous = false;
-});
-Clazz.defineMethod (c$, "processPeakList", 
+}, $fz.isPrivate = true, $fz));
+$_M(c$, "processPeakList", 
 function () {
 if (this.tagName.equals ("peak")) {
 if (this.attrList.contains ("xvalue")) {
 var xy =  Clazz.newDoubleArray (2, 0);
 xy[1] = 50;
-xy[0] = Double.parseDouble (this.parser.getAttrValue ("xValue"));
-if (this.attrList.contains ("xunits")) this.xUnits = JSV.source.CMLReader.checkUnits (this.parser.getAttrValue ("xUnits"));
-if (this.attrList.contains ("yvalue")) xy[1] = Double.parseDouble (this.parser.getAttrValue ("yValue"));
-if (this.attrList.contains ("yunits")) this.yUnits = JSV.source.CMLReader.checkUnits (this.parser.getAttrValue ("yUnits"));
-if (this.attrList.contains ("atomrefs")) xy[1] = 49 * JU.PT.getTokens (this.parser.getAttrValue ("atomRefs")).length;
+xy[0] = Double.parseDouble (this.reader.getAttrValue ("xValue"));
+if (this.attrList.contains ("xunits")) this.xUnits = JSV.source.CMLReader.checkUnits (this.reader.getAttrValue ("xUnits"));
+if (this.attrList.contains ("yvalue")) xy[1] = Double.parseDouble (this.reader.getAttrValue ("yValue"));
+if (this.attrList.contains ("yunits")) this.yUnits = JSV.source.CMLReader.checkUnits (this.reader.getAttrValue ("yUnits"));
+if (this.attrList.contains ("atomrefs")) xy[1] = 49 * JU.PT.getTokens (this.reader.getAttrValue ("atomRefs")).length;
 this.peakData.add (xy);
 }}});
-c$.checkUnits = Clazz.defineMethod (c$, "checkUnits", 
- function (units) {
+c$.checkUnits = $_M(c$, "checkUnits", 
+($fz = function (units) {
 units = units.substring (units.indexOf (":") + 1).toUpperCase ();
 return (units.equals ("RELABUNDANCE") ? "RELATIVE ABUNDANCE" : units.contains ("ARBITRARY") ? "ARBITRARY UNITS" : units.equals ("MOVERZ") ? "M/Z" : units.equals ("CM-1") ? "1/CM" : units.equals ("NM") ? "NANOMETERS" : units);
-}, "~S");
+}, $fz.isPrivate = true, $fz), "~S");
 });

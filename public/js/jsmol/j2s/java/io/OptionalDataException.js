@@ -1,7 +1,7 @@
-Clazz.load(["java.io.ObjectStreamException"],"java.io.OptionalDataException",null,function(){
-c$=Clazz.decorateAsClass(function(){
+$_L(["java.io.ObjectStreamException"],"java.io.OptionalDataException",null,function(){
+c$=$_C(function(){
 this.eof=false;
 this.length=0;
-Clazz.instantialize(this,arguments);
+$_Z(this,arguments);
 },java.io,"OptionalDataException",java.io.ObjectStreamException);
 });

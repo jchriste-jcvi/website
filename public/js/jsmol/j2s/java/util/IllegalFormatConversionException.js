@@ -1,26 +1,26 @@
-Clazz.load(["java.util.IllegalFormatException"],"java.util.IllegalFormatConversionException",["java.lang.NullPointerException"],function(){
-c$=Clazz.decorateAsClass(function(){
+$_L(["java.util.IllegalFormatException"],"java.util.IllegalFormatConversionException",["java.lang.NullPointerException"],function(){
+c$=$_C(function(){
 this.c=0;
 this.arg=null;
-Clazz.instantialize(this,arguments);
+$_Z(this,arguments);
 },java.util,"IllegalFormatConversionException",java.util.IllegalFormatException,java.io.Serializable);
-Clazz.makeConstructor(c$,
+$_K(c$,
 function(c,arg){
-Clazz.superConstructor(this,java.util.IllegalFormatConversionException,[]);
+$_R(this,java.util.IllegalFormatConversionException,[]);
 this.c=c;
 if(arg==null){
 throw new NullPointerException();
 }this.arg=arg;
 },"~N,Class");
-Clazz.defineMethod(c$,"getArgumentClass",
+$_M(c$,"getArgumentClass",
 function(){
 return this.arg;
 });
-Clazz.defineMethod(c$,"getConversion",
+$_M(c$,"getConversion",
 function(){
 return this.c;
 });
-Clazz.overrideMethod(c$,"getMessage",
+$_V(c$,"getMessage",
 function(){
 return""+this.c+" is incompatible with "+this.arg.getName();
 });

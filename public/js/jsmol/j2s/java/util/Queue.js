@@ -1,3 +1,3 @@
-Clazz.load(["java.util.Collection"],"java.util.Queue",null,function(){
-Clazz.declareInterface(java.util,"Queue",java.util.Collection);
+$_L(["java.util.Collection"],"java.util.Queue",null,function(){
+$_I(java.util,"Queue",java.util.Collection);
 });

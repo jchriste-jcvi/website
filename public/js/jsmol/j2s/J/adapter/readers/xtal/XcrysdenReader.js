@@ -1,5 +1,5 @@
 Clazz.declarePackage ("J.adapter.readers.xtal");
-Clazz.load (["J.adapter.smarter.AtomSetCollectionReader"], "J.adapter.readers.xtal.XcrysdenReader", ["JU.PT"], function () {
+Clazz.load (["J.adapter.smarter.AtomSetCollectionReader"], "J.adapter.readers.xtal.XcrysdenReader", null, function () {
 c$ = Clazz.decorateAsClass (function () {
 this.nAtoms = 0;
 this.animation = false;
@@ -10,11 +10,11 @@ Clazz.instantialize (this, arguments);
 Clazz.prepareFields (c$, function () {
 this.unitCellData =  Clazz.newFloatArray (9, 0);
 });
-Clazz.overrideMethod (c$, "initializeReader", 
+$_V(c$, "initializeReader", 
 function () {
 this.doApplySymmetry = true;
 });
-Clazz.overrideMethod (c$, "checkLine", 
+$_V(c$, "checkLine", 
 function () {
 if (this.line.contains ("ANIMSTEP")) {
 this.readNostep ();
@@ -26,40 +26,45 @@ this.readUnitCell ();
 this.readCoordinates ();
 }return true;
 });
-Clazz.defineMethod (c$, "readNostep", 
- function () {
+$_M(c$, "readNostep", 
+($fz = function () {
 this.animation = true;
-});
-Clazz.defineMethod (c$, "readUnitCell", 
- function () {
+}, $fz.isPrivate = true, $fz));
+$_M(c$, "readUnitCell", 
+($fz = function () {
 this.setSymmetry ();
 this.fillFloatArray (null, 0, this.unitCellData);
 this.setUnitCell ();
-});
-Clazz.defineMethod (c$, "setUnitCell", 
- function () {
-this.addExplicitLatticeVector (0, this.unitCellData, 0);
-this.addExplicitLatticeVector (1, this.unitCellData, 3);
-this.addExplicitLatticeVector (2, this.unitCellData, 6);
-});
-Clazz.defineMethod (c$, "setSymmetry", 
- function () {
+}, $fz.isPrivate = true, $fz));
+$_M(c$, "setUnitCell", 
+($fz = function () {
+this.addPrimitiveLatticeVector (0, this.unitCellData, 0);
+this.addPrimitiveLatticeVector (1, this.unitCellData, 3);
+this.addPrimitiveLatticeVector (2, this.unitCellData, 6);
+}, $fz.isPrivate = true, $fz));
+$_M(c$, "setSymmetry", 
+($fz = function () {
 this.applySymmetryAndSetTrajectory ();
-this.asc.newAtomSet ();
+this.atomSetCollection.newAtomSet ();
 this.setSpaceGroupName ("P1");
 this.setFractionalCoordinates (false);
-});
-Clazz.defineMethod (c$, "readCoordinates", 
- function () {
-var atomStr = JU.PT.getTokens (this.rd ());
+}, $fz.isPrivate = true, $fz));
+$_M(c$, "readCoordinates", 
+($fz = function () {
+var atomStr = J.adapter.smarter.AtomSetCollectionReader.getTokensStr (this.readLine ());
 this.nAtoms = Integer.parseInt (atomStr[0]);
 this.setFractionalCoordinates (false);
 var counter = 0;
-while (counter < this.nAtoms && this.rd () != null) {
+while (counter < this.nAtoms && this.readLine () != null) {
+var atom = this.atomSetCollection.addNewAtom ();
 var tokens = this.getTokens ();
-this.addAtomXYZSymName (tokens, 1, null, J.adapter.smarter.AtomSetCollectionReader.getElementSymbol (Integer.parseInt (tokens[0])));
+atom.atomName = J.adapter.smarter.AtomSetCollectionReader.getElementSymbol (Integer.parseInt (tokens[0]));
+var x = this.parseFloatStr (tokens[1]);
+var y = this.parseFloatStr (tokens[2]);
+var z = this.parseFloatStr (tokens[3]);
+this.setAtomCoordXYZ (atom, x, y, z);
 counter++;
 }
-this.asc.setAtomSetName (this.animation ? "Structure " + (this.animationStep++) : "Initial coordinates");
-});
+this.atomSetCollection.setAtomSetName (this.animation ? "Structure " + (this.animationStep++) : "Initial coordinates");
+}, $fz.isPrivate = true, $fz));
 });

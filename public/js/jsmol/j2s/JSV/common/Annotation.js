@@ -9,7 +9,7 @@ this.offsetY = 0;
 this.spec = null;
 Clazz.instantialize (this, arguments);
 }, JSV.common, "Annotation", JSV.common.Coordinate);
-Clazz.defineMethod (c$, "setA", 
+$_M(c$, "setA", 
 function (x, y, spec, text, isPixels, is2D, offsetX, offsetY) {
 this.set (x, y);
 this.spec = spec;
@@ -19,25 +19,25 @@ this.is2D = is2D;
 this.offsetX = offsetX;
 this.offsetY = offsetY;
 return this;
-}, "~N,~N,JSV.common.Spectrum,~S,~B,~B,~N,~N");
-Clazz.defineMethod (c$, "setSpec", 
+}, "~N,~N,JSV.common.JDXSpectrum,~S,~B,~B,~N,~N");
+$_M(c$, "setSpec", 
 function (spec) {
 this.spec = spec;
 return this;
-}, "JSV.common.Spectrum");
-Clazz.defineMethod (c$, "addSpecShift", 
+}, "JSV.common.JDXSpectrum");
+$_M(c$, "addSpecShift", 
 function (dx) {
 this.setXVal (this.getXVal () + dx);
 }, "~N");
-Clazz.defineMethod (c$, "isPixels", 
+$_M(c$, "isPixels", 
 function () {
 return this.$isPixels;
 });
-Clazz.overrideMethod (c$, "toString", 
+$_V(c$, "toString", 
 function () {
 return "[" + this.getXVal () + ", " + this.getYVal () + "," + this.text + "]";
 });
-c$.getColoredAnnotation = Clazz.defineMethod (c$, "getColoredAnnotation", 
+c$.getColoredAnnotation = $_M(c$, "getColoredAnnotation", 
 function (g2d, spec, args, lastAnnotation) {
 var arg;
 var xPt = 0;
@@ -104,8 +104,8 @@ return null;
 throw e;
 }
 }
-}, "J.api.GenericGraphics,JSV.common.Spectrum,JU.Lst,JSV.common.Annotation");
-Clazz.pu$h(self.c$);
+}, "JSV.api.JSVGraphics,JSV.common.JDXSpectrum,JU.List,JSV.common.Annotation");
+Clazz.pu$h ();
 c$ = Clazz.declareType (JSV.common.Annotation, "AType", Enum);
 Clazz.defineEnumConstant (c$, "Integration", 0, []);
 Clazz.defineEnumConstant (c$, "PeakList", 1, []);

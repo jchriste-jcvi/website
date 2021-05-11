@@ -1,5 +1,5 @@
 Clazz.declarePackage ("J.shape");
-Clazz.load (["J.shape.Shape"], "J.shape.Frank", ["J.i18n.GT", "JV.Viewer"], function () {
+Clazz.load (["J.shape.FontShape"], "J.shape.Frank", ["J.i18n.GT"], function () {
 c$ = Clazz.decorateAsClass (function () {
 this.frankString = "Jmol";
 this.currentMetricsFont3d = null;
@@ -11,60 +11,52 @@ this.x = 0;
 this.y = 0;
 this.dx = 0;
 this.dy = 0;
-this.scaling = 0;
-this.font3d = null;
 Clazz.instantialize (this, arguments);
-}, J.shape, "Frank", J.shape.Shape);
-Clazz.overrideMethod (c$, "initShape", 
+}, J.shape, "Frank", J.shape.FontShape);
+$_M(c$, "initShape", 
 function () {
+Clazz.superCall (this, J.shape.Frank, "initShape", []);
 this.myType = "frank";
-this.baseFont3d = this.font3d = this.vwr.gdata.getFont3DFSS ("SansSerif", "Plain", 16);
+this.baseFont3d = this.font3d = this.gdata.getFont3DFSS ("SansSerif", "Plain", 16);
 this.calcMetrics ();
 });
-Clazz.overrideMethod (c$, "setProperty", 
+$_V(c$, "setProperty", 
 function (propertyName, value, bs) {
-if ("font" === propertyName) {
-var f = value;
-if (f.fontSize >= 10) {
-this.baseFont3d = f;
-this.scaling = 0;
-}}return;
+this.setPropFS (propertyName, value);
 }, "~S,~O,JU.BS");
-Clazz.overrideMethod (c$, "wasClicked", 
+$_V(c$, "wasClicked", 
 function (x, y) {
-var width = this.vwr.getScreenWidth ();
-var height = this.vwr.getScreenHeight ();
+var width = this.viewer.getScreenWidth ();
+var height = this.viewer.getScreenHeight ();
 return (width > 0 && height > 0 && x > width - this.frankWidth - 4 && y > height - this.frankAscent - 4);
 }, "~N,~N");
-Clazz.overrideMethod (c$, "checkObjectHovered", 
+$_V(c$, "checkObjectHovered", 
 function (x, y, bsVisible) {
-if (!this.vwr.getShowFrank () || !this.wasClicked (x, y) || !this.vwr.menuEnabled ()) return false;
-if (this.vwr.gdata.antialiasEnabled && !this.vwr.isSingleThreaded) {
+if (!this.viewer.getShowFrank () || !this.wasClicked (x, y) || !this.viewer.menuEnabled ()) return false;
+if (this.gdata.isDisplayAntialiased () && !this.viewer.isSingleThreaded) {
 x <<= 1;
 y <<= 1;
-}this.vwr.hoverOnPt (x, y, J.i18n.GT.$ ("Click for menu..."), null, null);
+}this.viewer.hoverOnPt (x, y, J.i18n.GT._ ("Click for menu..."), null, null);
 return true;
 }, "~N,~N,JU.BS");
-Clazz.defineMethod (c$, "calcMetrics", 
+$_M(c$, "calcMetrics", 
 function () {
-if (JV.Viewer.isJS) this.frankString = "JSmol";
- else if (this.vwr.isSignedApplet) this.frankString = "Jmol_S";
+if (this.viewer.isJS) this.frankString = "JSmol";
+ else if (this.viewer.isSignedApplet ()) this.frankString = "Jmol_S";
 if (this.font3d === this.currentMetricsFont3d) return;
 this.currentMetricsFont3d = this.font3d;
 this.frankWidth = this.font3d.stringWidth (this.frankString);
 this.frankDescent = this.font3d.getDescent ();
 this.frankAscent = this.font3d.getAscent ();
 });
-Clazz.defineMethod (c$, "getFont", 
+$_M(c$, "getFont", 
 function (imageFontScaling) {
-if (imageFontScaling != this.scaling) {
-this.scaling = imageFontScaling;
-this.font3d = this.vwr.gdata.getFont3DScaled (this.baseFont3d, imageFontScaling);
+this.font3d = this.gdata.getFont3DScaled (this.baseFont3d, imageFontScaling);
 this.calcMetrics ();
-}}, "~N");
-Clazz.overrideMethod (c$, "getShapeState", 
+}, "~N");
+$_V(c$, "getShapeState", 
 function () {
-return null;
+return this.viewer.getFontState (this.myType, this.font3d);
 });
 Clazz.defineStatics (c$,
 "defaultFontName", "SansSerif",

@@ -1,10 +1,10 @@
-Clazz.load(["java.util.AbstractList"],"java.util.AbstractSequentialList",["java.lang.IndexOutOfBoundsException"],function(){
-c$=Clazz.declareType(java.util,"AbstractSequentialList",java.util.AbstractList);
-Clazz.defineMethod(c$,"add",
+$_L(["java.util.AbstractList"],"java.util.AbstractSequentialList",["java.lang.IndexOutOfBoundsException"],function(){
+c$=$_T(java.util,"AbstractSequentialList",java.util.AbstractList);
+$_M(c$,"add",
 function(location,object){
 this.listIterator(location).add(object);
 },"~N,~O");
-Clazz.defineMethod(c$,"addAll",
+$_M(c$,"addAll",
 function(location,collection){
 var it=this.listIterator(location);
 var colIt=collection.iterator();
@@ -15,23 +15,23 @@ it.previous();
 }
 return next!=it.nextIndex();
 },"~N,java.util.Collection");
-Clazz.overrideMethod(c$,"get",
+$_V(c$,"get",
 function(location){
 try{
 return this.listIterator(location).next();
 }catch(e){
-if(Clazz.instanceOf(e,java.util.NoSuchElementException)){
+if($_O(e,java.util.NoSuchElementException)){
 throw new IndexOutOfBoundsException();
 }else{
 throw e;
 }
 }
 },"~N");
-Clazz.overrideMethod(c$,"iterator",
+$_V(c$,"iterator",
 function(){
 return this.listIterator(0);
 });
-Clazz.defineMethod(c$,"remove",
+$_M(c$,"remove",
 function(location){
 try{
 var it=this.listIterator(location);
@@ -39,14 +39,14 @@ var result=it.next();
 it.remove();
 return result;
 }catch(e){
-if(Clazz.instanceOf(e,java.util.NoSuchElementException)){
+if($_O(e,java.util.NoSuchElementException)){
 throw new IndexOutOfBoundsException();
 }else{
 throw e;
 }
 }
 },"~N");
-Clazz.overrideMethod(c$,"set",
+$_V(c$,"set",
 function(location,object){
 var it=this.listIterator(location);
 var result=it.next();

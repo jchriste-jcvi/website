@@ -1,5 +1,5 @@
 Clazz.declarePackage ("J.jvxl.readers");
-Clazz.load (["J.jvxl.readers.MapFileReader"], "J.jvxl.readers.PyMOLMeshReader", ["java.lang.Float", "JU.SB", "JU.Logger"], function () {
+Clazz.load (["J.jvxl.readers.MapFileReader"], "J.jvxl.readers.PyMOLMeshReader", ["java.lang.Float", "JU.SB", "J.util.Logger"], function () {
 c$ = Clazz.decorateAsClass (function () {
 this.data = null;
 this.voxelList = null;
@@ -13,7 +13,7 @@ Clazz.makeConstructor (c$,
 function () {
 Clazz.superConstructor (this, J.jvxl.readers.PyMOLMeshReader, []);
 });
-Clazz.overrideMethod (c$, "init2", 
+$_V(c$, "init2", 
 function (sg, brNull) {
 this.init2MFR (sg, null);
 this.allowSigma = true;
@@ -24,20 +24,20 @@ if (this.data == null) return;
 this.pymolType = Clazz.floatToInt (this.getFloat (J.jvxl.readers.PyMOLMeshReader.getList (this.data, 0), 0));
 this.isMesh = (this.pymolType == 3);
 this.surfaceName = this.data.get (this.data.size () - 1);
-JU.Logger.info ("PyMOLMeshReader for " + this.params.calculationType + " pymolType=" + this.pymolType + "; isMesh=" + this.isMesh + " surfaceName=" + this.surfaceName);
+J.util.Logger.info ("PyMOLMeshReader for " + this.params.calculationType + " pymolType=" + this.pymolType + "; isMesh=" + this.isMesh + " surfaceName=" + this.surfaceName);
 this.data = J.jvxl.readers.PyMOLMeshReader.getList (J.jvxl.readers.PyMOLMeshReader.getList (this.data, 2), 0);
 if (this.isMesh && this.params.thePlane == null && this.params.cutoffAutomatic) {
 this.params.cutoff = this.getFloat (this.data, 8);
 this.params.cutoffAutomatic = false;
 }if (this.isMesh) this.data = J.jvxl.readers.PyMOLMeshReader.getList (J.jvxl.readers.PyMOLMeshReader.getList (map.get (this.surfaceName), 2), 0);
 this.voxelList = J.jvxl.readers.PyMOLMeshReader.getList (J.jvxl.readers.PyMOLMeshReader.getList (J.jvxl.readers.PyMOLMeshReader.getList (this.data, 14), 2), 6);
-JU.Logger.info ("PyMOLMeshReader: Number of grid points = " + this.voxelList.size ());
+J.util.Logger.info ("PyMOLMeshReader: Number of grid points = " + this.voxelList.size ());
 }, "J.jvxl.readers.SurfaceGenerator,java.io.BufferedReader");
-c$.getList = Clazz.defineMethod (c$, "getList", 
- function (list, i) {
+c$.getList = $_M(c$, "getList", 
+($fz = function (list, i) {
 return list.get (i);
-}, "JU.Lst,~N");
-Clazz.overrideMethod (c$, "readParameters", 
+}, $fz.isPrivate = true, $fz), "JU.List,~N");
+$_V(c$, "readParameters", 
 function () {
 var t;
 this.jvxlFileHeaderBuffer =  new JU.SB ();
@@ -64,17 +64,17 @@ this.na = Clazz.floatToInt (this.getFloat (t, 0));
 this.nb = Clazz.floatToInt (this.getFloat (t, 1));
 this.nc = Clazz.floatToInt (this.getFloat (t, 2));
 t = J.jvxl.readers.PyMOLMeshReader.getList (this.data, 11);
-this.xyzStart[0] = this.getFloat (t, 0);
-this.xyzStart[1] = this.getFloat (t, 1);
-this.xyzStart[2] = this.getFloat (t, 2);
+this.nxyzStart[0] = Clazz.floatToInt (this.getFloat (t, 0));
+this.nxyzStart[1] = Clazz.floatToInt (this.getFloat (t, 1));
+this.nxyzStart[2] = Clazz.floatToInt (this.getFloat (t, 2));
 t = J.jvxl.readers.PyMOLMeshReader.getList (this.data, 13);
-this.n2 = Clazz.floatToInt (this.getFloat (t, 0));
-this.n1 = Clazz.floatToInt (this.getFloat (t, 1));
-this.n0 = Clazz.floatToInt (this.getFloat (t, 2));
+this.nz = Clazz.floatToInt (this.getFloat (t, 0));
+this.ny = Clazz.floatToInt (this.getFloat (t, 1));
+this.nx = Clazz.floatToInt (this.getFloat (t, 2));
 if (!haveUnitCell) {
-this.na = this.n2 - 1;
-this.nb = this.n1 - 1;
-this.nc = this.n0 - 1;
+this.na = this.nz - 1;
+this.nb = this.ny - 1;
+this.nc = this.nx - 1;
 t = J.jvxl.readers.PyMOLMeshReader.getList (this.data, 8);
 this.a = this.getFloat (t, 0) - this.origin.x;
 this.b = this.getFloat (t, 1) - this.origin.y;
@@ -86,18 +86,18 @@ this.maps = 1;
 this.getVectorsAndOrigin ();
 this.setCutoffAutomatic ();
 });
-Clazz.overrideMethod (c$, "nextVoxel", 
+$_V(c$, "nextVoxel", 
 function () {
 return this.getFloat (this.voxelList, this.pt++);
 });
-Clazz.defineMethod (c$, "getFloat", 
- function (list, i) {
+$_M(c$, "getFloat", 
+($fz = function (list, i) {
 return (list.get (i)).floatValue ();
-}, "JU.Lst,~N");
-Clazz.overrideMethod (c$, "skipData", 
+}, $fz.isPrivate = true, $fz), "JU.List,~N");
+$_V(c$, "skipData", 
 function (nPoints) {
 }, "~N");
-Clazz.overrideMethod (c$, "setCutoffAutomatic", 
+$_V(c$, "setCutoffAutomatic", 
 function () {
 if (this.params.thePlane != null) return;
 if (Float.isNaN (this.params.sigma)) {
@@ -107,10 +107,10 @@ if (this.dmin != 3.4028235E38) {
 if (this.params.cutoff > this.dmax) this.params.cutoff = this.dmax / 4;
 }} else {
 this.params.cutoff = this.calculateCutoff ();
-}JU.Logger.info ("MapReader: setting cutoff to default value of " + this.params.cutoff + (this.boundingBox == null ? " (no BOUNDBOX parameter)\n" : "\n"));
+}J.util.Logger.info ("MapReader: setting cutoff to default value of " + this.params.cutoff + (this.boundingBox == null ? " (no BOUNDBOX parameter)\n" : "\n"));
 });
-Clazz.defineMethod (c$, "calculateCutoff", 
- function () {
+$_M(c$, "calculateCutoff", 
+($fz = function () {
 var n = this.voxelList.size ();
 var sum = 0;
 var sum2 = 0;
@@ -121,9 +121,9 @@ sum2 += v * v;
 }
 var mean = sum / n;
 var rmsd = Math.sqrt (sum2 / n);
-JU.Logger.info ("PyMOLMeshReader rmsd=" + rmsd + " mean=" + mean);
+J.util.Logger.info ("PyMOLMeshReader rmsd=" + rmsd + " mean=" + mean);
 return this.params.sigma * rmsd + mean;
-});
+}, $fz.isPrivate = true, $fz));
 Clazz.defineStatics (c$,
 "cMapSourceCrystallographic", 1,
 "cMapSourceCCP4", 2,

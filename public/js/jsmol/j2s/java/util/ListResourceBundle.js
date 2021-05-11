@@ -1,23 +1,23 @@
-Clazz.load(["java.util.ResourceBundle"],"java.util.ListResourceBundle",["java.util.Enumeration","$.Hashtable"],function(){
-c$=Clazz.decorateAsClass(function(){
+$_L(["java.util.ResourceBundle"],"java.util.ListResourceBundle",["java.util.Enumeration","$.Hashtable"],function(){
+c$=$_C(function(){
 this.table=null;
-Clazz.instantialize(this,arguments);
+$_Z(this,arguments);
 },java.util,"ListResourceBundle",java.util.ResourceBundle);
-Clazz.defineMethod(c$,"getKeys",
+$_M(c$,"getKeys",
 function(){
 if(this.table==null){
 this.initializeTable();
 }if(this.parent==null){
 return this.table.keys();
-}return((Clazz.isClassDefined("java.util.ListResourceBundle$1")?0:java.util.ListResourceBundle.$ListResourceBundle$1$()),Clazz.innerTypeInstance(java.util.ListResourceBundle$1,this,null));
+}return(($_D("java.util.ListResourceBundle$1")?0:java.util.ListResourceBundle.$ListResourceBundle$1$()),$_N(java.util.ListResourceBundle$1,this,null));
 });
-Clazz.overrideMethod(c$,"handleGetObject",
+$_V(c$,"handleGetObject",
 function(key){
 if(this.table==null){
 this.initializeTable();
 }return this.table.get(key);
 },"~S");
-Clazz.defineMethod(c$,"initializeTable",
+$_M(c$,"initializeTable",
 ($fz=function(){
 if(this.table==null){
 var contents=this.getContents();
@@ -27,19 +27,19 @@ this.table.put(contents[i][0],contents[i][1]);
 }
 }},$fz.isPrivate=true,$fz));
 c$.$ListResourceBundle$1$=function(){
-Clazz.pu$h(self.c$);
-c$=Clazz.decorateAsClass(function(){
-Clazz.prepareCallback(this,arguments);
+$_H();
+c$=$_C(function(){
+$_B(this,arguments);
 this.local=null;
 this.pEnum=null;
 this.$nextElement=null;
-Clazz.instantialize(this,arguments);
+$_Z(this,arguments);
 },java.util,"ListResourceBundle$1",null,java.util.Enumeration);
-Clazz.prepareFields(c$,function(){
+$_Y(c$,function(){
 this.local=this.b$["java.util.ListResourceBundle"].table.keys();
 this.pEnum=this.b$["java.util.ListResourceBundle"].parent.getKeys();
 });
-Clazz.defineMethod(c$,"findNext",
+$_M(c$,"findNext",
 ($fz=function(){
 if(this.$nextElement!=null){
 return true;
@@ -51,13 +51,13 @@ return true;
 }}
 return false;
 },$fz.isPrivate=true,$fz));
-Clazz.defineMethod(c$,"hasMoreElements",
+$_M(c$,"hasMoreElements",
 function(){
 if(this.local.hasMoreElements()){
 return true;
 }return this.findNext();
 });
-Clazz.defineMethod(c$,"nextElement",
+$_M(c$,"nextElement",
 function(){
 if(this.local.hasMoreElements()){
 return this.local.nextElement();
@@ -67,6 +67,6 @@ this.$nextElement=null;
 return result;
 }return this.pEnum.nextElement();
 });
-c$=Clazz.p0p();
+c$=$_P();
 };
 });

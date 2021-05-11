@@ -1,18 +1,18 @@
-Clazz.load(["java.util.IllegalFormatException"],"java.util.IllegalFormatCodePointException",null,function(){
-c$=Clazz.decorateAsClass(function(){
+$_L(["java.util.IllegalFormatException"],"java.util.IllegalFormatCodePointException",null,function(){
+c$=$_C(function(){
 this.c=0;
-Clazz.instantialize(this,arguments);
+$_Z(this,arguments);
 },java.util,"IllegalFormatCodePointException",java.util.IllegalFormatException,java.io.Serializable);
-Clazz.makeConstructor(c$,
+$_K(c$,
 function(c){
-Clazz.superConstructor(this,java.util.IllegalFormatCodePointException,[]);
+$_R(this,java.util.IllegalFormatCodePointException,[]);
 this.c=c;
 },"~N");
-Clazz.defineMethod(c$,"getCodePoint",
+$_M(c$,"getCodePoint",
 function(){
 return this.c;
 });
-Clazz.overrideMethod(c$,"getMessage",
+$_V(c$,"getMessage",
 function(){
 return"Code point is "+this.c;
 });

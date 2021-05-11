@@ -1,13 +1,13 @@
-Clazz.load(["java.util.Collection"],"java.util.AbstractCollection",["java.lang.StringBuilder","$.UnsupportedOperationException","java.lang.reflect.Array"],function(){
-c$=Clazz.declareType(java.util,"AbstractCollection",null,java.util.Collection);
-Clazz.makeConstructor(c$,
+$_L(["java.util.Collection"],"java.util.AbstractCollection",["java.lang.StringBuilder","$.UnsupportedOperationException","java.lang.reflect.Array"],function(){
+c$=$_T(java.util,"AbstractCollection",null,java.util.Collection);
+$_K(c$,
 function(){
 });
-Clazz.overrideMethod(c$,"add",
+$_V(c$,"add",
 function(object){
 throw new UnsupportedOperationException();
 },"~O");
-Clazz.overrideMethod(c$,"addAll",
+$_V(c$,"addAll",
 function(collection){
 var result=false;
 var it=collection.iterator();
@@ -17,7 +17,7 @@ result=true;
 }}
 return result;
 },"java.util.Collection");
-Clazz.overrideMethod(c$,"clear",
+$_V(c$,"clear",
 function(){
 var it=this.iterator();
 while(it.hasNext()){
@@ -25,7 +25,7 @@ it.next();
 it.remove();
 }
 });
-Clazz.overrideMethod(c$,"contains",
+$_V(c$,"contains",
 function(object){
 var it=this.iterator();
 if(object!=null){
@@ -40,7 +40,7 @@ return true;
 }}
 }return false;
 },"~O");
-Clazz.overrideMethod(c$,"containsAll",
+$_V(c$,"containsAll",
 function(collection){
 var it=collection.iterator();
 while(it.hasNext()){
@@ -49,11 +49,11 @@ return false;
 }}
 return true;
 },"java.util.Collection");
-Clazz.overrideMethod(c$,"isEmpty",
+$_V(c$,"isEmpty",
 function(){
 return this.size()==0;
 });
-Clazz.overrideMethod(c$,"remove",
+$_V(c$,"remove",
 function(object){
 var it=this.iterator();
 if(object!=null){
@@ -70,7 +70,7 @@ return true;
 }}
 }return false;
 },"~O");
-Clazz.overrideMethod(c$,"removeAll",
+$_V(c$,"removeAll",
 function(collection){
 var result=false;
 var it=this.iterator();
@@ -81,7 +81,7 @@ result=true;
 }}
 return result;
 },"java.util.Collection");
-Clazz.overrideMethod(c$,"retainAll",
+$_V(c$,"retainAll",
 function(collection){
 var result=false;
 var it=this.iterator();
@@ -92,7 +92,7 @@ result=true;
 }}
 return result;
 },"java.util.Collection");
-Clazz.defineMethod(c$,"toArray",
+$_M(c$,"toArray",
 function(){
 var size=this.size();
 var index=0;
@@ -103,7 +103,7 @@ array[index++]=it.next();
 }
 return array;
 });
-Clazz.defineMethod(c$,"toArray",
+$_M(c$,"toArray",
 function(contents){
 var size=this.size();
 var index=0;
@@ -117,7 +117,7 @@ if(index<contents.length){
 contents[index]=null;
 }return contents;
 },"~A");
-Clazz.overrideMethod(c$,"toString",
+$_V(c$,"toString",
 function(){
 if(this.isEmpty()){
 return"[]";

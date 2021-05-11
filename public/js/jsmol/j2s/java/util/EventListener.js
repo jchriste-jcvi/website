@@ -1,1 +1,1 @@
-Clazz.declareInterface(java.util,"EventListener");
+$_I(java.util,"EventListener");

@@ -1,1 +1,1 @@
-Clazz.declareInterface(java.util,"Comparator");
+$_I(java.util,"Comparator");

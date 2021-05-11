@@ -12,6 +12,7 @@ Clazz.instantialize (this, arguments);
 }, J.bspt, "Node", J.bspt.Element);
 Clazz.makeConstructor (c$, 
 function (bspt, level, leafLeft) {
+Clazz.superConstructor (this, J.bspt.Node, []);
 this.bspt = bspt;
 if (level == bspt.treeDepth) {
 bspt.treeDepth = level + 1;
@@ -27,7 +28,7 @@ this.eleLeft = leafLeft;
 this.eleRight = leafRight;
 this.count = 2;
 }, "J.bspt.Bspt,~N,J.bspt.Leaf");
-Clazz.defineMethod (c$, "addTuple", 
+$_M(c$, "addTuple", 
 function (level, tuple) {
 var dimValue = J.bspt.Node.getDimensionValue (tuple, this.dim);
 ++this.count;
@@ -56,17 +57,22 @@ if (dimValue < this.minRight) this.minRight = dimValue;
  else if (dimValue > this.maxRight) this.maxRight = dimValue;
 this.eleRight = this.eleRight.addTuple (level + 1, tuple);
 }return this;
-}, "~N,JU.T3");
-c$.getDimensionValue = Clazz.defineMethod (c$, "getDimensionValue", 
+}, "~N,JU.P3");
+$_M(c$, "dump", 
+function (level, sb) {
+sb.append ("\nnode LEFT" + level);
+this.eleLeft.dump (level + 1, sb);
+for (var i = 0; i < level; ++i) sb.append ("->");
+
+sb.append (" RIGHT" + level);
+this.eleRight.dump (level + 1, sb);
+}, "~N,JU.SB");
+$_M(c$, "toString", 
+function () {
+return this.eleLeft.toString () + this.dim + ":" + "\n" + this.eleRight.toString ();
+});
+c$.getDimensionValue = $_M(c$, "getDimensionValue", 
 function (pt, dim) {
-if (pt == null) System.out.println ("bspt.Node ???");
-switch (dim) {
-case 0:
-return pt.x;
-case 1:
-return pt.y;
-default:
-return pt.z;
-}
-}, "JU.T3,~N");
+return (dim == 0 ? pt.x : dim == 1 ? pt.y : pt.z);
+}, "JU.P3,~N");
 });

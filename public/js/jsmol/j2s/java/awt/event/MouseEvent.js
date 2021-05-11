@@ -10,11 +10,11 @@ this.button = 0;
 this.popupTrigger = false;
 Clazz.instantialize (this, arguments);
 }, java.awt.event, "MouseEvent", java.awt.event.InputEvent);
-Clazz.defineMethod (c$, "getXOnScreen", 
+$_M(c$, "getXOnScreen", 
 function () {
 return this.xAbs;
 });
-Clazz.defineMethod (c$, "getYOnScreen", 
+$_M(c$, "getYOnScreen", 
 function () {
 return this.yAbs;
 });
@@ -43,36 +43,36 @@ this.setNewModifiers ();
 } else if ((this.getModifiers () == 0) && (this.getModifiersEx () != 0 || button != 0)) {
 this.setOldModifiers ();
 }}, "~O,~N,~N,~N,~N,~N,~N,~N,~N,~B,~N");
-Clazz.defineMethod (c$, "getX", 
+$_M(c$, "getX", 
 function () {
 return this.x;
 });
-Clazz.defineMethod (c$, "getY", 
+$_M(c$, "getY", 
 function () {
 return this.y;
 });
-Clazz.defineMethod (c$, "translatePoint", 
+$_M(c$, "translatePoint", 
 function (x, y) {
 this.x += x;
 this.y += y;
 }, "~N,~N");
-Clazz.defineMethod (c$, "getClickCount", 
+$_M(c$, "getClickCount", 
 function () {
 return this.clickCount;
 });
-Clazz.defineMethod (c$, "getButton", 
+$_M(c$, "getButton", 
 function () {
 return this.button;
 });
-Clazz.defineMethod (c$, "isPopupTrigger", 
+$_M(c$, "isPopupTrigger", 
 function () {
 return this.popupTrigger;
 });
-c$.getMouseModifiersText = Clazz.defineMethod (c$, "getMouseModifiersText", 
+c$.getMouseModifiersText = $_M(c$, "getMouseModifiersText", 
 function (modifiers) {
 return "[" + modifiers + "]";
 }, "~N");
-Clazz.defineMethod (c$, "paramString", 
+$_M(c$, "paramString", 
 function () {
 var str =  new StringBuilder (80);
 switch (this.id) {
@@ -113,8 +113,8 @@ str.append (",extModifiers=").append (java.awt.event.InputEvent.getModifiersExTe
 }str.append (",clickCount=").append (this.clickCount);
 return str.toString ();
 });
-Clazz.defineMethod (c$, "setNewModifiers", 
- function () {
+$_M(c$, "setNewModifiers", 
+($fz = function () {
 if ((this.modifiers & 16) != 0) {
 this.modifiers |= 1024;
 }if ((this.modifiers & 8) != 0) {
@@ -147,9 +147,9 @@ this.modifiers |= 64;
 this.modifiers |= 128;
 }if ((this.modifiers & 32) != 0) {
 this.modifiers |= 8192;
-}});
-Clazz.defineMethod (c$, "setOldModifiers", 
- function () {
+}}, $fz.isPrivate = true, $fz));
+$_M(c$, "setOldModifiers", 
+($fz = function () {
 if (this.id == 501 || this.id == 502 || this.id == 500) {
 switch (this.button) {
 case 1:
@@ -179,7 +179,7 @@ this.modifiers |= 1;
 this.modifiers |= 2;
 }if ((this.modifiers & 8192) != 0) {
 this.modifiers |= 32;
-}});
+}}, $fz.isPrivate = true, $fz));
 Clazz.defineStatics (c$,
 "MOUSE_FIRST", 500,
 "MOUSE_LAST", 507,

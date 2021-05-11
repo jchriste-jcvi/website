@@ -1,3 +1,3 @@
-Clazz.load(["java.lang.IllegalArgumentException"],"java.lang.NumberFormatException",null,function(){
-c$=Clazz.declareType(java.lang,"NumberFormatException",IllegalArgumentException);
+$_L(["java.lang.IllegalArgumentException"],"java.lang.NumberFormatException",null,function(){
+c$=$_T(java.lang,"NumberFormatException",IllegalArgumentException);
 });

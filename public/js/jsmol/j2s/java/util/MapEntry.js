@@ -1,60 +1,60 @@
-Clazz.load(["java.util.Map"],"java.util.MapEntry",null,function(){
-c$=Clazz.decorateAsClass(function(){
+$_L(["java.util.Map"],"java.util.MapEntry",null,function(){
+c$=$_C(function(){
 this.key=null;
 this.value=null;
-Clazz.instantialize(this,arguments);
+$_Z(this,arguments);
 },java.util,"MapEntry",null,[java.util.Map.Entry,Cloneable]);
-Clazz.makeConstructor(c$,
+$_K(c$,
 function(theKey){
 this.key=theKey;
 },"~O");
-Clazz.makeConstructor(c$,
+$_K(c$,
 function(theKey,theValue){
 this.key=theKey;
 this.value=theValue;
 },"~O,~O");
-Clazz.defineMethod(c$,"clone",
+$_M(c$,"clone",
 function(){
 try{
-return Clazz.superCall(this,java.util.MapEntry,"clone",[]);
+return $_U(this,java.util.MapEntry,"clone",[]);
 }catch(e){
-if(Clazz.instanceOf(e,CloneNotSupportedException)){
+if($_O(e,CloneNotSupportedException)){
 return null;
 }else{
 throw e;
 }
 }
 });
-Clazz.overrideMethod(c$,"equals",
+$_V(c$,"equals",
 function(object){
 if(this===object){
 return true;
-}if(Clazz.instanceOf(object,java.util.Map.Entry)){
+}if($_O(object,java.util.Map.Entry)){
 var entry=object;
 return(this.key==null?entry.getKey()==null:this.key.equals(entry.getKey()))&&(this.value==null?entry.getValue()==null:this.value.equals(entry.getValue()));
 }return false;
 },"~O");
-Clazz.overrideMethod(c$,"getKey",
+$_V(c$,"getKey",
 function(){
 return this.key;
 });
-Clazz.overrideMethod(c$,"getValue",
+$_V(c$,"getValue",
 function(){
 return this.value;
 });
-Clazz.overrideMethod(c$,"hashCode",
+$_V(c$,"hashCode",
 function(){
 return(this.key==null?0:this.key.hashCode())^(this.value==null?0:this.value.hashCode());
 });
-Clazz.overrideMethod(c$,"setValue",
+$_V(c$,"setValue",
 function(object){
 var result=this.value;
 this.value=object;
 return result;
 },"~O");
-Clazz.overrideMethod(c$,"toString",
+$_V(c$,"toString",
 function(){
 return this.key+"="+this.value;
 });
-Clazz.declareInterface(java.util.MapEntry,"Type");
+$_I(java.util.MapEntry,"Type");
 });

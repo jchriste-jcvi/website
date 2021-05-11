@@ -1,31 +1,30 @@
 Clazz.declarePackage ("JSV.common");
-Clazz.load (null, "JSV.common.RepaintManager", ["JSV.common.JSViewer"], function () {
 c$ = Clazz.decorateAsClass (function () {
 this.repaintPending = false;
-this.vwr = null;
+this.viewer = null;
+this.n = 0;
 Clazz.instantialize (this, arguments);
 }, JSV.common, "RepaintManager");
 Clazz.makeConstructor (c$, 
 function (viewer) {
-this.vwr = viewer;
+this.viewer = viewer;
 }, "JSV.common.JSViewer");
-Clazz.defineMethod (c$, "refresh", 
+$_M(c$, "refresh", 
 function () {
+this.n++;
 if (this.repaintPending) {
+System.out.println ("Repaint " + this.n + " skipped");
 return false;
 }this.repaintPending = true;
-var applet = this.vwr.html5Applet;
-var jmol = (JSV.common.JSViewer.isJS && !JSV.common.JSViewer.isSwingJS ? JSV.common.JSViewer.jmolObject : null);
-if (jmol == null) {
-this.vwr.selectedPanel.repaint ();
-} else {
-jmol.repaint (applet, false);
-this.repaintDone ();
+this.viewer.selectedPanel.getPanelData ().taintedAll = true;
+{
+if (typeof Jmol != "undefined" && Jmol._repaint && this.viewer.applet)
+Jmol._repaint(this.viewer.applet, false);
+this.repaintDone();
 }return true;
 });
-Clazz.defineMethod (c$, "repaintDone", 
+$_M(c$, "repaintDone", 
 function () {
 this.repaintPending = false;
 this.notify ();
-});
 });

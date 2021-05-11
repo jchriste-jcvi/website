@@ -1,52 +1,52 @@
-Clazz.load(null,"java.lang.AbstractStringBuilder",["java.io.InvalidObjectException","java.lang.ArrayIndexOutOfBoundsException","$.IndexOutOfBoundsException","$.NegativeArraySizeException","$.NullPointerException","$.StringIndexOutOfBoundsException"],function(){
-c$=Clazz.decorateAsClass(function(){
+$_L(null,"java.lang.AbstractStringBuilder",["java.io.InvalidObjectException","java.lang.ArrayIndexOutOfBoundsException","$.IndexOutOfBoundsException","$.NegativeArraySizeException","$.NullPointerException","$.StringIndexOutOfBoundsException"],function(){
+c$=$_C(function(){
 this.value=null;
 this.count=0;
 this.shared=false;
-Clazz.instantialize(this,arguments);
+$_Z(this,arguments);
 },java.lang,"AbstractStringBuilder");
-Clazz.defineMethod(c$,"getValue",
+$_M(c$,"getValue",
 function(){
 return this.value;
 });
-Clazz.defineMethod(c$,"shareValue",
+$_M(c$,"shareValue",
 function(){
 this.shared=true;
 return this.value;
 });
-Clazz.defineMethod(c$,"set",
+$_M(c$,"set",
 function(val,len){
-if(val==null)val=Clazz.newArray(0,'\0');
+if(val==null)val=$_A(0,'\0');
 if(val.length<len)throw new java.io.InvalidObjectException(("K0199"));
 this.shared=false;
 this.value=val;
 this.count=len;
 },"~A,~N");
-Clazz.makeConstructor(c$,
+$_K(c$,
 function(){
-this.value=Clazz.newArray(16,'\0');
+this.value=$_A(16,'\0');
 });
-Clazz.makeConstructor(c$,
+$_K(c$,
 function(capacity){
 if(capacity<0)throw new NegativeArraySizeException();
-this.value=Clazz.newArray(capacity,'\0');
+this.value=$_A(capacity,'\0');
 },"~N");
-Clazz.makeConstructor(c$,
+$_K(c$,
 function(string){
 this.count=string.length;
 this.shared=false;
-this.value=Clazz.newArray(this.count+16,'\0');
+this.value=$_A(this.count+16,'\0');
 string.getChars(0,this.count,this.value,0);
 },"~S");
-Clazz.defineMethod(c$,"enlargeBuffer",
+$_M(c$,"enlargeBuffer",
 ($fz=function(min){
 var twice=(this.value.length<<1)+2;
-var newData=Clazz.newArray(min>twice?min:twice,'\0');
+var newData=$_A(min>twice?min:twice,'\0');
 System.arraycopy(this.value,0,newData,0,this.count);
 this.value=newData;
 this.shared=false;
 },$fz.isPrivate=true,$fz),"~N");
-Clazz.defineMethod(c$,"appendNull",
+$_M(c$,"appendNull",
 function(){
 var newSize=this.count+4;
 if(newSize>this.value.length){
@@ -59,7 +59,7 @@ this.value[this.count++]='u';
 this.value[this.count++]='l';
 this.value[this.count++]='l';
 });
-Clazz.defineMethod(c$,"append0",
+$_M(c$,"append0",
 function(chars){
 var newSize=this.count+chars.length;
 if(newSize>this.value.length){
@@ -70,7 +70,7 @@ this.shared=false;
 }System.arraycopy(chars,0,this.value,this.count,chars.length);
 this.count=newSize;
 },"~A");
-Clazz.defineMethod(c$,"append0",
+$_M(c$,"append0",
 function(chars,start,length){
 if(chars==null){
 throw new NullPointerException();
@@ -86,7 +86,7 @@ this.count=newSize;
 }else{
 throw new ArrayIndexOutOfBoundsException();
 }},"~A,~N,~N");
-Clazz.defineMethod(c$,"append0",
+$_M(c$,"append0",
 function(ch){
 if(this.count==this.value.length){
 this.enlargeBuffer(this.count+1);
@@ -95,7 +95,7 @@ this.value=this.value.clone();
 this.shared=false;
 }this.value[this.count++]=ch;
 },"~N");
-Clazz.defineMethod(c$,"append0",
+$_M(c$,"append0",
 function(string){
 if(string==null){
 this.appendNull();
@@ -110,22 +110,22 @@ this.shared=false;
 }string.getChars(0,adding,this.value,this.count);
 this.count=newSize;
 },"~S");
-Clazz.defineMethod(c$,"append0",
+$_M(c$,"append0",
 function(s,start,end){
 if(s==null)s="null";
 if(start<0||end<0||start>end||end>s.length())throw new IndexOutOfBoundsException();
 this.append0(s.subSequence(start,end).toString());
 },"CharSequence,~N,~N");
-Clazz.defineMethod(c$,"capacity",
+$_M(c$,"capacity",
 function(){
 return this.value.length;
 });
-Clazz.defineMethod(c$,"charAt",
+$_M(c$,"charAt",
 function(index){
 if(index<0||index>=this.count)throw new StringIndexOutOfBoundsException(index);
 return this.value[index];
 },"~N");
-Clazz.defineMethod(c$,"delete0",
+$_M(c$,"delete0",
 function(start,end){
 if(start>=0){
 if(end>this.count){
@@ -138,7 +138,7 @@ if(length>0){
 if(!this.shared){
 System.arraycopy(this.value,end,this.value,start,length);
 }else{
-var newData=Clazz.newArray(this.value.length,'\0');
+var newData=$_A(this.value.length,'\0');
 System.arraycopy(this.value,0,newData,0,start);
 System.arraycopy(this.value,end,newData,start,length);
 this.value=newData;
@@ -147,7 +147,7 @@ this.shared=false;
 return;
 }}throw new StringIndexOutOfBoundsException();
 },"~N,~N");
-Clazz.defineMethod(c$,"deleteCharAt0",
+$_M(c$,"deleteCharAt0",
 function(location){
 if(0>location||location>=this.count)throw new StringIndexOutOfBoundsException(location);
 var length=this.count-location-1;
@@ -155,25 +155,25 @@ if(length>0){
 if(!this.shared){
 System.arraycopy(this.value,location+1,this.value,location,length);
 }else{
-var newData=Clazz.newArray(this.value.length,'\0');
+var newData=$_A(this.value.length,'\0');
 System.arraycopy(this.value,0,newData,0,location);
 System.arraycopy(this.value,location+1,newData,location,length);
 this.value=newData;
 this.shared=false;
 }}this.count--;
 },"~N");
-Clazz.defineMethod(c$,"ensureCapacity",
+$_M(c$,"ensureCapacity",
 function(min){
 if(min>this.value.length){
 this.enlargeBuffer(min);
 }},"~N");
-Clazz.defineMethod(c$,"getChars",
+$_M(c$,"getChars",
 function(start,end,dest,destStart){
 if(start>this.count||end>this.count||start>end){
 throw new StringIndexOutOfBoundsException();
 }System.arraycopy(this.value,start,dest,destStart,end-start);
 },"~N,~N,~A,~N");
-Clazz.defineMethod(c$,"insert0",
+$_M(c$,"insert0",
 function(index,chars){
 if(0>index||index>this.count){
 throw new StringIndexOutOfBoundsException(index);
@@ -182,7 +182,7 @@ this.move(chars.length,index);
 System.arraycopy(chars,0,this.value,index,chars.length);
 this.count+=chars.length;
 }},"~N,~A");
-Clazz.defineMethod(c$,"insert0",
+$_M(c$,"insert0",
 function(index,chars,start,length){
 if(0<=index&&index<=this.count){
 if(start>=0&&0<=length&&length<=chars.length-start){
@@ -194,7 +194,7 @@ this.count+=length;
 }throw new StringIndexOutOfBoundsException("offset "+start+", len "+length+", array.length "+chars.length);
 }throw new StringIndexOutOfBoundsException(index);
 },"~N,~A,~N,~N");
-Clazz.defineMethod(c$,"insert0",
+$_M(c$,"insert0",
 function(index,ch){
 if(0>index||index>this.count){
 throw new ArrayIndexOutOfBoundsException(index);
@@ -202,7 +202,7 @@ throw new ArrayIndexOutOfBoundsException(index);
 this.value[index]=ch;
 this.count++;
 },"~N,~N");
-Clazz.defineMethod(c$,"insert0",
+$_M(c$,"insert0",
 function(index,string){
 if(0<=index&&index<=this.count){
 if(string==null)string="null";
@@ -214,17 +214,17 @@ this.count+=min;
 }}else{
 throw new StringIndexOutOfBoundsException(index);
 }},"~N,~S");
-Clazz.defineMethod(c$,"insert0",
+$_M(c$,"insert0",
 function(index,s,start,end){
 if(s==null)s="null";
 if(index<0||index>this.count||start<0||end<0||start>end||end>s.length())throw new IndexOutOfBoundsException();
 this.insert0(index,s.subSequence(start,end).toString());
 },"~N,CharSequence,~N,~N");
-Clazz.defineMethod(c$,"length",
+$_M(c$,"length",
 function(){
 return this.count;
 });
-Clazz.defineMethod(c$,"move",
+$_M(c$,"move",
 ($fz=function(size,index){
 var newSize;
 if(this.value.length-this.count>=size){
@@ -236,13 +236,13 @@ return;
 var a=this.count+size;
 var b=(this.value.length<<1)+2;
 newSize=a>b?a:b;
-}var newData=Clazz.newArray(newSize,'\0');
+}var newData=$_A(newSize,'\0');
 System.arraycopy(this.value,0,newData,0,index);
 System.arraycopy(this.value,index,newData,index+size,this.count-index);
 this.value=newData;
 this.shared=false;
 },$fz.isPrivate=true,$fz),"~N,~N");
-Clazz.defineMethod(c$,"replace0",
+$_M(c$,"replace0",
 function(start,end,string){
 if(start>=0){
 if(end>this.count)end=this.count;
@@ -253,7 +253,7 @@ if(diff>0){
 if(!this.shared){
 System.arraycopy(this.value,end,this.value,start+stringLength,this.count-end);
 }else{
-var newData=Clazz.newArray(this.value.length,'\0');
+var newData=$_A(this.value.length,'\0');
 System.arraycopy(this.value,0,newData,0,start);
 System.arraycopy(this.value,end,newData,start+stringLength,this.count-end);
 this.value=newData;
@@ -272,7 +272,7 @@ this.insert0(start,string);
 return;
 }}throw new StringIndexOutOfBoundsException();
 },"~N,~N,~S");
-Clazz.defineMethod(c$,"reverse0",
+$_M(c$,"reverse0",
 function(){
 if(this.count<2){
 return;
@@ -283,14 +283,14 @@ this.value[end]=this.value[i];
 this.value[i]=temp;
 }
 }else{
-var newData=Clazz.newArray(this.value.length,'\0');
+var newData=$_A(this.value.length,'\0');
 for(var i=0,end=this.count;i<this.count;i++){
 newData[--end]=this.value[i];
 }
 this.value=newData;
 this.shared=false;
 }});
-Clazz.defineMethod(c$,"setCharAt",
+$_M(c$,"setCharAt",
 function(index,ch){
 if(0>index||index>=this.count){
 throw new StringIndexOutOfBoundsException(index);
@@ -299,7 +299,7 @@ this.value=this.value.clone();
 this.shared=false;
 }this.value[index]=ch;
 },"~N,~N");
-Clazz.defineMethod(c$,"setLength",
+$_M(c$,"setLength",
 function(length){
 if(length<0)throw new StringIndexOutOfBoundsException(length);
 if(this.count<length){
@@ -307,7 +307,7 @@ if(length>this.value.length){
 this.enlargeBuffer(length);
 }else{
 if(this.shared){
-var newData=Clazz.newArray(this.value.length,'\0');
+var newData=$_A(this.value.length,'\0');
 System.arraycopy(this.value,0,newData,0,this.count);
 this.value=newData;
 this.shared=false;
@@ -317,7 +317,7 @@ this.value[i]=String.fromCharCode(0);
 }
 }}}this.count=length;
 },"~N");
-Clazz.defineMethod(c$,"substring",
+$_M(c$,"substring",
 function(start){
 if(0<=start&&start<=this.count){
 if(start==this.count)return"";
@@ -325,7 +325,7 @@ this.shared=true;
 return String.instantialize(start,this.count-start,this.value);
 }throw new StringIndexOutOfBoundsException(start);
 },"~N");
-Clazz.defineMethod(c$,"substring",
+$_M(c$,"substring",
 function(start,end){
 if(0<=start&&start<=end&&end<=this.count){
 if(start==end)return"";
@@ -333,22 +333,22 @@ this.shared=true;
 return String.instantialize(this.value,start,end-start);
 }throw new StringIndexOutOfBoundsException();
 },"~N,~N");
-Clazz.overrideMethod(c$,"toString",
+$_V(c$,"toString",
 function(){
 if(this.count==0)return"";
 if(this.count>=256&&this.count<=(this.value.length>>1))return String.instantialize(this.value,0,this.count);
 this.shared=true;
 return String.instantialize(0,this.count,this.value);
 });
-Clazz.defineMethod(c$,"subSequence",
+$_M(c$,"subSequence",
 function(start,end){
 return this.substring(start,end);
 },"~N,~N");
-Clazz.defineMethod(c$,"indexOf",
+$_M(c$,"indexOf",
 function(string){
 return this.indexOf(string,0);
 },"~S");
-Clazz.defineMethod(c$,"indexOf",
+$_M(c$,"indexOf",
 function(subString,start){
 if(start<0)start=0;
 var subCount=subString.length;
@@ -372,11 +372,11 @@ start=i+1;
 }
 }return(start<this.count||start==0)?start:this.count;
 },"~S,~N");
-Clazz.defineMethod(c$,"lastIndexOf",
+$_M(c$,"lastIndexOf",
 function(string){
 return this.lastIndexOf(string,this.count);
 },"~S");
-Clazz.defineMethod(c$,"lastIndexOf",
+$_M(c$,"lastIndexOf",
 function(subString,start){
 var subCount=subString.length;
 if(subCount<=this.count&&start>=0){
@@ -401,14 +401,14 @@ start=i-1;
 }return start<this.count?start:this.count;
 }return-1;
 },"~S,~N");
-Clazz.defineMethod(c$,"trimToSize",
+$_M(c$,"trimToSize",
 function(){
 if(this.count<this.value.length){
-var newValue=Clazz.newArray(this.count,'\0');
+var newValue=$_A(this.count,'\0');
 System.arraycopy(this.value,0,newValue,0,this.count);
 this.value=newValue;
 this.shared=false;
 }});
-Clazz.defineStatics(c$,
+$_S(c$,
 "INITIAL_CAPACITY",16);
 });

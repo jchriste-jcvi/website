@@ -8,13 +8,13 @@ Clazz.makeConstructor (c$,
 function () {
 Clazz.superConstructor (this, J.jvxl.readers.IsoFxyzReader, []);
 });
-Clazz.overrideMethod (c$, "setup", 
+$_V(c$, "setup", 
 function (isMapData) {
 if (this.params.functionInfo.size () > 5) this.$data = this.params.functionInfo.get (5);
 this.setupType ("functionXYZ");
 }, "~B");
-Clazz.overrideMethod (c$, "getValue", 
-function (x, y, z, xyz) {
+$_M(c$, "getValue", 
+function (x, y, z) {
 return (this.$data == null ? this.evaluateValue (x, y, z) : this.$data[x][y][z]);
-}, "~N,~N,~N,~N");
+}, "~N,~N,~N");
 });

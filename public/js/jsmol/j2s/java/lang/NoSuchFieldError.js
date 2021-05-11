@@ -1,3 +1,3 @@
-Clazz.load(["java.lang.IncompatibleClassChangeError"],"java.lang.NoSuchFieldError",null,function(){
-c$=Clazz.declareType(java.lang,"NoSuchFieldError",IncompatibleClassChangeError);
+$_L(["java.lang.IncompatibleClassChangeError"],"java.lang.NoSuchFieldError",null,function(){
+c$=$_T(java.lang,"NoSuchFieldError",IncompatibleClassChangeError);
 });

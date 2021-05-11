@@ -1,5 +1,5 @@
 Clazz.declarePackage ("J.adapter.readers.quantum");
-Clazz.load (["J.adapter.readers.quantum.SlaterReader", "java.util.Hashtable"], "J.adapter.readers.quantum.DgridReader", ["java.lang.Float", "JU.PT", "$.SB", "J.quantum.SlaterData", "JU.Logger"], function () {
+Clazz.load (["J.adapter.readers.quantum.SlaterReader", "java.util.Hashtable"], "J.adapter.readers.quantum.DgridReader", ["java.lang.Float", "JU.SB", "J.quantum.SlaterData", "J.util.Logger"], function () {
 c$ = Clazz.decorateAsClass (function () {
 this.title = null;
 this.htExponents = null;
@@ -9,10 +9,10 @@ Clazz.instantialize (this, arguments);
 Clazz.prepareFields (c$, function () {
 this.htExponents =  new java.util.Hashtable ();
 });
-Clazz.overrideMethod (c$, "checkLine", 
+$_V(c$, "checkLine", 
 function () {
 if (this.line.indexOf (":title") == 0) {
-this.title = this.rd ().substring (2);
+this.title = this.readLine ().substring (2);
 return true;
 }if (this.line.indexOf ("basis:  CARTESIAN  STO") >= 0) {
 this.readSlaterBasis ();
@@ -25,22 +25,25 @@ if (this.doReadMolecularOrbitals) this.readMolecularOrbitals ();
 return true;
 }return true;
 });
-Clazz.defineMethod (c$, "readCoordinates", 
- function () {
-this.asc.newAtomSet ();
-this.asc.setAtomSetName (this.title);
+$_M(c$, "readCoordinates", 
+($fz = function () {
+this.atomSetCollection.newAtomSet ();
+this.atomSetCollection.setAtomSetName (this.title);
 this.discardLinesUntilContains ("----");
-while (this.rd () != null && !this.line.startsWith (":-----")) {
+while (this.readLine () != null && !this.line.startsWith (":-----")) {
 var tokens = this.getTokens ();
 if (tokens.length < 5) break;
-this.setAtomCoordScaled (null, tokens, 2, 0.5291772).elementSymbol = tokens[0];
+var symbol = tokens[0];
+var atom = this.atomSetCollection.addNewAtom ();
+atom.elementSymbol = symbol;
+this.setAtomCoordXYZ (atom, this.parseFloatStr (tokens[2]) * 0.5291772, this.parseFloatStr (tokens[3]) * 0.5291772, this.parseFloatStr (tokens[4]) * 0.5291772);
 }
-});
-Clazz.defineMethod (c$, "readSlaterBasis", 
- function () {
+}, $fz.isPrivate = true, $fz));
+$_M(c$, "readSlaterBasis", 
+($fz = function () {
 this.discardLinesUntilContains (":-");
 var ch = 'a';
-while (this.rd () != null && this.line.indexOf (":-") < 0) {
+while (this.readLine () != null && this.line.indexOf (":-") < 0) {
 var atomSymbol = this.line.substring (3, 6).trim ();
 var xyz = this.line.substring (19, 21);
 var code = atomSymbol + xyz;
@@ -51,9 +54,9 @@ code += "_" + ($c$ = ch, ch = String.fromCharCode (ch.charCodeAt (0) + 1), $c$);
 }var exp = this.line.substring (34);
 this.htExponents.put (code, Float.$valueOf (this.parseFloatStr (exp)));
 }
-});
-Clazz.defineMethod (c$, "readMolecularOrbitals", 
- function () {
+}, $fz.isPrivate = true, $fz));
+$_M(c$, "readMolecularOrbitals", 
+($fz = function () {
 this.htFuncMap =  new java.util.Hashtable ();
 this.readLines (3);
 while (this.line != null && this.line.indexOf (":") != 0) {
@@ -62,12 +65,12 @@ var symmetry = this.line.substring (4, 10).trim ();
 if (symmetry.indexOf ("_FC") >= 0) break;
 var data =  new JU.SB ();
 data.append (this.line.substring (15));
-while (this.rd () != null && this.line.length >= 15) data.append (this.line);
+while (this.readLine () != null && this.line.length >= 15) data.append (this.line);
 
-var tokens = JU.PT.getTokens (data.toString ());
+var tokens = J.adapter.smarter.AtomSetCollectionReader.getTokensStr (data.toString ());
 var nFuncs = Clazz.doubleToInt (tokens.length / 2);
 var ptSlater =  Clazz.newIntArray (nFuncs, 0);
-var atoms = this.asc.atoms;
+var atoms = this.atomSetCollection.getAtoms ();
 for (var i = 0, pt = 0; i < tokens.length; ) {
 var iAtom = this.parseIntStr (tokens[i++]) - 1;
 var code = tokens[i++];
@@ -78,22 +81,22 @@ ptSlater[pt++] = this.htFuncMap.get (key).intValue ();
 var n = this.slaters.size ();
 ptSlater[pt++] = n;
 this.htFuncMap.put (key, Integer.$valueOf (n));
-this.addSlater (this.createSlaterData (iAtom + 1, atoms[iAtom].elementSymbol, code), n);
+this.addSlater (this.createSlaterData (iAtom, atoms[iAtom].elementSymbol, code), n);
 }}
 this.discardLinesUntilContains (":-");
-this.rd ();
+this.readLine ();
 while (this.line != null && this.line.length >= 20) {
 var iOrb = this.parseIntRange (this.line, 0, 10);
 var energy = this.parseFloatRange (this.line, 10, 20);
 var cData =  new JU.SB ();
 cData.append (this.line.substring (20));
-while (this.rd () != null && this.line.length >= 10) {
+while (this.readLine () != null && this.line.length >= 10) {
 if (this.line.charAt (3) != ' ') break;
 cData.append (this.line);
 }
 var list =  Clazz.newFloatArray (this.slaters.size (), 0);
-tokens = JU.PT.getTokens (cData.toString ());
-if (tokens.length != nFuncs) JU.Logger.error ("DgridReader: number of coefficients (" + tokens.length + ") does not equal number of functions (" + nFuncs + ")");
+tokens = J.adapter.smarter.AtomSetCollectionReader.getTokensStr (cData.toString ());
+if (tokens.length != nFuncs) J.util.Logger.error ("DgridReader: number of coefficients (" + tokens.length + ") does not equal number of functions (" + nFuncs + ")");
 for (var i = 0; i < tokens.length; i++) {
 var pt = ptSlater[i];
 list[pt] = this.parseFloatStr (tokens[i]);
@@ -106,18 +109,18 @@ this.setMO (mo);
 }
 }
 this.discardLinesUntilContains (":  #  symmetry");
-this.rd ();
+this.readLine ();
 for (var i = 0; i < this.orbitals.size (); i++) {
-this.rd ();
+this.readLine ();
 var occupancy = this.parseFloatRange (this.line, 31, 45) + this.parseFloatRange (this.line, 47, 61);
 this.orbitals.get (i).put ("occupancy", Float.$valueOf (occupancy));
 }
 this.sortOrbitals ();
 this.setSlaters (true, true);
 this.setMOs ("eV");
-});
-Clazz.defineMethod (c$, "createSlaterData", 
- function (iAtom, atomSymbol, xyz) {
+}, $fz.isPrivate = true, $fz));
+$_M(c$, "createSlaterData", 
+($fz = function (iAtom, atomSymbol, xyz) {
 var ch;
 var abc = ' ';
 var type = ' ';
@@ -165,8 +168,8 @@ var code = atomSymbol + xyz.substring (0, 2);
 if (type != ' ') code += "_" + type;
 var f = this.htExponents.get (code);
 var zeta = 0;
-if (f == null) JU.Logger.error ("Exponent for " + code + " not found");
+if (f == null) J.util.Logger.error ("Exponent for " + code + " not found");
  else zeta = f.floatValue ();
 return  new J.quantum.SlaterData (iAtom, x, y, z, r, zeta, 1);
-}, "~N,~S,~S");
+}, $fz.isPrivate = true, $fz), "~N,~S,~S");
 });

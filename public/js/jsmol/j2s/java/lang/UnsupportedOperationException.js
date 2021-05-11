@@ -1,11 +1,11 @@
-Clazz.load(["java.lang.RuntimeException"],"java.lang.UnsupportedOperationException",null,function(){
-c$=Clazz.declareType(java.lang,"UnsupportedOperationException",RuntimeException);
-Clazz.makeConstructor(c$,
+$_L(["java.lang.RuntimeException"],"java.lang.UnsupportedOperationException",null,function(){
+c$=$_T(java.lang,"UnsupportedOperationException",RuntimeException);
+$_K(c$,
 function(){
-Clazz.superConstructor(this,UnsupportedOperationException,[]);
+$_R(this,UnsupportedOperationException,[]);
 });
-Clazz.makeConstructor(c$,
+$_K(c$,
 function(cause){
-Clazz.superConstructor(this,UnsupportedOperationException,[(cause==null?null:cause.toString()),cause]);
+$_R(this,UnsupportedOperationException,[(cause==null?null:cause.toString()),cause]);
 },"Throwable");
 });

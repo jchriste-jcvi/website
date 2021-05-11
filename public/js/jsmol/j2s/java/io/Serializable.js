@@ -1,1 +1,1 @@
-Clazz.declareInterface(java.io,"Serializable");
+$_I(java.io,"Serializable");

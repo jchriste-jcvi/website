@@ -1,5 +1,5 @@
 Clazz.declarePackage ("J.shapebio");
-Clazz.load (["J.shape.Shape"], "J.shapebio.BioShapeCollection", ["java.util.Hashtable", "JU.AU", "J.c.PAL", "J.shapebio.BioShape", "JU.BSUtil", "$.C", "JV.JC"], function () {
+Clazz.load (["J.shape.Shape"], "J.shapebio.BioShapeCollection", ["JU.AU", "J.constant.EnumPalette", "J.shapebio.BioShape", "J.util.BSUtil", "$.C"], function () {
 c$ = Clazz.decorateAsClass (function () {
 this.atoms = null;
 this.madOn = -2;
@@ -10,39 +10,26 @@ this.isActive = false;
 this.bioShapes = null;
 Clazz.instantialize (this, arguments);
 }, J.shapebio, "BioShapeCollection", J.shape.Shape);
-Clazz.overrideMethod (c$, "initModelSet", 
+$_V(c$, "initModelSet", 
 function () {
 this.isBioShape = true;
-this.atoms = this.ms.at;
+this.atoms = this.modelSet.atoms;
 this.initialize ();
 });
-Clazz.overrideMethod (c$, "initShape", 
-function () {
-});
-Clazz.overrideMethod (c$, "getSizeG", 
+$_V(c$, "getSizeG", 
 function (group) {
 var m = group;
-var groupIndex = m.groupIndex;
-var leadAtomIndex = m.getLeadAtom ().i;
+var groupIndex = m.getGroupIndex ();
+var leadAtomIndex = m.getLeadAtom ().getIndex ();
 for (var i = this.bioShapes.length; --i >= 0; ) {
 var bioShape = this.bioShapes[i];
 for (var j = 0; j < bioShape.monomerCount; j++) {
-if (bioShape.monomers[j].groupIndex == groupIndex && bioShape.monomers[j].getLeadAtom ().i == leadAtomIndex) return bioShape.mads[j];
+if (bioShape.monomers[j].getGroupIndex () == groupIndex && bioShape.monomers[j].getLeadAtom ().getIndex () == leadAtomIndex) return bioShape.mads[j];
 }
 }
 return 0;
-}, "JM.Group");
-Clazz.overrideMethod (c$, "replaceGroup", 
-function (g0, g1) {
-for (var i = this.bioShapes.length; --i >= 0; ) {
-var bioShape = this.bioShapes[i];
-for (var j = 0; j < bioShape.monomerCount; j++) if (bioShape.monomers[j] === g0) {
-bioShape.monomers[j] = g1;
-break;
-}
-}
-}, "JM.Group,JM.Group");
-Clazz.overrideMethod (c$, "setShapeSizeRD", 
+}, "J.modelset.Group");
+$_V(c$, "setShapeSizeRD", 
 function (size, rd, bsSelected) {
 var mad = size;
 this.initialize ();
@@ -51,11 +38,11 @@ var bioShape = this.bioShapes[i];
 if (bioShape.monomerCount > 0) bioShape.setMad (mad, bsSelected, (rd == null ? null : rd.values));
 }
 }, "~N,J.atomdata.RadiusData,JU.BS");
-Clazz.overrideMethod (c$, "setProperty", 
+$_V(c$, "setProperty", 
 function (propertyName, value, bsSelected) {
 this.setPropBSC (propertyName, value, bsSelected);
 }, "~S,~O,JU.BS");
-Clazz.defineMethod (c$, "setPropBSC", 
+$_M(c$, "setPropBSC", 
 function (propertyName, value, bsSelected) {
 if (propertyName === "refreshTrajectories") {
 var modelIndex = ((value)[0]).intValue ();
@@ -78,8 +65,8 @@ this.bioShapes = JU.AU.deleteElements (this.bioShapes, i, 1);
 return;
 }this.initialize ();
 if ("color" === propertyName) {
-var pid = J.c.PAL.pidOf (value);
-var colix = JU.C.getColixO (value);
+var pid = J.constant.EnumPalette.pidOf (value);
+var colix = J.util.C.getColixO (value);
 for (var i = this.bioShapes.length; --i >= 0; ) {
 var bioShape = this.bioShapes[i];
 if (bioShape.monomerCount > 0) bioShape.setColixBS (colix, pid, bsSelected);
@@ -95,12 +82,12 @@ for (var i = this.bioShapes.length; --i >= 0; ) this.bioShapes[i].setParams (val
 return;
 }if ("colorPhase" === propertyName) {
 var twoColors = value;
-var colixBack = JU.C.getColixO (twoColors[0]);
-var colix = JU.C.getColixO (twoColors[1]);
+var colixBack = J.util.C.getColixO (twoColors[0]);
+var colix = J.util.C.getColixO (twoColors[1]);
 for (var i = this.bioShapes.length; --i >= 0; ) {
 var bioShape = this.bioShapes[i];
 if (bioShape.monomerCount > 0) {
-bioShape.setColixBS (colix, 64, bsSelected);
+bioShape.setColixBS (colix, 0, bsSelected);
 bioShape.setColixBack (colixBack, bsSelected);
 }}
 return;
@@ -113,55 +100,50 @@ if (bioShape.monomerCount > 0) bioShape.setTranslucent (isTranslucent, bsSelecte
 return;
 }this.setPropS (propertyName, value, bsSelected);
 }, "~S,~O,JU.BS");
-Clazz.overrideMethod (c$, "getShapeState", 
+$_V(c$, "getShapeState", 
 function () {
-var temp =  new java.util.Hashtable ();
-var temp2 =  new java.util.Hashtable ();
-var type = JV.JC.shapeClassBases[this.shapeID];
-for (var iShape = this.bioShapes.length; --iShape >= 0; ) this.bioShapes[iShape].getBioShapeState (type, this.translucentAllowed, temp, temp2);
-
-var s = "\n" + this.vwr.getCommands (temp, temp2, this.shapeID == 9 ? "Backbone" : "select");
-return s;
+return this.viewer.getAtomShapeSetState (this, this.bioShapes);
 });
-Clazz.defineMethod (c$, "initialize", 
+$_M(c$, "initialize", 
 function () {
-var modelCount = this.ms.mc;
-var models = this.ms.am;
-var n = this.ms.getBioPolymerCountInModel (-1);
+var modelCount = this.modelSet.modelCount;
+var models = this.modelSet.models;
+var n = this.modelSet.getBioPolymerCount ();
 var shapes =  new Array (n--);
-for (var i = modelCount; --i >= 0; ) for (var j = this.ms.getBioPolymerCountInModel (i); --j >= 0; n--) {
-var bp = (models[i]).bioPolymers[j];
+for (var i = modelCount; --i >= 0; ) for (var j = this.modelSet.getBioPolymerCountInModel (i); --j >= 0; n--) {
+var bp = (models[i]).getBioPolymer (j);
 shapes[n] = (this.bioShapes == null || this.bioShapes.length <= n || this.bioShapes[n] == null || this.bioShapes[n].bioPolymer !== bp ?  new J.shapebio.BioShape (this, i, bp) : this.bioShapes[n]);
 }
 
 this.bioShapes = shapes;
 });
-Clazz.overrideMethod (c$, "findNearestAtomIndex", 
+$_V(c$, "findNearestAtomIndex", 
 function (xMouse, yMouse, closest, bsNot) {
 for (var i = this.bioShapes.length; --i >= 0; ) this.bioShapes[i].findNearestAtomIndex (xMouse, yMouse, closest, bsNot);
 
 }, "~N,~N,~A,JU.BS");
-Clazz.overrideMethod (c$, "setModelVisibilityFlags", 
-function (bsModels) {
+$_V(c$, "setVisibilityFlags", 
+function (bs) {
 if (this.bioShapes == null) return;
-bsModels = JU.BSUtil.copy (bsModels);
-if (this.ms.trajectory != null) this.ms.trajectory.setBaseModels (bsModels);
+bs = J.util.BSUtil.copy (bs);
+for (var i = this.modelSet.modelCount; --i >= 0; ) if (bs.get (i) && this.modelSet.isTrajectory (i)) bs.set (this.modelSet.getTrajectoryIndex (i));
+
 for (var i = this.bioShapes.length; --i >= 0; ) {
 var b = this.bioShapes[i];
-b.modelVisibilityFlags = (bsModels.get (b.modelIndex) ? this.vf : 0);
+b.modelVisibilityFlags = (bs.get (b.modelIndex) ? this.myVisibilityFlag : 0);
 }
 }, "JU.BS");
-Clazz.overrideMethod (c$, "setAtomClickability", 
+$_V(c$, "setModelClickability", 
 function () {
 if (this.bioShapes == null) return;
-for (var i = this.bioShapes.length; --i >= 0; ) this.bioShapes[i].setAtomClickability ();
+for (var i = this.bioShapes.length; --i >= 0; ) this.bioShapes[i].setModelClickability ();
 
 });
-Clazz.defineMethod (c$, "getMpsShapeCount", 
+$_M(c$, "getMpsShapeCount", 
 function () {
 return this.bioShapes.length;
 });
-Clazz.defineMethod (c$, "getBioShape", 
+$_M(c$, "getBioShape", 
 function (i) {
 return this.bioShapes[i];
 }, "~N");

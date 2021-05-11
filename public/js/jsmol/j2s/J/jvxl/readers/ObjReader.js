@@ -5,13 +5,13 @@ Clazz.makeConstructor (c$,
 function () {
 Clazz.superConstructor (this, J.jvxl.readers.ObjReader, []);
 });
-Clazz.overrideMethod (c$, "init2", 
+$_V(c$, "init2", 
 function (sg, br) {
 this.init2PR (sg, br);
 this.type = "obj";
 this.setHeader ();
 }, "J.jvxl.readers.SurfaceGenerator,java.io.BufferedReader");
-Clazz.overrideMethod (c$, "readVertices", 
+$_V(c$, "readVertices", 
 function () {
 this.pmeshError = "pmesh ERROR: invalid vertex/face list";
 var pt =  new JU.P3 ();
@@ -27,7 +27,7 @@ var ipt = null;
 var spt = null;
 var pymolMap =  Clazz.newIntArray (3, 0);
 var bsOK =  new JU.BS ();
-while (this.rd () != null) {
+while (this.readLine () != null) {
 if (this.line.length < 2 || this.line.charAt (1) != ' ') {
 if (this.params.readAllData && this.line.startsWith ("usemtl")) color = JU.CU.getArgbFromString ("[x" + this.line.substring (8) + "]");
 continue;
@@ -46,7 +46,7 @@ i = ipt.intValue ();
 }var j = i;
 if (i == this.nVertices) {
 if (this.isAnisotropic) this.setVertexAnisotropy (pt);
-j = this.addVertexCopy (pt, 0, this.nVertices++, true);
+j = this.addVertexCopy (pt, 0, this.nVertices++);
 if (j >= 0) bsOK.set (i);
 }pymolMap[nPts % 3] = j;
 if (addHt) htPymol.put (spt, Integer.$valueOf (i));
@@ -81,18 +81,14 @@ if (ia < 0 || ib < 0 || ic < 0) continue;
 break;
 case 'g':
 htPymol = null;
-if (this.params.readAllData) try {
-color = JU.PT.parseIntRadix (this.line.substring (3), 16);
-} catch (e) {
-color = 0;
-}
+if (this.params.readAllData) color = JU.CU.getArgbFromString ("[x" + this.line.substring (3) + "]");
 break;
 }
 }
 this.pmeshError = null;
 return true;
 });
-Clazz.overrideMethod (c$, "readPolygons", 
+$_V(c$, "readPolygons", 
 function () {
 return true;
 });

@@ -1,26 +1,26 @@
-Clazz.load(["java.util.IllegalFormatException"],"java.util.FormatFlagsConversionMismatchException",["java.lang.NullPointerException"],function(){
-c$=Clazz.decorateAsClass(function(){
+$_L(["java.util.IllegalFormatException"],"java.util.FormatFlagsConversionMismatchException",["java.lang.NullPointerException"],function(){
+c$=$_C(function(){
 this.f=null;
 this.c=0;
-Clazz.instantialize(this,arguments);
+$_Z(this,arguments);
 },java.util,"FormatFlagsConversionMismatchException",java.util.IllegalFormatException,java.io.Serializable);
-Clazz.makeConstructor(c$,
+$_K(c$,
 function(f,c){
-Clazz.superConstructor(this,java.util.FormatFlagsConversionMismatchException,[]);
+$_R(this,java.util.FormatFlagsConversionMismatchException,[]);
 if(null==f){
 throw new NullPointerException();
 }this.f=f;
 this.c=c;
 },"~S,~N");
-Clazz.defineMethod(c$,"getFlags",
+$_M(c$,"getFlags",
 function(){
 return this.f;
 });
-Clazz.defineMethod(c$,"getConversion",
+$_M(c$,"getConversion",
 function(){
 return this.c;
 });
-Clazz.overrideMethod(c$,"getMessage",
+$_V(c$,"getMessage",
 function(){
 return"Mismatched Convertor ="+this.c+", Flags= "+this.f;
 });

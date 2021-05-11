@@ -20,11 +20,11 @@ Clazz.makeConstructor (c$,
 function () {
 Clazz.superConstructor (this, J.jvxl.readers.IsoIntersectReader, []);
 });
-Clazz.overrideMethod (c$, "init", 
+$_V(c$, "init", 
 function (sg) {
 this.initADR (sg);
 }, "J.jvxl.readers.SurfaceGenerator");
-Clazz.overrideMethod (c$, "readVolumeParameters", 
+$_V(c$, "readVolumeParameters", 
 function (isMapData) {
 this.setup (isMapData);
 if (isMapData) return false;
@@ -32,21 +32,18 @@ this.initializeVolumetricData ();
 this.volumeData.setUnitVectors ();
 this.thisPlaneB =  Clazz.newFloatArray (this.volumeData.getYzCount (), 0);
 this.voxelSource =  Clazz.newIntArray (this.volumeData.nPoints, 0);
-this.vl0 = this.volumeData.volumetricVectorLengths[0];
-this.vl1 = this.volumeData.volumetricVectorLengths[1];
-this.vl2 = this.volumeData.volumetricVectorLengths[2];
 this.getAtomMinMax (this.myBsA, this.bsAtomMinMax[0] =  new Array (this.nPointsX));
 this.getAtomMinMax (this.myBsB, this.bsAtomMinMax[1] =  new Array (this.nPointsX));
 return true;
 }, "~B");
-Clazz.overrideMethod (c$, "setup", 
+$_V(c$, "setup", 
 function (isMapData) {
 this.setup2 ();
 this.params.fullyLit = true;
 this.point = this.params.point;
 if (Clazz.instanceOf (this.params.func, String)) {
 this.funcType = (this.params.func.equals ("a-b") ? 2 : this.params.func.equals ("a+b") ? 1 : 3);
-} else if (this.params.func == null || this.sg.atomDataServer == null) {
+} else if (this.params.func == null || this.atomDataServer == null) {
 this.funcType = 2;
 } else {
 this.func = this.params.func;
@@ -57,7 +54,7 @@ var bsSelected =  new JU.BS ();
 bsSelected.or (bsA);
 bsSelected.or (bsB);
 this.doUseIterator = true;
-this.getAtoms (bsSelected, this.doAddHydrogens, true, true, false, false, false, NaN, null);
+this.getAtoms (bsSelected, this.doAddHydrogens, true, true, false, false, false, NaN);
 for (var i = bsA.nextSetBit (0); i >= 0; i = bsA.nextSetBit (i + 1)) this.myBsA.set (this.myIndex[i]);
 
 for (var i = bsB.nextSetBit (0); i >= 0; i = bsB.nextSetBit (i + 1)) this.myBsB.set (this.myIndex[i]);
@@ -69,7 +66,7 @@ this.margin = 5;
 this.setVolumeData ();
 }this.isProgressive = this.isXLowToHigh = true;
 }, "~B");
-Clazz.overrideMethod (c$, "getPlane", 
+$_V(c$, "getPlane", 
 function (x) {
 if (this.yzCount == 0) {
 this.initPlanes ();
@@ -92,8 +89,8 @@ if (!this.setVoxels ()) this.resetPlane (0);
 if (this.contactPair == null) this.unsetVoxelData ();
 return this.thisPlane;
 }, "~N");
-Clazz.defineMethod (c$, "setVoxels", 
- function () {
+$_M(c$, "setVoxels", 
+($fz = function () {
 for (var i = 0; i < this.yzCount; i++) {
 var va = this.thisPlane[i];
 var vb = this.thisPlaneB[i];
@@ -102,9 +99,9 @@ if (Float.isNaN (v)) return false;
 this.thisPlane[i] = v;
 }
 return true;
-});
-Clazz.defineMethod (c$, "getValueAB", 
- function (va, vb) {
+}, $fz.isPrivate = true, $fz));
+$_M(c$, "getValueAB", 
+($fz = function (va, vb) {
 if (va == 3.4028235E38 || vb == 3.4028235E38 || Float.isNaN (va) || Float.isNaN (vb)) return 3.4028235E38;
 switch (this.funcType) {
 case 1:
@@ -117,22 +114,22 @@ return (va > vb ? va : vb);
 default:
 this.values[0] = va;
 this.values[1] = vb;
-return this.sg.atomDataServer.evalFunctionFloat (this.func[0], this.func[1], this.values);
+return this.atomDataServer.evalFunctionFloat (this.func[0], this.func[1], this.values);
 }
-}, "~N,~N");
-Clazz.overrideMethod (c$, "getValueAtPoint", 
+}, $fz.isPrivate = true, $fz), "~N,~N");
+$_V(c$, "getValueAtPoint", 
 function (pt, getSource) {
 return this.getValueAB (this.getValueAtPoint2 (pt, this.myBsA), this.getValueAtPoint2 (pt, this.myBsB));
-}, "JU.T3,~B");
-Clazz.defineMethod (c$, "getValueAtPoint2", 
- function (pt, bs) {
+}, "JU.P3,~B");
+$_M(c$, "getValueAtPoint2", 
+($fz = function (pt, bs) {
 var value = 3.4028235E38;
 for (var iAtom = bs.nextSetBit (0); iAtom >= 0; iAtom = bs.nextSetBit (iAtom + 1)) {
-var r = pt.distance (this.atomXyzTruncated[iAtom]) - this.atomRadius[iAtom];
+var r = pt.distance (this.atomXyz[iAtom]) - this.atomRadius[iAtom];
 if (r < value) value = r;
 }
 return (value == 3.4028235E38 ? NaN : value);
-}, "JU.T3,JU.BS");
+}, $fz.isPrivate = true, $fz), "JU.P3,JU.BS");
 Clazz.defineStatics (c$,
 "TYPE_FUNCTION", 0,
 "TYPE_SUM", 1,

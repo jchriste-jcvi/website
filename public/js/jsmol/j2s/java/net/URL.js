@@ -1,5 +1,5 @@
 Clazz.declarePackage ("java.net");
-Clazz.load (["java.util.Hashtable"], "java.net.URL", ["java.lang.Character", "$.Error", "java.net.MalformedURLException"], function () {
+Clazz.load (["java.util.Hashtable"], "java.net.URL", ["java.io.IOException", "java.lang.Character", "$.Error", "java.net.MalformedURLException"], function () {
 c$ = Clazz.decorateAsClass (function () {
 this.protocol = null;
 this.host = null;
@@ -13,26 +13,10 @@ this.ref = null;
 this.handler = null;
 this.$hashCode = -1;
 Clazz.instantialize (this, arguments);
-}, java.net, "URL");
+}, java.net, "URL", null, java.io.Serializable);
 Clazz.makeConstructor (c$, 
 function (context, spec, handler) {
-{
-switch (arguments.length) {
-case 1:
-spec = context;context = handler = null;
-break;
-case 2:
-handler = null;
-break;
-case 3:
-if (context == null || Clazz.instanceOf(context, java.net.URL))
-break;
-default:
-alert("java.net.URL constructor format not supported");
-break;
-}
-context && context.valueOf && context.valueOf() == null && (context = null);
-}var original = spec;
+var original = spec;
 var i;
 var limit;
 var c;
@@ -40,7 +24,11 @@ var start = 0;
 var newProtocol = null;
 var aRef = false;
 var isRelative = false;
-try {
+if (handler != null) {
+var sm = System.getSecurityManager ();
+if (sm != null) {
+this.checkSpecifyHandler (sm);
+}}try {
 limit = spec.length;
 while ((limit > 0) && (spec.charAt (limit - 1) <= ' ')) {
 limit--;
@@ -106,8 +94,8 @@ throw e$$;
 }
 }
 }, "java.net.URL,~S,java.net.URLStreamHandler");
-Clazz.defineMethod (c$, "isValidProtocol", 
- function (protocol) {
+$_M(c$, "isValidProtocol", 
+($fz = function (protocol) {
 var len = protocol.length;
 if (len < 1) return false;
 var c = protocol.charAt (0);
@@ -118,8 +106,11 @@ if (!Character.isLetterOrDigit (c) && c != '.' && c != '+' && c != '-') {
 return false;
 }}
 return true;
-}, "~S");
-Clazz.defineMethod (c$, "set5", 
+}, $fz.isPrivate = true, $fz), "~S");
+$_M(c$, "checkSpecifyHandler", 
+($fz = function (sm) {
+}, $fz.isPrivate = true, $fz), "SecurityManager");
+$_M(c$, "set5", 
 function (protocol, host, port, file, ref) {
 {
 this.protocol = protocol;
@@ -135,7 +126,7 @@ this.query = file.substring (q + 1);
 this.path = file.substring (0, q);
 } else this.path = file;
 }}, "~S,~S,~N,~S,~S");
-Clazz.defineMethod (c$, "set", 
+$_M(c$, "set", 
 function (protocol, host, port, authority, userInfo, path, query, ref) {
 {
 this.protocol = protocol;
@@ -149,83 +140,83 @@ this.$hashCode = -1;
 this.query = query;
 this.authority = authority;
 }}, "~S,~S,~N,~S,~S,~S,~S,~S");
-Clazz.defineMethod (c$, "getQuery", 
+$_M(c$, "getQuery", 
 function () {
 return this.query;
 });
-Clazz.defineMethod (c$, "getPath", 
+$_M(c$, "getPath", 
 function () {
 return this.path;
 });
-Clazz.defineMethod (c$, "getUserInfo", 
+$_M(c$, "getUserInfo", 
 function () {
 return this.userInfo;
 });
-Clazz.defineMethod (c$, "getAuthority", 
+$_M(c$, "getAuthority", 
 function () {
 return this.authority;
 });
-Clazz.defineMethod (c$, "getPort", 
+$_M(c$, "getPort", 
 function () {
 return this.port;
 });
-Clazz.defineMethod (c$, "getDefaultPort", 
+$_M(c$, "getDefaultPort", 
 function () {
 return this.handler.getDefaultPort ();
 });
-Clazz.defineMethod (c$, "getProtocol", 
+$_M(c$, "getProtocol", 
 function () {
 return this.protocol;
 });
-Clazz.defineMethod (c$, "getHost", 
+$_M(c$, "getHost", 
 function () {
 return this.host;
 });
-Clazz.defineMethod (c$, "getFile", 
+$_M(c$, "getFile", 
 function () {
 return this.file;
 });
-Clazz.defineMethod (c$, "getRef", 
+$_M(c$, "getRef", 
 function () {
 return this.ref;
 });
-Clazz.overrideMethod (c$, "equals", 
+$_V(c$, "equals", 
 function (obj) {
 if (!(Clazz.instanceOf (obj, java.net.URL))) return false;
 var u2 = obj;
 return this.handler.equals2 (this, u2);
 }, "~O");
-Clazz.overrideMethod (c$, "hashCode", 
+$_V(c$, "hashCode", 
 function () {
 if (this.$hashCode != -1) return this.$hashCode;
 this.$hashCode = this.handler.hashCode (this);
 return this.$hashCode;
 });
-Clazz.defineMethod (c$, "sameFile", 
+$_M(c$, "sameFile", 
 function (other) {
 return this.handler.sameFile (this, other);
 }, "java.net.URL");
-Clazz.overrideMethod (c$, "toString", 
+$_V(c$, "toString", 
 function () {
 return this.toExternalForm ();
 });
-Clazz.defineMethod (c$, "toExternalForm", 
+$_M(c$, "toExternalForm", 
 function () {
 return this.handler.toExternalForm (this);
 });
-Clazz.defineMethod (c$, "openConnection", 
+$_M(c$, "openConnection", 
 function () {
 return this.handler.openConnection (this);
 });
-Clazz.defineMethod (c$, "openStream", 
+$_M(c$, "openStream", 
 function () {
 return this.openConnection ().getInputStream ();
 });
-Clazz.defineMethod (c$, "getContent", 
+$_M(c$, "getContent", 
 function () {
 return this.openConnection ().getInputStream ();
 });
-c$.setURLStreamHandlerFactory = Clazz.defineMethod (c$, "setURLStreamHandlerFactory", 
+c$.setURLStreamHandlerFactory = $_M(c$, "setURLStreamHandlerFactory", 
 function (fac) {
 {
 if (java.net.URL.factory != null) {
@@ -236,7 +227,7 @@ security.checkSetFactory ();
 }java.net.URL.handlers.clear ();
 java.net.URL.factory = fac;
 }}, "java.net.URLStreamHandlerFactory");
-c$.getURLStreamHandler = Clazz.defineMethod (c$, "getURLStreamHandler", 
+c$.getURLStreamHandler = $_M(c$, "getURLStreamHandler", 
 function (protocol) {
 var handler = java.net.URL.handlers.get (protocol);
 if (handler == null) {
@@ -247,5 +238,5 @@ handler = java.net.URL.factory.createURLStreamHandler (protocol);
 Clazz.defineStatics (c$,
 "factory", null);
 c$.handlers = c$.prototype.handlers =  new java.util.Hashtable ();
-c$.streamHandlerLock = c$.prototype.streamHandlerLock =  new Clazz._O ();
+c$.streamHandlerLock = c$.prototype.streamHandlerLock =  new JavaObject ();
 });

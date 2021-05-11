@@ -6,17 +6,17 @@ function () {
 Clazz.superConstructor (this, JSV.dialog.OverlayLegendDialog, []);
 this.type = JSV.common.Annotation.AType.OverlayLegend;
 });
-Clazz.overrideMethod (c$, "getPosXY", 
+$_V(c$, "getPosXY", 
 function () {
 return JSV.dialog.OverlayLegendDialog.posXY;
 });
-Clazz.defineMethod (c$, "addUniqueControls", 
+$_M(c$, "addUniqueControls", 
 function () {
 });
-Clazz.overrideMethod (c$, "callback", 
+$_V(c$, "callback", 
 function (id, msg) {
 return false;
 }, "~S,~S");
 Clazz.defineStatics (c$,
-"posXY",  Clazz.newIntArray (-1, [-2147483648, 0]));
+"posXY", [-2147483648, 0]);
 });

@@ -11,17 +11,17 @@ Clazz.prepareFields (c$, function () {
 this.crc =  new java.util.zip.CRC32 ();
 this.tmpbuf =  Clazz.newByteArray (128, 0);
 });
-Clazz.defineMethod (c$, "ensureOpen", 
- function () {
+$_M(c$, "ensureOpen", 
+($fz = function () {
 if (this.$closed) {
 throw  new java.io.IOException ("Stream closed");
-}});
+}}, $fz.isPrivate = true, $fz));
 Clazz.makeConstructor (c$, 
 function ($in, size) {
 Clazz.superConstructor (this, java.util.zip.GZIPInputStream, [$in,  new java.util.zip.Inflater ().init (0, true), size]);
 this.readHeader ($in);
 }, "java.io.InputStream,~N");
-Clazz.defineMethod (c$, "read", 
+$_V(c$, "read", 
 function (buf, off, len) {
 this.ensureOpen ();
 if (this.eos) {
@@ -34,16 +34,16 @@ if (this.readTrailer ()) this.eos = true;
 this.crc.update (buf, off, n);
 }return n;
 }, "~A,~N,~N");
-Clazz.defineMethod (c$, "close", 
+$_M(c$, "close", 
 function () {
 if (!this.$closed) {
 Clazz.superCall (this, java.util.zip.GZIPInputStream, "close", []);
 this.eos = true;
 this.$closed = true;
 }});
-Clazz.defineMethod (c$, "readHeader", 
- function (this_in) {
-var $in =  new java.util.zip.CheckedInputStream (this_in).set (this.crc);
+$_M(c$, "readHeader", 
+($fz = function (this_in) {
+var $in =  new java.util.zip.CheckedInputStream (this_in, this.crc);
 this.crc.reset ();
 if (this.readUShort ($in) != 35615) {
 throw  new java.util.zip.ZipException ("Not in GZIP format");
@@ -71,34 +71,34 @@ throw  new java.util.zip.ZipException ("Corrupt GZIP header");
 }n += 2;
 }this.crc.reset ();
 return n;
-}, "java.io.InputStream");
-Clazz.defineMethod (c$, "readTrailer", 
- function () {
+}, $fz.isPrivate = true, $fz), "java.io.InputStream");
+$_M(c$, "readTrailer", 
+($fz = function () {
 return true;
-});
-Clazz.defineMethod (c$, "readUShort", 
- function ($in) {
+}, $fz.isPrivate = true, $fz));
+$_M(c$, "readUShort", 
+($fz = function ($in) {
 var b = this.readUByte ($in);
 return (this.readUByte ($in) << 8) | b;
-}, "java.io.InputStream");
-Clazz.defineMethod (c$, "readUByte", 
- function ($in) {
+}, $fz.isPrivate = true, $fz), "java.io.InputStream");
+$_M(c$, "readUByte", 
+($fz = function ($in) {
 var b = $in.readByteAsInt ();
 if (b == -1) {
 throw  new java.io.EOFException ();
 }if (b < -1 || b > 255) {
 throw  new java.io.IOException (this.$in.getClass ().getName () + ".read() returned value out of range -1..255: " + b);
 }return b;
-}, "java.io.InputStream");
-Clazz.defineMethod (c$, "skipBytes", 
- function ($in, n) {
+}, $fz.isPrivate = true, $fz), "java.io.InputStream");
+$_M(c$, "skipBytes", 
+($fz = function ($in, n) {
 while (n > 0) {
 var len = $in.read (this.tmpbuf, 0, n < this.tmpbuf.length ? n : this.tmpbuf.length);
 if (len == -1) {
 throw  new java.io.EOFException ();
 }n -= len;
 }
-}, "java.io.InputStream,~N");
+}, $fz.isPrivate = true, $fz), "java.io.InputStream,~N");
 Clazz.defineStatics (c$,
 "GZIP_MAGIC", 0x8b1f,
 "FHCRC", 2,

@@ -9,77 +9,73 @@ this.bsModelsDefined = null;
 Clazz.instantialize (this, arguments);
 }, J.adapter.smarter, "StructureIterator", J.api.JmolAdapterStructureIterator);
 Clazz.makeConstructor (c$, 
-function (asc) {
+function (atomSetCollection) {
 Clazz.superConstructor (this, J.adapter.smarter.StructureIterator, []);
-this.structureCount = asc.structureCount;
-this.structures = asc.structures;
+this.structureCount = atomSetCollection.getStructureCount ();
+this.structures = atomSetCollection.getStructures ();
 this.istructure = 0;
-this.bsModelsDefined = asc.bsStructuredModels;
+this.bsModelsDefined = atomSetCollection.bsStructuredModels;
 }, "J.adapter.smarter.AtomSetCollection");
-Clazz.overrideMethod (c$, "hasNext", 
+$_V(c$, "hasNext", 
 function () {
 if (this.istructure == this.structureCount) return false;
 this.structure = this.structures[this.istructure++];
 return true;
 });
-Clazz.overrideMethod (c$, "getStructureType", 
+$_V(c$, "getStructureType", 
 function () {
 return this.structure.structureType;
 });
-Clazz.overrideMethod (c$, "getSubstructureType", 
+$_V(c$, "getSubstructureType", 
 function () {
 return this.structure.substructureType;
 });
-Clazz.overrideMethod (c$, "getStructureID", 
+$_V(c$, "getStructureID", 
 function () {
 return this.structure.structureID;
 });
-Clazz.overrideMethod (c$, "getSerialID", 
+$_V(c$, "getSerialID", 
 function () {
 return this.structure.serialID;
 });
-Clazz.overrideMethod (c$, "getStartChainID", 
+$_V(c$, "getStartChainID", 
 function () {
 return this.structure.startChainID;
 });
-Clazz.overrideMethod (c$, "getStartSequenceNumber", 
+$_V(c$, "getStartSequenceNumber", 
 function () {
 return this.structure.startSequenceNumber;
 });
-Clazz.overrideMethod (c$, "getStartInsertionCode", 
+$_V(c$, "getStartInsertionCode", 
 function () {
 return J.api.JmolAdapter.canonizeInsertionCode (this.structure.startInsertionCode);
 });
-Clazz.overrideMethod (c$, "getEndChainID", 
+$_V(c$, "getEndChainID", 
 function () {
 return this.structure.endChainID;
 });
-Clazz.overrideMethod (c$, "getEndSequenceNumber", 
+$_V(c$, "getEndSequenceNumber", 
 function () {
 return this.structure.endSequenceNumber;
 });
-Clazz.overrideMethod (c$, "getEndInsertionCode", 
+$_V(c$, "getEndInsertionCode", 
 function () {
 return this.structure.endInsertionCode;
 });
-Clazz.overrideMethod (c$, "getStrandCount", 
+$_V(c$, "getStrandCount", 
 function () {
 return this.structure.strandCount;
 });
-Clazz.overrideMethod (c$, "getStructuredModels", 
+$_V(c$, "getStructuredModels", 
 function () {
 return this.bsModelsDefined;
 });
-Clazz.overrideMethod (c$, "getAtomIndices", 
+$_V(c$, "getAtomIndices", 
 function () {
 return this.structure.atomStartEnd;
 });
-Clazz.overrideMethod (c$, "getModelIndices", 
+$_V(c$, "getModelIndices", 
 function () {
 return this.structure.modelStartEnd;
-});
-Clazz.overrideMethod (c$, "getBSAll", 
-function () {
-return this.structure.bsAll;
 });
 });

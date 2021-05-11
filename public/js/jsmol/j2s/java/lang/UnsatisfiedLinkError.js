@@ -1,3 +1,3 @@
-Clazz.load(["java.lang.LinkageError"],"java.lang.UnsatisfiedLinkError",null,function(){
-c$=Clazz.declareType(java.lang,"UnsatisfiedLinkError",LinkageError);
+$_L(["java.lang.LinkageError"],"java.lang.UnsatisfiedLinkError",null,function(){
+c$=$_T(java.lang,"UnsatisfiedLinkError",LinkageError);
 });

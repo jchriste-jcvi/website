@@ -1,5 +1,5 @@
 Clazz.declarePackage ("JSV.common");
-Clazz.load (["JSV.common.CoordComparator"], "JSV.common.Coordinate", ["java.lang.Double", "java.util.Arrays", "$.StringTokenizer", "JU.DF", "$.Lst"], function () {
+Clazz.load (["JSV.common.CoordComparator"], "JSV.common.Coordinate", ["java.lang.Double", "java.util.Arrays", "$.StringTokenizer", "JU.DF", "$.List"], function () {
 c$ = Clazz.decorateAsClass (function () {
 this.xVal = 0;
 this.yVal = 0;
@@ -8,63 +8,63 @@ Clazz.instantialize (this, arguments);
 Clazz.makeConstructor (c$, 
 function () {
 });
-Clazz.defineMethod (c$, "set", 
+$_M(c$, "set", 
 function (x, y) {
 this.xVal = x;
 this.yVal = y;
 return this;
 }, "~N,~N");
-Clazz.defineMethod (c$, "getXVal", 
+$_M(c$, "getXVal", 
 function () {
 return this.xVal;
 });
-Clazz.defineMethod (c$, "getYVal", 
+$_M(c$, "getYVal", 
 function () {
 return this.yVal;
 });
-Clazz.defineMethod (c$, "getXString", 
+$_M(c$, "getXString", 
 function () {
 return JU.DF.formatDecimalTrimmed (this.xVal, 8);
 });
-Clazz.defineMethod (c$, "getYString", 
+$_M(c$, "getYString", 
 function () {
 return JU.DF.formatDecimalTrimmed (this.yVal, 8);
 });
-Clazz.defineMethod (c$, "setXVal", 
+$_M(c$, "setXVal", 
 function (val) {
 this.xVal = val;
 }, "~N");
-Clazz.defineMethod (c$, "setYVal", 
+$_M(c$, "setYVal", 
 function (val) {
 this.yVal = val;
 }, "~N");
-Clazz.defineMethod (c$, "copy", 
+$_M(c$, "copy", 
 function () {
 return  new JSV.common.Coordinate ().set (this.xVal, this.yVal);
 });
-Clazz.defineMethod (c$, "equals", 
+$_M(c$, "equals", 
 function (coord) {
 return (coord.xVal == this.xVal && coord.yVal == this.yVal);
 }, "JSV.common.Coordinate");
-Clazz.overrideMethod (c$, "toString", 
+$_V(c$, "toString", 
 function () {
 return "[" + this.xVal + ", " + this.yVal + "]";
 });
-c$.isYInRange = Clazz.defineMethod (c$, "isYInRange", 
+c$.isYInRange = $_M(c$, "isYInRange", 
 function (xyCoords, min, max) {
-return (JSV.common.Coordinate.getMinY (xyCoords, 0, xyCoords.length - 1) >= min && JSV.common.Coordinate.getMaxY (xyCoords, 0, xyCoords.length - 1) >= max);
+return (JSV.common.Coordinate.getMinY (xyCoords, 0, xyCoords.length) >= min && JSV.common.Coordinate.getMaxY (xyCoords, 0, xyCoords.length) >= max);
 }, "~A,~N,~N");
-c$.normalise = Clazz.defineMethod (c$, "normalise", 
+c$.normalise = $_M(c$, "normalise", 
 function (xyCoords, min, max) {
 var newXYCoords =  new Array (xyCoords.length);
-var minY = JSV.common.Coordinate.getMinY (xyCoords, 0, xyCoords.length - 1);
-var maxY = JSV.common.Coordinate.getMaxY (xyCoords, 0, xyCoords.length - 1);
+var minY = JSV.common.Coordinate.getMinY (xyCoords, 0, xyCoords.length);
+var maxY = JSV.common.Coordinate.getMaxY (xyCoords, 0, xyCoords.length);
 var factor = (maxY - minY) / (max - min);
 for (var i = 0; i < xyCoords.length; i++) newXYCoords[i] =  new JSV.common.Coordinate ().set (xyCoords[i].getXVal (), ((xyCoords[i].getYVal () - minY) / factor) - min);
 
 return newXYCoords;
 }, "~A,~N,~N");
-c$.reverse = Clazz.defineMethod (c$, "reverse", 
+c$.reverse = $_M(c$, "reverse", 
 function (x) {
 var n = x.length;
 for (var i = 0; i < n; i++) {
@@ -74,12 +74,12 @@ x[n] = v;
 }
 return x;
 }, "~A");
-c$.parseDSV = Clazz.defineMethod (c$, "parseDSV", 
+c$.parseDSV = $_M(c$, "parseDSV", 
 function (dataPoints, xFactor, yFactor) {
 var point;
 var xval = 0;
 var yval = 0;
-var xyCoords =  new JU.Lst ();
+var xyCoords =  new JU.List ();
 var delim = " \t\n\r\f,;";
 var st =  new java.util.StringTokenizer (dataPoints, delim);
 var tmp1;
@@ -95,16 +95,16 @@ xyCoords.addLast (point);
 var coord =  new Array (xyCoords.size ());
 return xyCoords.toArray (coord);
 }, "~S,~N,~N");
-c$.deltaX = Clazz.defineMethod (c$, "deltaX", 
+c$.deltaX = $_M(c$, "deltaX", 
 function (last, first, numPoints) {
 var test = (last - first) / (numPoints - 1);
 return test;
 }, "~N,~N,~N");
-c$.removeScale = Clazz.defineMethod (c$, "removeScale", 
+c$.removeScale = $_M(c$, "removeScale", 
 function (xyCoords, xScale, yScale) {
 JSV.common.Coordinate.applyScale (xyCoords, (1 / xScale), (1 / yScale));
 }, "~A,~N,~N");
-c$.applyScale = Clazz.defineMethod (c$, "applyScale", 
+c$.applyScale = $_M(c$, "applyScale", 
 function (xyCoords, xScale, yScale) {
 if (xScale != 1 || yScale != 1) {
 for (var i = 0; i < xyCoords.length; i++) {
@@ -112,7 +112,7 @@ xyCoords[i].setXVal (xyCoords[i].getXVal () * xScale);
 xyCoords[i].setYVal (xyCoords[i].getYVal () * yScale);
 }
 }}, "~A,~N,~N");
-c$.applyShiftReference = Clazz.defineMethod (c$, "applyShiftReference", 
+c$.applyShiftReference = $_M(c$, "applyShiftReference", 
 function (xyCoords, dataPointNum, firstX, lastX, offset, observedFreq, shiftRefType) {
 if (dataPointNum > xyCoords.length || dataPointNum < 0) return;
 var coord;
@@ -135,16 +135,16 @@ xyCoords[index] = coord;
 firstX -= offset;
 lastX -= offset;
 }, "~A,~N,~N,~N,~N,~N,~N");
-c$.getMinX = Clazz.defineMethod (c$, "getMinX", 
+c$.getMinX = $_M(c$, "getMinX", 
 function (coords, start, end) {
 var min = 1.7976931348623157E308;
-for (var index = start; index <= end; index++) {
+for (var index = start; index < end; index++) {
 var tmp = coords[index].getXVal ();
 if (tmp < min) min = tmp;
 }
 return min;
 }, "~A,~N,~N");
-c$.getMinX = Clazz.defineMethod (c$, "getMinX", 
+c$.getMinX = $_M(c$, "getMinX", 
 function (spectra, vd) {
 var min = 1.7976931348623157E308;
 for (var i = 0; i < spectra.size (); i++) {
@@ -153,17 +153,17 @@ var tmp = JSV.common.Coordinate.getMinX (xyCoords, vd.getStartingPointIndex (i),
 if (tmp < min) min = tmp;
 }
 return min;
-}, "JU.Lst,JSV.common.ViewData");
-c$.getMaxX = Clazz.defineMethod (c$, "getMaxX", 
+}, "JU.List,JSV.common.ViewData");
+c$.getMaxX = $_M(c$, "getMaxX", 
 function (coords, start, end) {
 var max = -1.7976931348623157E308;
-for (var index = start; index <= end; index++) {
+for (var index = start; index < end; index++) {
 var tmp = coords[index].getXVal ();
 if (tmp > max) max = tmp;
 }
 return max;
 }, "~A,~N,~N");
-c$.getMaxX = Clazz.defineMethod (c$, "getMaxX", 
+c$.getMaxX = $_M(c$, "getMaxX", 
 function (spectra, vd) {
 var max = -1.7976931348623157E308;
 for (var i = 0; i < spectra.size (); i++) {
@@ -172,17 +172,17 @@ var tmp = JSV.common.Coordinate.getMaxX (xyCoords, vd.getStartingPointIndex (i),
 if (tmp > max) max = tmp;
 }
 return max;
-}, "JU.Lst,JSV.common.ViewData");
-c$.getMinY = Clazz.defineMethod (c$, "getMinY", 
+}, "JU.List,JSV.common.ViewData");
+c$.getMinY = $_M(c$, "getMinY", 
 function (coords, start, end) {
 var min = 1.7976931348623157E308;
-for (var index = start; index <= end; index++) {
+for (var index = start; index < end; index++) {
 var tmp = coords[index].getYVal ();
 if (tmp < min) min = tmp;
 }
 return min;
 }, "~A,~N,~N");
-c$.getMinYUser = Clazz.defineMethod (c$, "getMinYUser", 
+c$.getMinYUser = $_M(c$, "getMinYUser", 
 function (spectra, vd) {
 var min = 1.7976931348623157E308;
 for (var i = 0; i < spectra.size (); i++) {
@@ -193,17 +193,17 @@ var tmp = (JSV.common.Coordinate.getMinY (xyCoords, vd.getStartingPointIndex (i)
 if (tmp < min) min = tmp;
 }
 return min;
-}, "JU.Lst,JSV.common.ViewData");
-c$.getMaxY = Clazz.defineMethod (c$, "getMaxY", 
+}, "JU.List,JSV.common.ViewData");
+c$.getMaxY = $_M(c$, "getMaxY", 
 function (coords, start, end) {
 var max = -1.7976931348623157E308;
-for (var index = start; index <= end; index++) {
+for (var index = start; index < end; index++) {
 var tmp = coords[index].getYVal ();
 if (tmp > max) max = tmp;
 }
 return max;
 }, "~A,~N,~N");
-c$.getMaxYUser = Clazz.defineMethod (c$, "getMaxYUser", 
+c$.getMaxYUser = $_M(c$, "getMaxYUser", 
 function (spectra, vd) {
 var max = -1.7976931348623157E308;
 for (var i = 0; i < spectra.size (); i++) {
@@ -214,8 +214,8 @@ var tmp = (JSV.common.Coordinate.getMaxY (xyCoords, vd.getStartingPointIndex (i)
 if (tmp > max) max = tmp;
 }
 return max;
-}, "JU.Lst,JSV.common.ViewData");
-c$.getYValueAt = Clazz.defineMethod (c$, "getYValueAt", 
+}, "JU.List,JSV.common.ViewData");
+c$.getYValueAt = $_M(c$, "getYValueAt", 
 function (xyCoords, xPt) {
 var i = JSV.common.Coordinate.getNearestIndexForX (xyCoords, xPt);
 if (i == 0 || i == xyCoords.length) return NaN;
@@ -226,11 +226,15 @@ var y0 = xyCoords[i - 1].getYVal ();
 if (x1 == x0) return y1;
 return y0 + (y1 - y0) / (x1 - x0) * (xPt - x0);
 }, "~A,~N");
-c$.intoRange = Clazz.defineMethod (c$, "intoRange", 
+c$.intoRange = $_M(c$, "intoRange", 
 function (i, i0, i1) {
 return Math.max (Math.min (i, i1), i0);
 }, "~N,~N,~N");
-c$.getNearestIndexForX = Clazz.defineMethod (c$, "getNearestIndexForX", 
+c$.intoRange = $_M(c$, "intoRange", 
+function (x, x0, x1) {
+return Math.max (Math.min (x, x1), x0);
+}, "~N,~N,~N");
+c$.getNearestIndexForX = $_M(c$, "getNearestIndexForX", 
 function (xyCoords, xPt) {
 var x =  new JSV.common.Coordinate ().set (xPt, 0);
 var i = java.util.Arrays.binarySearch (xyCoords, x, JSV.common.Coordinate.c);
@@ -239,7 +243,7 @@ if (i < 0) return 0;
 if (i > xyCoords.length - 1) return xyCoords.length - 1;
 return i;
 }, "~A,~N");
-c$.findXForPeakNearest = Clazz.defineMethod (c$, "findXForPeakNearest", 
+c$.findXForPeakNearest = $_M(c$, "findXForPeakNearest", 
 function (xyCoords, x, isMin) {
 var pt = JSV.common.Coordinate.getNearestIndexForX (xyCoords, x);
 var f = (isMin ? -1 : 1);
@@ -250,7 +254,7 @@ while (pt >= 1 && f * (xyCoords[pt - 1].yVal - xyCoords[pt].yVal) > 0) pt--;
 if (pt == 0 || pt == xyCoords.length - 1) return xyCoords[pt].xVal;
 return JSV.common.Coordinate.parabolicInterpolation (xyCoords, pt);
 }, "~A,~N,~B");
-c$.parabolicInterpolation = Clazz.defineMethod (c$, "parabolicInterpolation", 
+c$.parabolicInterpolation = $_M(c$, "parabolicInterpolation", 
 function (xyCoords, pt) {
 var alpha = xyCoords[pt - 1].yVal;
 var beta = xyCoords[pt].yVal;
@@ -258,7 +262,7 @@ var gamma = xyCoords[pt + 1].yVal;
 var p = (alpha - gamma) / 2 / (alpha - 2 * beta + gamma);
 return xyCoords[pt].xVal + p * (xyCoords[pt + 1].xVal - xyCoords[pt].xVal);
 }, "~A,~N");
-c$.getPickedCoordinates = Clazz.defineMethod (c$, "getPickedCoordinates", 
+c$.getPickedCoordinates = $_M(c$, "getPickedCoordinates", 
 function (coordsClicked, coordClicked, coord, actualCoord) {
 if (coordClicked == null) return false;
 var x = coordClicked.getXVal ();
@@ -270,12 +274,12 @@ actualCoord.setXVal (coordsClicked[pt].getXVal ());
 actualCoord.setYVal (coordsClicked[pt].getYVal ());
 return true;
 }, "~A,JSV.common.Coordinate,JSV.common.Coordinate,JSV.common.Coordinate");
-c$.shiftX = Clazz.defineMethod (c$, "shiftX", 
+c$.shiftX = $_M(c$, "shiftX", 
 function (xyCoords, dx) {
 for (var i = xyCoords.length; --i >= 0; ) xyCoords[i].xVal += dx;
 
 }, "~A,~N");
-c$.getNearestXWithYAbove = Clazz.defineMethod (c$, "getNearestXWithYAbove", 
+c$.getNearestXWithYAbove = $_M(c$, "getNearestXWithYAbove", 
 function (xyCoords, x, y, inverted, andGreaterThanX) {
 var pt = JSV.common.Coordinate.getNearestIndexForX (xyCoords, x);
 var f = (inverted ? -1 : 1);

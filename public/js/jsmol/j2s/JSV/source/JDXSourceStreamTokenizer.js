@@ -1,32 +1,31 @@
 Clazz.declarePackage ("JSV.source");
-Clazz.load (null, "JSV.source.JDXSourceStreamTokenizer", ["java.lang.Character", "JU.SB", "JU.Logger"], function () {
+Clazz.load (null, "JSV.source.JDXSourceStreamTokenizer", ["java.lang.Character", "JU.SB", "J.util.Logger"], function () {
 c$ = Clazz.decorateAsClass (function () {
 this.br = null;
-this.rawLabel = null;
+this.label = null;
 this.value = null;
 this.labelLineNo = 0;
 this.line = null;
 this.lineNo = 0;
-this.rawLine = null;
 Clazz.instantialize (this, arguments);
 }, JSV.source, "JDXSourceStreamTokenizer");
 Clazz.makeConstructor (c$, 
 function (br) {
 this.br = br;
 }, "java.io.BufferedReader");
-Clazz.defineMethod (c$, "peakLabel", 
+$_M(c$, "peakLabel", 
 function () {
 return this.nextLabel (false);
 });
-Clazz.defineMethod (c$, "getLabel", 
+$_M(c$, "getLabel", 
 function () {
 return this.nextLabel (true);
 });
-Clazz.defineMethod (c$, "nextLabel", 
- function (isGet) {
-this.rawLabel = null;
+$_M(c$, "nextLabel", 
+($fz = function (isGet) {
+this.label = null;
 this.value = null;
-while (this.line == null || this.line.length == 0) {
+while (this.line == null) {
 try {
 this.readLine ();
 if (this.line == null) {
@@ -44,20 +43,19 @@ throw e;
 if (this.line.startsWith ("##")) break;
 this.line = null;
 }
-this.rawLine = this.line;
 var pt = this.line.indexOf ("=");
 if (pt < 0) {
-if (isGet) JU.Logger.info ("BAD JDX LINE -- no '=' (line " + this.lineNo + "): " + this.line);
-this.rawLabel = this.line;
+if (isGet) J.util.Logger.info ("BAD JDX LINE -- no '=' (line " + this.lineNo + "): " + this.line);
+this.label = this.line;
 if (!isGet) this.line = "";
 } else {
-this.rawLabel = this.line.substring (0, pt).trim ();
+this.label = this.line.substring (0, pt).trim ();
 if (isGet) this.line = this.line.substring (pt + 1);
 }this.labelLineNo = this.lineNo;
-if (JU.Logger.debugging) JU.Logger.info (this.rawLabel);
-return JSV.source.JDXSourceStreamTokenizer.cleanLabel (this.rawLabel);
-}, "~B");
-c$.cleanLabel = Clazz.defineMethod (c$, "cleanLabel", 
+if (J.util.Logger.debugging) J.util.Logger.info (this.label);
+return JSV.source.JDXSourceStreamTokenizer.cleanLabel (this.label);
+}, $fz.isPrivate = true, $fz), "~B");
+c$.cleanLabel = $_M(c$, "cleanLabel", 
 function (label) {
 if (label == null) return null;
 var i;
@@ -77,7 +75,15 @@ break;
 }
 return str.toString ().toUpperCase ();
 }, "~S");
-Clazz.defineMethod (c$, "getValue", 
+$_M(c$, "getRawLabel", 
+function () {
+return this.label;
+});
+$_M(c$, "getLabelLineNo", 
+function () {
+return this.labelLineNo;
+});
+$_M(c$, "getValue", 
 function () {
 if (this.value != null) return this.value;
 var sb =  new JU.SB ().append (this.line);
@@ -89,16 +95,16 @@ sb.append (this.line).appendC ('\n');
 }
 } catch (e) {
 if (Clazz.exceptionOf (e, java.io.IOException)) {
-JU.Logger.info (e.toString ());
+e.printStackTrace ();
 } else {
 throw e;
 }
 }
-this.value = (this.rawLabel.startsWith ("##$") ? sb.toString ().trim () : JSV.source.JDXSourceStreamTokenizer.trimLines (sb));
-if (JU.Logger.debugging) JU.Logger.info (this.value);
+this.value = JSV.source.JDXSourceStreamTokenizer.trimLines (sb);
+if (J.util.Logger.debugging) J.util.Logger.info (this.value);
 return this.value;
 });
-Clazz.defineMethod (c$, "readLineTrimmed", 
+$_M(c$, "readLineTrimmed", 
 function () {
 this.readLine ();
 if (this.line == null) return null;
@@ -106,25 +112,29 @@ if (this.line.indexOf ("$$") < 0) return this.line.trim ();
 var sb =  new JU.SB ().append (this.line);
 return JSV.source.JDXSourceStreamTokenizer.trimLines (sb);
 });
-Clazz.defineMethod (c$, "flushLine", 
+$_M(c$, "flushLine", 
 function () {
 var sb =  new JU.SB ().append (this.line);
 this.line = null;
 return JSV.source.JDXSourceStreamTokenizer.trimLines (sb);
 });
-Clazz.defineMethod (c$, "readLine", 
- function () {
+$_M(c$, "readLine", 
+($fz = function () {
 this.line = this.br.readLine ();
 this.lineNo++;
 return this.line;
-});
-c$.trimLines = Clazz.defineMethod (c$, "trimLines", 
- function (v) {
+}, $fz.isPrivate = true, $fz));
+c$.trimLines = $_M(c$, "trimLines", 
+($fz = function (v) {
 var n = v.length ();
 var ilast = n - 1;
 var vpt = JSV.source.JDXSourceStreamTokenizer.ptNonWhite (v, 0, n);
 if (vpt >= n) return "";
-var buffer =  Clazz.newCharArray (n - vpt, '\0');
+if (v.charAt (vpt) == '<') {
+n = v.lastIndexOf (">") + 1;
+if (n == 0) n = v.length ();
+return v.toString ().substring (vpt, n);
+}var buffer =  Clazz.newCharArray (n - vpt, '\0');
 var pt = 0;
 for (; vpt < n; vpt++) {
 var ch;
@@ -150,23 +160,23 @@ buffer[pt++] = ch;
 }
 if (pt > 0 && buffer[pt - 1] == '\n') --pt;
 return ( String.instantialize (buffer)).substring (0, pt).trim ();
-}, "JU.SB");
-c$.ptNonWhite = Clazz.defineMethod (c$, "ptNonWhite", 
- function (v, pt, n) {
+}, $fz.isPrivate = true, $fz), "JU.SB");
+c$.ptNonWhite = $_M(c$, "ptNonWhite", 
+($fz = function (v, pt, n) {
 while (pt < n && Character.isWhitespace (v.charAt (pt))) pt++;
 
 return pt;
-}, "JU.SB,~N,~N");
-c$.ptNonSpace = Clazz.defineMethod (c$, "ptNonSpace", 
- function (v, pt, n) {
+}, $fz.isPrivate = true, $fz), "JU.SB,~N,~N");
+c$.ptNonSpace = $_M(c$, "ptNonSpace", 
+($fz = function (v, pt, n) {
 while (pt < n && (v.charAt (pt) == ' ' || v.charAt (pt) == '\t')) pt++;
 
 return pt;
-}, "JU.SB,~N,~N");
-c$.ptNonSpaceRev = Clazz.defineMethod (c$, "ptNonSpaceRev", 
- function (v, pt) {
+}, $fz.isPrivate = true, $fz), "JU.SB,~N,~N");
+c$.ptNonSpaceRev = $_M(c$, "ptNonSpaceRev", 
+($fz = function (v, pt) {
 while (--pt >= 0 && (v.charAt (pt) == ' ' || v.charAt (pt) == '\t')) {
 }
 return pt;
-}, "JU.SB,~N");
+}, $fz.isPrivate = true, $fz), "JU.SB,~N");
 });

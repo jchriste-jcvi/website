@@ -1,70 +1,67 @@
 Clazz.declarePackage ("JSV.js2d");
-Clazz.load (["JSV.api.JSVPanel"], "JSV.js2d.JsPanel", ["JSV.common.JSViewer", "$.PanelData", "JU.Font", "$.Logger"], function () {
+Clazz.load (["JSV.api.JSVPanel"], "JSV.js2d.JsPanel", ["javajs.awt.Font", "JSV.common.JSViewer", "$.PanelData", "J.util.Logger"], function () {
 c$ = Clazz.decorateAsClass (function () {
 this.apiPlatform = null;
 this.pd = null;
 this.mouse = null;
-this.vwr = null;
+this.viewer = null;
 this.name = null;
-this.bgcolor = null;
 Clazz.instantialize (this, arguments);
 }, JSV.js2d, "JsPanel", null, JSV.api.JSVPanel);
-Clazz.overrideMethod (c$, "finalize", 
+$_V(c$, "finalize", 
 function () {
-JU.Logger.info ("JSVPanel " + this + " finalized");
+J.util.Logger.info ("JSVPanel " + this + " finalized");
 });
-Clazz.overrideMethod (c$, "getApiPlatform", 
+$_V(c$, "getApiPlatform", 
 function () {
 return this.apiPlatform;
 });
-Clazz.overrideMethod (c$, "getPanelData", 
+$_V(c$, "getPanelData", 
 function () {
 return this.pd;
 });
-c$.getEmptyPanel = Clazz.defineMethod (c$, "getEmptyPanel", 
-function (viewer) {
-var p =  new JSV.js2d.JsPanel (viewer, false);
-p.pd = null;
+c$.getPanelOne = $_M(c$, "getPanelOne", 
+function (viewer, spectrum) {
+var p =  new JSV.js2d.JsPanel (viewer);
+p.pd.initOne (spectrum);
 return p;
-}, "JSV.common.JSViewer");
-c$.getPanelMany = Clazz.defineMethod (c$, "getPanelMany", 
-function (viewer, spectra) {
-var p =  new JSV.js2d.JsPanel (viewer, true);
-p.pd.initMany (spectra, viewer.initialStartIndex, viewer.initialEndIndex);
+}, "JSV.common.JSViewer,JSV.common.JDXSpectrum");
+c$.getPanelMany = $_M(c$, "getPanelMany", 
+function (viewer, spectra, startIndex, endIndex) {
+var p =  new JSV.js2d.JsPanel (viewer);
+p.pd.initMany (spectra, startIndex, endIndex);
 return p;
-}, "JSV.common.JSViewer,JU.Lst");
+}, "JSV.common.JSViewer,JU.List,~N,~N");
 Clazz.makeConstructor (c$, 
- function (viewer, withPd) {
-this.vwr = viewer;
-this.pd = (withPd ?  new JSV.common.PanelData (this, viewer) : null);
+($fz = function (viewer) {
+this.viewer = viewer;
+this.pd =  new JSV.common.PanelData (this, viewer);
 this.apiPlatform = viewer.apiPlatform;
 this.mouse = this.apiPlatform.getMouseManager (0, this);
-}, "JSV.common.JSViewer,~B");
-Clazz.overrideMethod (c$, "getTitle", 
+}, $fz.isPrivate = true, $fz), "JSV.common.JSViewer");
+$_V(c$, "getTitle", 
 function () {
 return this.pd.getTitle ();
 });
-Clazz.overrideMethod (c$, "dispose", 
+$_V(c$, "dispose", 
 function () {
 if (this.pd != null) this.pd.dispose ();
 this.pd = null;
 this.mouse.dispose ();
-this.mouse = null;
 });
-Clazz.overrideMethod (c$, "setTitle", 
+$_V(c$, "setTitle", 
 function (title) {
 this.pd.title = title;
 this.name = title;
 }, "~S");
-Clazz.defineMethod (c$, "setColorOrFont", 
+$_M(c$, "setColorOrFont", 
 function (ds, st) {
 this.pd.setColorOrFont (ds, st);
 }, "JSV.common.ColorParameters,JSV.common.ScriptToken");
-Clazz.overrideMethod (c$, "setBackgroundColor", 
+$_V(c$, "setBackgroundColor", 
 function (color) {
-this.bgcolor = color;
 }, "javajs.api.GenericColor");
-Clazz.overrideMethod (c$, "getInput", 
+$_V(c$, "getInput", 
 function (message, title, sval) {
 var ret = null;
 {
@@ -72,51 +69,40 @@ ret = prompt(message, sval);
 }this.getFocusNow (true);
 return ret;
 }, "~S,~S,~S");
-Clazz.overrideMethod (c$, "showMessage", 
+$_V(c$, "showMessage", 
 function (msg, title) {
-JU.Logger.info (msg);
-var applet = this.vwr.html5Applet;
+J.util.Logger.info (msg);
 {
-applet._showStatus(msg, title);
+alert(msg);
 }this.getFocusNow (true);
 }, "~S,~S");
-Clazz.overrideMethod (c$, "getFocusNow", 
+$_V(c$, "getFocusNow", 
 function (asThread) {
-if (this.pd != null) this.pd.dialogsToFront (null);
+this.pd.dialogsToFront ();
 }, "~B");
-Clazz.overrideMethod (c$, "getFontFaceID", 
+$_V(c$, "getFontFaceID", 
 function (name) {
-return JU.Font.getFontFaceID ("SansSerif");
+return javajs.awt.Font.getFontFaceID ("SansSerif");
 }, "~S");
-Clazz.overrideMethod (c$, "doRepaint", 
+$_V(c$, "doRepaint", 
 function (andTaintAll) {
-if (this.pd == null) return;
-if (andTaintAll) this.pd.setTaintedAll ();
-if (!this.pd.isPrinting) this.vwr.requestRepaint ();
+this.pd.taintedAll = new Boolean (this.pd.taintedAll | andTaintAll).valueOf ();
+if (!this.pd.isPrinting) this.viewer.requestRepaint ();
 }, "~B");
-Clazz.overrideMethod (c$, "paintComponent", 
+$_M(c$, "paintComponent", 
 function (context) {
-var contextFront = null;
-var contextRear = null;
+if (this.viewer == null || this.pd == null || this.pd.graphSets == null || this.pd.isPrinting) return;
+var context2 = null;
 {
-contextFront = context.canvas.frontLayer.getContext("2d");
-contextRear = context;
-}if (this.vwr == null) return;
-if (this.pd == null) {
-if (this.bgcolor == null) this.bgcolor = this.vwr.g2d.getColor1 (-1);
-this.vwr.g2d.fillBackground (context, this.bgcolor);
-this.vwr.g2d.fillBackground (contextRear, this.bgcolor);
-this.vwr.g2d.fillBackground (contextFront, this.bgcolor);
-return;
-}if (this.pd.graphSets == null || this.pd.isPrinting) return;
-this.pd.g2d = this.pd.g2d0;
-this.pd.drawGraph (context, contextFront, contextRear, this.getWidth (), this.getHeight (), false);
-this.vwr.repaintDone ();
+context2 = context.canvas.topLayer.getContext("2d");
+}this.pd.g2d = this.pd.g2d0;
+this.pd.drawGraph (context, context2, this.getWidth (), this.getHeight (), false);
+this.viewer.repaintDone ();
 }, "~O");
-Clazz.overrideMethod (c$, "printPanel", 
+$_V(c$, "printPanel", 
 function (pl, os, title) {
 pl.title = title;
-pl.date = this.apiPlatform.getDateFormat ("8824");
+pl.date = this.apiPlatform.getDateFormat (true);
 this.pd.setPrint (pl, "Helvetica");
 try {
 (JSV.common.JSViewer.getInterface ("JSV.common.PDFWriter")).createPdfDocument (this, pl, os);
@@ -130,68 +116,56 @@ throw ex;
 this.pd.setPrint (null, null);
 }
 }, "JSV.common.PrintLayout,java.io.OutputStream,~S");
-Clazz.overrideMethod (c$, "saveImage", 
-function (type, file, out) {
-var fname = file.getName ();
-if (out != null) out.cancel ();
-JSV.common.JSViewer.jmolObject.saveImage (this.vwr.html5Applet, "png", fname);
-return "OK";
-}, "~S,J.api.GenericFileInterface,JU.OC");
-Clazz.overrideMethod (c$, "hasFocus", 
+$_V(c$, "saveImage", 
+function (type, file) {
+return null;
+}, "~S,javajs.api.GenericFileInterface");
+$_V(c$, "hasFocus", 
 function () {
 return false;
 });
-Clazz.overrideMethod (c$, "repaint", 
+$_V(c$, "repaint", 
 function () {
 });
-Clazz.overrideMethod (c$, "setToolTipText", 
+$_V(c$, "setToolTipText", 
 function (s) {
-var x = this.pd.mouseX;
-var y = this.pd.mouseY;
-var applet = this.vwr.html5Applet;
-{
-applet._showTooltip && applet._showTooltip(s, x, y);
-}}, "~S");
-Clazz.overrideMethod (c$, "getHeight", 
+}, "~S");
+$_V(c$, "getHeight", 
 function () {
-return this.vwr.getHeight ();
+return this.viewer.getHeight ();
 });
-Clazz.overrideMethod (c$, "getWidth", 
+$_V(c$, "getWidth", 
 function () {
-return this.vwr.getWidth ();
+return this.viewer.getWidth ();
 });
-Clazz.overrideMethod (c$, "isEnabled", 
+$_V(c$, "isEnabled", 
 function () {
 return false;
 });
-Clazz.overrideMethod (c$, "isFocusable", 
+$_V(c$, "isFocusable", 
 function () {
 return false;
 });
-Clazz.overrideMethod (c$, "isVisible", 
+$_V(c$, "isVisible", 
 function () {
 return false;
 });
-Clazz.overrideMethod (c$, "setEnabled", 
+$_V(c$, "setEnabled", 
 function (b) {
 }, "~B");
-Clazz.overrideMethod (c$, "setFocusable", 
+$_V(c$, "setFocusable", 
 function (b) {
 }, "~B");
-Clazz.overrideMethod (c$, "toString", 
+$_V(c$, "toString", 
 function () {
-return (this.pd == null ? "<closed>" : "" + this.pd.getSpectrumAt (0));
+return this.pd.getSpectrumAt (0).toString ();
 });
-Clazz.overrideMethod (c$, "processMouseEvent", 
+$_V(c$, "processMouseEvent", 
 function (id, x, y, modifiers, time) {
-return this.mouse != null && this.mouse.processEvent (id, x, y, modifiers, time);
+return this.mouse.processEvent (id, x, y, modifiers, time);
 }, "~N,~N,~N,~N,~N");
-Clazz.overrideMethod (c$, "processTwoPointGesture", 
+$_V(c$, "processTwoPointGesture", 
 function (touches) {
-if (this.mouse != null) this.mouse.processTwoPointGesture (touches);
+this.mouse.processTwoPointGesture (touches);
 }, "~A");
-Clazz.overrideMethod (c$, "showMenu", 
-function (x, y) {
-this.vwr.showMenu (x, y);
-}, "~N,~N");
 });

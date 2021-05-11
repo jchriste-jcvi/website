@@ -4,20 +4,23 @@ c$ = Clazz.decorateAsClass (function () {
 this.transformManager = null;
 Clazz.instantialize (this, arguments);
 }, J.thread, "VibrationThread", J.thread.JmolThread);
-Clazz.overrideMethod (c$, "setManager", 
-function (manager, vwr, options) {
+Clazz.makeConstructor (c$, 
+function () {
+Clazz.superConstructor (this, J.thread.VibrationThread, []);
+});
+$_V(c$, "setManager", 
+function (manager, viewer, options) {
 this.transformManager = manager;
-this.setViewer (vwr, "VibrationThread");
+this.setViewer (viewer, "VibrationThread");
 return 0;
-}, "~O,JV.Viewer,~O");
-Clazz.overrideMethod (c$, "run1", 
+}, "~O,J.viewer.Viewer,~O");
+$_V(c$, "run1", 
 function (mode) {
 var elapsed;
 while (true) switch (mode) {
 case -1:
 this.lastRepaintTime = this.startTime = System.currentTimeMillis ();
-this.vwr.startHoverWatcher (false);
-this.haveReference = true;
+this.viewer.startHoverWatcher (false);
 mode = 0;
 break;
 case 0:
@@ -34,11 +37,11 @@ mode = -2;
 } else {
 var t = (elapsed % this.transformManager.vibrationPeriodMs) / this.transformManager.vibrationPeriodMs;
 this.transformManager.setVibrationT (t);
-this.vwr.refresh (3, "VibrationThread");
-mode = (this.checkInterrupted (this.transformManager.vibrationThread) ? -2 : 0);
+this.viewer.refresh (3, "VibrationThread:run()");
+mode = (this.checkInterrupted () ? -2 : 0);
 }break;
 case -2:
-this.vwr.startHoverWatcher (true);
+this.viewer.startHoverWatcher (true);
 return;
 }
 

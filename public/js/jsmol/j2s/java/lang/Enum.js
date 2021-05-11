@@ -1,44 +1,43 @@
-// BH removed inner class 
-Clazz.load(null,"java.lang.Enum",["java.lang.CloneNotSupportedException","$.IllegalArgumentException","$.NullPointerException"],function(){
-c$=Clazz.decorateAsClass(function(){
+$_L(null,"java.lang.Enum",["java.lang.CloneNotSupportedException","$.IllegalArgumentException","$.NullPointerException","java.security.AccessController","$.PrivilegedExceptionAction"],function(){
+c$=$_C(function(){
 this.$name=null;
 this.$ordinal=0;
-Clazz.instantialize(this,arguments);
+$_Z(this,arguments);
 },java.lang,"Enum",null,[java.io.Serializable,Comparable]);
-Clazz.makeConstructor(c$,
+$_K(c$,
 function(name,ordinal){
 this.$name=name;
 this.$ordinal=ordinal;
 },"~S,~N");
-Clazz.defineMethod(c$,"name",
+$_M(c$,"name",
 function(){
 return this.$name;
 });
-Clazz.defineMethod(c$,"ordinal",
+$_M(c$,"ordinal",
 function(){
 return this.$ordinal;
 });
-Clazz.overrideMethod(c$,"toString",
+$_V(c$,"toString",
 function(){
 return this.$name;
 });
-Clazz.overrideMethod(c$,"equals",
+$_V(c$,"equals",
 function(other){
 return this===other;
 },"~O");
-Clazz.overrideMethod(c$,"hashCode",
+$_V(c$,"hashCode",
 function(){
 return this.$ordinal+(this.$name==null?0:this.$name.hashCode());
 });
-Clazz.overrideMethod(c$,"clone",
+$_V(c$,"clone",
 function(){
 throw new CloneNotSupportedException(("KA004"));
 });
-Clazz.overrideMethod(c$,"compareTo",
+$_V(c$,"compareTo",
 function(o){
 return this.$ordinal-o.$ordinal;
 },"~O");
-Clazz.defineMethod(c$,"getDeclaringClass",
+$_M(c$,"getDeclaringClass",
 function(){
 var myClass=this.getClass();
 var mySuperClass=myClass.getSuperclass();
@@ -46,7 +45,7 @@ if(Enum===mySuperClass){
 return myClass;
 }return mySuperClass;
 });
-c$.$valueOf=Clazz.defineMethod(c$,"$valueOf",
+c$.$valueOf=$_M(c$,"$valueOf",
 function(enumType,name){
 if((enumType==null)||(name==null)){
 throw new NullPointerException(("KA001"));
@@ -59,23 +58,28 @@ return enumConst;
 }}
 throw new IllegalArgumentException(("KA006"));
 },"Class,~S");
-c$.getValues=Clazz.defineMethod(c$,"getValues",
+c$.getValues=$_M(c$,"getValues",
 function(enumType){
-return enumType.values();
+try{
+var values=java.security.AccessController.doPrivileged((($_D("Enum$1")?0:java.lang.Enum.$Enum$1$()),$_N(Enum$1,this,$_F("enumType",enumType))));
+return values.invoke(enumType,Clazz.castNullAs("Array"));
+}catch(e){
+if($_O(e,Exception)){
+return null;
+}else{
+throw e;
+}
+}
 },"Class");
-
-//c$.$Enum$1$=function(){
-//Clazz.pu$h(self.c$);
-
-//c$=Clazz.declareAnonymous(null,"Enum$1",null,java.security.PrivilegedExceptionAction);
-//Clazz.overrideMethod(c$,"run",
-//function(){
-//var valsMethod=this.f$.enumType.getMethod("values",null);
-//valsMethod.setAccessible(true);
-//return valsMethod;
-//});
-//c$=Clazz.p0p();
-//};
-
-
+c$.$Enum$1$=function(){
+$_H();
+c$=$_W(null,"Enum$1",null,java.security.PrivilegedExceptionAction);
+$_V(c$,"run",
+function(){
+var valsMethod=this.f$.enumType.getMethod("values",null);
+valsMethod.setAccessible(true);
+return valsMethod;
+});
+c$=$_P();
+};
 });

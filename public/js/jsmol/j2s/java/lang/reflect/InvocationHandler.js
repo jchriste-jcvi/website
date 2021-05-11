@@ -1,1 +1,1 @@
-Clazz.declareInterface(java.lang.reflect,"InvocationHandler");
+$_I(java.lang.reflect,"InvocationHandler");

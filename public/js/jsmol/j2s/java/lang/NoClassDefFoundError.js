@@ -1,3 +1,3 @@
-Clazz.load(["java.lang.LinkageError"],"java.lang.NoClassDefFoundError",null,function(){
-c$=Clazz.declareType(java.lang,"NoClassDefFoundError",LinkageError);
+$_L(["java.lang.LinkageError"],"java.lang.NoClassDefFoundError",null,function(){
+c$=$_T(java.lang,"NoClassDefFoundError",LinkageError);
 });

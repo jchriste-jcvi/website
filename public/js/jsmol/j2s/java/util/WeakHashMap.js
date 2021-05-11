@@ -1,27 +1,27 @@
-Clazz.load(["java.lang.ref.WeakReference","java.util.AbstractMap","$.Iterator","$.Map"],"java.util.WeakHashMap",["java.lang.IllegalArgumentException","$.IllegalStateException","java.lang.ref.ReferenceQueue","java.util.AbstractCollection","$.AbstractSet","$.Arrays","$.ConcurrentModificationException","$.NoSuchElementException"],function(){
-c$=Clazz.decorateAsClass(function(){
+$_L(["java.lang.ref.WeakReference","java.util.AbstractMap","$.Iterator","$.Map"],"java.util.WeakHashMap",["java.lang.IllegalArgumentException","$.IllegalStateException","java.lang.ref.ReferenceQueue","java.util.AbstractCollection","$.AbstractSet","$.Arrays","$.ConcurrentModificationException","$.NoSuchElementException"],function(){
+c$=$_C(function(){
 this.referenceQueue=null;
 this.elementCount=0;
 this.elementData=null;
 this.loadFactor=0;
 this.threshold=0;
 this.modCount=0;
-if(!Clazz.isClassDefined("java.util.WeakHashMap.HashIterator")){
+if(!$_D("java.util.WeakHashMap.HashIterator")){
 java.util.WeakHashMap.$WeakHashMap$HashIterator$();
 }
-Clazz.instantialize(this,arguments);
+$_Z(this,arguments);
 },java.util,"WeakHashMap",java.util.AbstractMap,java.util.Map);
-c$.newEntryArray=Clazz.defineMethod(c$,"newEntryArray",
+c$.newEntryArray=$_M(c$,"newEntryArray",
 ($fz=function(size){
 return new Array(size);
 },$fz.isPrivate=true,$fz),"~N");
-Clazz.makeConstructor(c$,
+$_K(c$,
 function(){
 this.construct(16);
 });
-Clazz.makeConstructor(c$,
+$_K(c$,
 function(capacity){
-Clazz.superConstructor(this,java.util.WeakHashMap,[]);
+$_R(this,java.util.WeakHashMap,[]);
 if(capacity>=0){
 this.elementCount=0;
 this.elementData=java.util.WeakHashMap.newEntryArray(capacity==0?1:capacity);
@@ -31,9 +31,9 @@ this.referenceQueue=new java.lang.ref.ReferenceQueue();
 }else{
 throw new IllegalArgumentException();
 }},"~N");
-Clazz.makeConstructor(c$,
+$_K(c$,
 function(capacity,loadFactor){
-Clazz.superConstructor(this,java.util.WeakHashMap,[]);
+$_R(this,java.util.WeakHashMap,[]);
 if(capacity>=0&&loadFactor>0){
 this.elementCount=0;
 this.elementData=java.util.WeakHashMap.newEntryArray(capacity==0?1:capacity);
@@ -43,12 +43,12 @@ this.referenceQueue=new java.lang.ref.ReferenceQueue();
 }else{
 throw new IllegalArgumentException();
 }},"~N,~N");
-Clazz.makeConstructor(c$,
+$_K(c$,
 function(map){
 this.construct(map.size()<6?11:map.size()*2);
 this.putAllImpl(map);
 },"java.util.Map");
-Clazz.overrideMethod(c$,"clear",
+$_V(c$,"clear",
 function(){
 if(this.elementCount>0){
 this.elementCount=0;
@@ -57,34 +57,34 @@ this.modCount++;
 while(this.referenceQueue.poll()!=null){
 }
 }});
-Clazz.defineMethod(c$,"computeMaxSize",
+$_M(c$,"computeMaxSize",
 ($fz=function(){
 this.threshold=(Math.floor(this.elementData.length*this.loadFactor/10000));
 },$fz.isPrivate=true,$fz));
-Clazz.overrideMethod(c$,"containsKey",
+$_V(c$,"containsKey",
 function(key){
 return this.getEntry(key)!=null;
 },"~O");
-Clazz.overrideMethod(c$,"entrySet",
+$_V(c$,"entrySet",
 function(){
 this.poll();
-return((Clazz.isClassDefined("java.util.WeakHashMap$1")?0:java.util.WeakHashMap.$WeakHashMap$1$()),Clazz.innerTypeInstance(java.util.WeakHashMap$1,this,null));
+return(($_D("java.util.WeakHashMap$1")?0:java.util.WeakHashMap.$WeakHashMap$1$()),$_N(java.util.WeakHashMap$1,this,null));
 });
-Clazz.overrideMethod(c$,"keySet",
+$_V(c$,"keySet",
 function(){
 this.poll();
 if(this.$keySet==null){
-this.$keySet=((Clazz.isClassDefined("java.util.WeakHashMap$2")?0:java.util.WeakHashMap.$WeakHashMap$2$()),Clazz.innerTypeInstance(java.util.WeakHashMap$2,this,null));
+this.$keySet=(($_D("java.util.WeakHashMap$2")?0:java.util.WeakHashMap.$WeakHashMap$2$()),$_N(java.util.WeakHashMap$2,this,null));
 }return this.$keySet;
 });
-Clazz.overrideMethod(c$,"values",
+$_V(c$,"values",
 function(){
 this.poll();
 if(this.valuesCollection==null){
-this.valuesCollection=((Clazz.isClassDefined("java.util.WeakHashMap$3")?0:java.util.WeakHashMap.$WeakHashMap$3$()),Clazz.innerTypeInstance(java.util.WeakHashMap$3,this,null));
+this.valuesCollection=(($_D("java.util.WeakHashMap$3")?0:java.util.WeakHashMap.$WeakHashMap$3$()),$_N(java.util.WeakHashMap$3,this,null));
 }return this.valuesCollection;
 });
-Clazz.overrideMethod(c$,"get",
+$_V(c$,"get",
 function(key){
 this.poll();
 if(key!=null){
@@ -104,7 +104,7 @@ return entry.value;
 }
 return null;
 },"~O");
-Clazz.defineMethod(c$,"getEntry",
+$_M(c$,"getEntry",
 function(key){
 this.poll();
 if(key!=null){
@@ -124,7 +124,7 @@ return entry;
 }
 return null;
 },"~O");
-Clazz.overrideMethod(c$,"containsValue",
+$_V(c$,"containsValue",
 function(value){
 this.poll();
 if(value!=null){
@@ -149,18 +149,18 @@ return true;
 }
 }return false;
 },"~O");
-Clazz.overrideMethod(c$,"isEmpty",
+$_V(c$,"isEmpty",
 function(){
 return this.size()==0;
 });
-Clazz.defineMethod(c$,"poll",
+$_M(c$,"poll",
 function(){
 var toRemove;
 while((toRemove=this.referenceQueue.poll())!=null){
 this.removeEntry(toRemove);
 }
 });
-Clazz.defineMethod(c$,"removeEntry",
+$_M(c$,"removeEntry",
 function(toRemove){
 var entry;
 var last=null;
@@ -179,7 +179,7 @@ break;
 entry=entry.$next;
 }
 },"java.util.WeakHashMap.Entry");
-Clazz.overrideMethod(c$,"put",
+$_V(c$,"put",
 function(key,value){
 this.poll();
 var index=0;
@@ -208,7 +208,7 @@ return null;
 entry.value=value;
 return result;
 },"~O,~O");
-Clazz.defineMethod(c$,"rehash",
+$_M(c$,"rehash",
 ($fz=function(){
 var length=this.elementData.length<<1;
 if(length==0){
@@ -227,11 +227,11 @@ entry=next;
 this.elementData=newData;
 this.computeMaxSize();
 },$fz.isPrivate=true,$fz));
-Clazz.overrideMethod(c$,"putAll",
+$_V(c$,"putAll",
 function(map){
 this.putAllImpl(map);
 },"java.util.Map");
-Clazz.overrideMethod(c$,"remove",
+$_V(c$,"remove",
 function(key){
 this.poll();
 var index=0;
@@ -260,34 +260,34 @@ last.$next=entry.$next;
 return entry.value;
 }return null;
 },"~O");
-Clazz.overrideMethod(c$,"size",
+$_V(c$,"size",
 function(){
 this.poll();
 return this.elementCount;
 });
-Clazz.defineMethod(c$,"putAllImpl",
+$_M(c$,"putAllImpl",
 ($fz=function(map){
 if(map.entrySet()!=null){
-Clazz.superCall(this,java.util.WeakHashMap,"putAll",[map]);
+$_U(this,java.util.WeakHashMap,"putAll",[map]);
 }},$fz.isPrivate=true,$fz),"java.util.Map");
 c$.$WeakHashMap$HashIterator$=function(){
-Clazz.pu$h(self.c$);
-c$=Clazz.decorateAsClass(function(){
-Clazz.prepareCallback(this,arguments);
+$_H();
+c$=$_C(function(){
+$_B(this,arguments);
 this.position=0;
 this.expectedModCount=0;
 this.currentEntry=null;
 this.nextEntry=null;
 this.nextKey=null;
 this.type=null;
-Clazz.instantialize(this,arguments);
+$_Z(this,arguments);
 },java.util.WeakHashMap,"HashIterator",null,java.util.Iterator);
-Clazz.makeConstructor(c$,
+$_K(c$,
 function(a){
 this.type=a;
 this.expectedModCount=this.b$["java.util.WeakHashMap"].modCount;
 },"java.util.WeakHashMap.Entry.Type");
-Clazz.overrideMethod(c$,"hasNext",
+$_V(c$,"hasNext",
 function(){
 if(this.nextEntry!=null){
 return true;
@@ -305,7 +305,7 @@ return true;
 }this.nextEntry=this.nextEntry.$next;
 }
 });
-Clazz.overrideMethod(c$,"next",
+$_V(c$,"next",
 function(){
 if(this.expectedModCount==this.b$["java.util.WeakHashMap"].modCount){
 if(this.hasNext()){
@@ -317,7 +317,7 @@ return a;
 }throw new java.util.NoSuchElementException();
 }throw new java.util.ConcurrentModificationException();
 });
-Clazz.overrideMethod(c$,"remove",
+$_V(c$,"remove",
 function(){
 if(this.expectedModCount==this.b$["java.util.WeakHashMap"].modCount){
 if(this.currentEntry!=null){
@@ -329,29 +329,29 @@ throw new IllegalStateException();
 }}else{
 throw new java.util.ConcurrentModificationException();
 }});
-c$=Clazz.p0p();
+c$=$_P();
 };
 c$.$WeakHashMap$1$=function(){
-Clazz.pu$h(self.c$);
-c$=Clazz.declareAnonymous(java.util,"WeakHashMap$1",java.util.AbstractSet);
-Clazz.overrideMethod(c$,"size",
+$_H();
+c$=$_W(java.util,"WeakHashMap$1",java.util.AbstractSet);
+$_V(c$,"size",
 function(){
 return this.b$["java.util.WeakHashMap"].size();
 });
-Clazz.overrideMethod(c$,"clear",
+$_V(c$,"clear",
 function(){
 this.b$["java.util.WeakHashMap"].clear();
 });
-Clazz.overrideMethod(c$,"remove",
+$_V(c$,"remove",
 function(object){
 if(this.contains(object)){
 this.b$["java.util.WeakHashMap"].remove((object).getKey());
 return true;
 }return false;
 },"~O");
-Clazz.overrideMethod(c$,"contains",
+$_V(c$,"contains",
 function(object){
-if(Clazz.instanceOf(object,java.util.Map.Entry)){
+if($_O(object,java.util.Map.Entry)){
 var entry=this.b$["java.util.WeakHashMap"].getEntry((object).getKey());
 if(entry!=null){
 var key=entry.get();
@@ -359,135 +359,135 @@ if(key!=null||entry.isNull){
 return object.equals(entry);
 }}}return false;
 },"~O");
-Clazz.overrideMethod(c$,"iterator",
+$_V(c$,"iterator",
 function(){
-return Clazz.innerTypeInstance(java.util.WeakHashMap.HashIterator,this,null,((Clazz.isClassDefined("java.util.WeakHashMap$1$1")?0:java.util.WeakHashMap.$WeakHashMap$1$1$()),Clazz.innerTypeInstance(java.util.WeakHashMap$1$1,this,null)));
+return $_N(java.util.WeakHashMap.HashIterator,this,null,(($_D("java.util.WeakHashMap$1$1")?0:java.util.WeakHashMap.$WeakHashMap$1$1$()),$_N(java.util.WeakHashMap$1$1,this,null)));
 });
-c$=Clazz.p0p();
+c$=$_P();
 };
 c$.$WeakHashMap$1$1$=function(){
-Clazz.pu$h(self.c$);
-c$=Clazz.declareAnonymous(java.util,"WeakHashMap$1$1",null,java.util.WeakHashMap.Entry.Type);
-Clazz.overrideMethod(c$,"get",
+$_H();
+c$=$_W(java.util,"WeakHashMap$1$1",null,java.util.WeakHashMap.Entry.Type);
+$_V(c$,"get",
 function(entry){
 return entry;
 },"java.util.Map.Entry");
-c$=Clazz.p0p();
+c$=$_P();
 };
 c$.$WeakHashMap$2$=function(){
-Clazz.pu$h(self.c$);
-c$=Clazz.declareAnonymous(java.util,"WeakHashMap$2",java.util.AbstractSet);
-Clazz.overrideMethod(c$,"contains",
+$_H();
+c$=$_W(java.util,"WeakHashMap$2",java.util.AbstractSet);
+$_V(c$,"contains",
 function(object){
 return this.b$["java.util.WeakHashMap"].containsKey(object);
 },"~O");
-Clazz.overrideMethod(c$,"size",
+$_V(c$,"size",
 function(){
 return this.b$["java.util.WeakHashMap"].size();
 });
-Clazz.overrideMethod(c$,"clear",
+$_V(c$,"clear",
 function(){
 this.b$["java.util.WeakHashMap"].clear();
 });
-Clazz.overrideMethod(c$,"remove",
+$_V(c$,"remove",
 function(key){
 if(this.b$["java.util.WeakHashMap"].containsKey(key)){
 this.b$["java.util.WeakHashMap"].remove(key);
 return true;
 }return false;
 },"~O");
-Clazz.overrideMethod(c$,"iterator",
+$_V(c$,"iterator",
 function(){
-return Clazz.innerTypeInstance(java.util.WeakHashMap.HashIterator,this,null,((Clazz.isClassDefined("java.util.WeakHashMap$2$1")?0:java.util.WeakHashMap.$WeakHashMap$2$1$()),Clazz.innerTypeInstance(java.util.WeakHashMap$2$1,this,null)));
+return $_N(java.util.WeakHashMap.HashIterator,this,null,(($_D("java.util.WeakHashMap$2$1")?0:java.util.WeakHashMap.$WeakHashMap$2$1$()),$_N(java.util.WeakHashMap$2$1,this,null)));
 });
-c$=Clazz.p0p();
+c$=$_P();
 };
 c$.$WeakHashMap$2$1$=function(){
-Clazz.pu$h(self.c$);
-c$=Clazz.declareAnonymous(java.util,"WeakHashMap$2$1",null,java.util.WeakHashMap.Entry.Type);
-Clazz.overrideMethod(c$,"get",
+$_H();
+c$=$_W(java.util,"WeakHashMap$2$1",null,java.util.WeakHashMap.Entry.Type);
+$_V(c$,"get",
 function(entry){
 return entry.getKey();
 },"java.util.Map.Entry");
-c$=Clazz.p0p();
+c$=$_P();
 };
 c$.$WeakHashMap$3$=function(){
-Clazz.pu$h(self.c$);
-c$=Clazz.declareAnonymous(java.util,"WeakHashMap$3",java.util.AbstractCollection);
-Clazz.overrideMethod(c$,"size",
+$_H();
+c$=$_W(java.util,"WeakHashMap$3",java.util.AbstractCollection);
+$_V(c$,"size",
 function(){
 return this.b$["java.util.WeakHashMap"].size();
 });
-Clazz.overrideMethod(c$,"clear",
+$_V(c$,"clear",
 function(){
 this.b$["java.util.WeakHashMap"].clear();
 });
-Clazz.overrideMethod(c$,"contains",
+$_V(c$,"contains",
 function(object){
 return this.b$["java.util.WeakHashMap"].containsValue(object);
 },"~O");
-Clazz.overrideMethod(c$,"iterator",
+$_V(c$,"iterator",
 function(){
-return Clazz.innerTypeInstance(java.util.WeakHashMap.HashIterator,this,null,((Clazz.isClassDefined("java.util.WeakHashMap$3$1")?0:java.util.WeakHashMap.$WeakHashMap$3$1$()),Clazz.innerTypeInstance(java.util.WeakHashMap$3$1,this,null)));
+return $_N(java.util.WeakHashMap.HashIterator,this,null,(($_D("java.util.WeakHashMap$3$1")?0:java.util.WeakHashMap.$WeakHashMap$3$1$()),$_N(java.util.WeakHashMap$3$1,this,null)));
 });
-c$=Clazz.p0p();
+c$=$_P();
 };
 c$.$WeakHashMap$3$1$=function(){
-Clazz.pu$h(self.c$);
-c$=Clazz.declareAnonymous(java.util,"WeakHashMap$3$1",null,java.util.WeakHashMap.Entry.Type);
-Clazz.overrideMethod(c$,"get",
+$_H();
+c$=$_W(java.util,"WeakHashMap$3$1",null,java.util.WeakHashMap.Entry.Type);
+$_V(c$,"get",
 function(entry){
 return entry.getValue();
 },"java.util.Map.Entry");
-c$=Clazz.p0p();
+c$=$_P();
 };
-Clazz.pu$h(self.c$);
-c$=Clazz.decorateAsClass(function(){
+$_H();
+c$=$_C(function(){
 this.hash=0;
 this.isNull=false;
 this.value=null;
 this.$next=null;
-Clazz.instantialize(this,arguments);
+$_Z(this,arguments);
 },java.util.WeakHashMap,"Entry",java.lang.ref.WeakReference,java.util.Map.Entry);
-Clazz.makeConstructor(c$,
+$_K(c$,
 function(a,b,c){
-Clazz.superConstructor(this,java.util.WeakHashMap.Entry,[a,c]);
+$_R(this,java.util.WeakHashMap.Entry,[a,c]);
 this.isNull=a==null;
 this.hash=this.isNull?0:a.hashCode();
 this.value=b;
 },"~O,~O,java.lang.ref.ReferenceQueue");
-Clazz.overrideMethod(c$,"getKey",
+$_V(c$,"getKey",
 function(){
-return Clazz.superCall(this,java.util.WeakHashMap.Entry,"get",[]);
+return $_U(this,java.util.WeakHashMap.Entry,"get",[]);
 });
-Clazz.overrideMethod(c$,"getValue",
+$_V(c$,"getValue",
 function(){
 return this.value;
 });
-Clazz.overrideMethod(c$,"setValue",
+$_V(c$,"setValue",
 function(a){
 var b=this.value;
 this.value=a;
 return b;
 },"~O");
-Clazz.overrideMethod(c$,"equals",
+$_V(c$,"equals",
 function(a){
-if(!(Clazz.instanceOf(a,java.util.Map.Entry))){
+if(!($_O(a,java.util.Map.Entry))){
 return false;
 }var b=a;
-var c=Clazz.superCall(this,java.util.WeakHashMap.Entry,"get",[]);
+var c=$_U(this,java.util.WeakHashMap.Entry,"get",[]);
 return(c==null?c===b.getKey():c.equals(b.getKey()))&&(this.value==null?this.value===b.getValue():this.value.equals(b.getValue()));
 },"~O");
-Clazz.overrideMethod(c$,"hashCode",
+$_V(c$,"hashCode",
 function(){
 return this.hash+(this.value==null?0:this.value.hashCode());
 });
-Clazz.overrideMethod(c$,"toString",
+$_V(c$,"toString",
 function(){
-return Clazz.superCall(this,java.util.WeakHashMap.Entry,"get",[])+"="+this.value;
+return $_U(this,java.util.WeakHashMap.Entry,"get",[])+"="+this.value;
 });
-Clazz.declareInterface(java.util.WeakHashMap.Entry,"Type");
-c$=Clazz.p0p();
-Clazz.defineStatics(c$,
+$_I(java.util.WeakHashMap.Entry,"Type");
+c$=$_P();
+$_S(c$,
 "DEFAULT_SIZE",16);
 });

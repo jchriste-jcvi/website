@@ -1,5 +1,5 @@
 Clazz.declarePackage ("JSV.common");
-Clazz.load (["JSV.common.Parameters"], "JSV.common.ColorParameters", ["java.util.Hashtable", "$.StringTokenizer", "JU.CU", "$.Lst", "JSV.common.ScriptToken"], function () {
+Clazz.load (["JSV.common.Parameters"], "JSV.common.ColorParameters", ["java.util.Hashtable", "$.StringTokenizer", "JU.CU", "$.List", "JSV.common.ScriptToken"], function () {
 c$ = Clazz.decorateAsClass (function () {
 this.titleFontName = null;
 this.displayFontName = null;
@@ -34,7 +34,7 @@ for (var i = 0; i < 8; i++) JSV.common.ColorParameters.defaultPlotColors[i] = th
 this.plotColors =  new Array (8);
 System.arraycopy (JSV.common.ColorParameters.defaultPlotColors, 0, this.plotColors, 0, 8);
 });
-Clazz.defineMethod (c$, "setFor", 
+$_M(c$, "setFor", 
 function (jsvp, ds, includeMeasures) {
 if (ds == null) ds = this;
 if (includeMeasures) jsvp.getPanelData ().setBooleans (ds, null);
@@ -42,7 +42,7 @@ var pd = jsvp.getPanelData ();
 if (pd.getCurrentPlotColor (1) != null) pd.setPlotColors (this.plotColors);
 pd.setColorOrFont (ds, null);
 }, "JSV.api.JSVPanel,JSV.common.ColorParameters,~B");
-Clazz.defineMethod (c$, "set", 
+$_M(c$, "set", 
 function (pd, st, value) {
 var param = null;
 switch (st) {
@@ -74,37 +74,37 @@ break;
 if (pd == null) return;
 if (param != null) pd.setColorOrFont (this, st);
 }, "JSV.common.PanelData,JSV.common.ScriptToken,~S");
-Clazz.defineMethod (c$, "getElementColor", 
+$_M(c$, "getElementColor", 
 function (st) {
 return this.elementColors.get (st);
 }, "JSV.common.ScriptToken");
-Clazz.defineMethod (c$, "setColor", 
+$_M(c$, "setColor", 
 function (st, color) {
 if (color != null) this.elementColors.put (st, color);
 return color;
 }, "JSV.common.ScriptToken,javajs.api.GenericColor");
-Clazz.defineMethod (c$, "copy", 
+$_M(c$, "copy", 
 function () {
 return this.copy (this.name);
 });
-Clazz.defineMethod (c$, "setElementColors", 
+$_M(c$, "setElementColors", 
 function (p) {
 this.displayFontName = p.displayFontName;
 for (var entry, $entry = p.elementColors.entrySet ().iterator (); $entry.hasNext () && ((entry = $entry.next ()) || true);) this.setColor (entry.getKey (), entry.getValue ());
 
 return this;
 }, "JSV.common.ColorParameters");
-Clazz.defineMethod (c$, "getColorFromString", 
+$_M(c$, "getColorFromString", 
 function (name) {
 return this.getColor1 (JU.CU.getArgbFromString (name));
 }, "~S");
-Clazz.defineMethod (c$, "getPlotColors", 
+$_M(c$, "getPlotColors", 
 function (plotColorsStr) {
 if (plotColorsStr == null) {
 this.plotColors[0] = this.getElementColor (JSV.common.ScriptToken.PLOTCOLOR);
 return this.plotColors;
 }var st =  new java.util.StringTokenizer (plotColorsStr, ",;.- ");
-var colors =  new JU.Lst ();
+var colors =  new JU.List ();
 try {
 while (st.hasMoreTokens ()) colors.addLast (this.getColorFromString (st.nextToken ()));
 
@@ -117,11 +117,11 @@ throw e;
 }
 return colors.toArray ( new Array (colors.size ()));
 }, "~S");
-Clazz.defineMethod (c$, "setColorFromString", 
+$_M(c$, "setColorFromString", 
 function (st, value) {
 return this.setColor (st, this.getColorFromString (value));
 }, "JSV.common.ScriptToken,~S");
-Clazz.defineMethod (c$, "getFontName", 
+$_M(c$, "getFontName", 
 function (st, value) {
 var isValid = this.isValidFontName (value);
 switch (st) {
@@ -140,5 +140,5 @@ Clazz.defineStatics (c$,
 "BLUE", null,
 "WHITE", null);
 c$.defaultPlotColors = c$.prototype.defaultPlotColors =  new Array (8);
-c$.defaultPlotColorNames = c$.prototype.defaultPlotColorNames =  Clazz.newArray (-1, ["black", "darkGreen", "darkred", "orange", "magenta", "cyan", "maroon", "darkGray"]);
+c$.defaultPlotColorNames = c$.prototype.defaultPlotColorNames = ["black", "darkGreen", "darkred", "orange", "magenta", "cyan", "maroon", "darkGray"];
 });

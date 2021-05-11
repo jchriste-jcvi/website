@@ -1,42 +1,42 @@
-Clazz.load(["java.lang.reflect.AccessibleObject","$.Member"],"java.lang.reflect.Field",null,function(){
-c$=Clazz.declareType(java.lang.reflect,"Field",java.lang.reflect.AccessibleObject,java.lang.reflect.Member);
-Clazz.overrideMethod(c$,"isSynthetic",
+$_L(["java.lang.reflect.AccessibleObject","$.Member"],"java.lang.reflect.Field",null,function(){
+c$=$_T(java.lang.reflect,"Field",java.lang.reflect.AccessibleObject,java.lang.reflect.Member);
+$_V(c$,"isSynthetic",
 function(){
 return false;
 });
-Clazz.defineMethod(c$,"toGenericString",
+$_M(c$,"toGenericString",
 function(){
 return null;
 });
-Clazz.defineMethod(c$,"isEnumConstant",
+$_M(c$,"isEnumConstant",
 function(){
 return false;
 });
-Clazz.defineMethod(c$,"getGenericType",
+$_M(c$,"getGenericType",
 function(){
 return null;
 });
-Clazz.overrideMethod(c$,"equals",
+$_V(c$,"equals",
 function(object){
 return false;
 },"~O");
-Clazz.overrideMethod(c$,"getDeclaringClass",
+$_V(c$,"getDeclaringClass",
 function(){
 return null;
 });
-Clazz.overrideMethod(c$,"getName",
+$_V(c$,"getName",
 function(){
 return null;
 });
-Clazz.defineMethod(c$,"getType",
+$_M(c$,"getType",
 function(){
 return null;
 });
-Clazz.overrideMethod(c$,"hashCode",
+$_V(c$,"hashCode",
 function(){
 return 0;
 });
-Clazz.overrideMethod(c$,"toString",
+$_V(c$,"toString",
 function(){
 return null;
 });

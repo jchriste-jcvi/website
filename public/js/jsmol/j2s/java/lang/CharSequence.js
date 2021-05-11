@@ -1,1 +1,1 @@
-Clazz.declareInterface(java.lang,"CharSequence");
+$_I(java.lang,"CharSequence");

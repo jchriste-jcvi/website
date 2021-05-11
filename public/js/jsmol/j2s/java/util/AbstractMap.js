@@ -1,17 +1,17 @@
-Clazz.load(["java.util.Map"],"java.util.AbstractMap",["java.lang.StringBuilder","$.UnsupportedOperationException","java.util.AbstractCollection","$.AbstractSet","$.Iterator"],function(){
-c$=Clazz.decorateAsClass(function(){
+$_L(["java.util.Map"],"java.util.AbstractMap",["java.lang.StringBuilder","$.UnsupportedOperationException","java.util.AbstractCollection","$.AbstractSet","$.Iterator"],function(){
+c$=$_C(function(){
 this.$keySet=null;
 this.valuesCollection=null;
-Clazz.instantialize(this,arguments);
+$_Z(this,arguments);
 },java.util,"AbstractMap",null,java.util.Map);
-Clazz.makeConstructor(c$,
+$_K(c$,
 function(){
 });
-Clazz.overrideMethod(c$,"clear",
+$_V(c$,"clear",
 function(){
 this.entrySet().clear();
 });
-Clazz.overrideMethod(c$,"containsKey",
+$_V(c$,"containsKey",
 function(key){
 var it=this.entrySet().iterator();
 if(key!=null){
@@ -26,7 +26,7 @@ return true;
 }}
 }return false;
 },"~O");
-Clazz.overrideMethod(c$,"containsValue",
+$_V(c$,"containsValue",
 function(value){
 var it=this.entrySet().iterator();
 if(value!=null){
@@ -41,11 +41,11 @@ return true;
 }}
 }return false;
 },"~O");
-Clazz.overrideMethod(c$,"equals",
+$_V(c$,"equals",
 function(object){
 if(this===object){
 return true;
-}if(Clazz.instanceOf(object,java.util.Map)){
+}if($_O(object,java.util.Map)){
 var map=object;
 if(this.size()!=map.size()){
 return false;
@@ -58,7 +58,7 @@ return false;
 return true;
 }return false;
 },"~O");
-Clazz.overrideMethod(c$,"get",
+$_V(c$,"get",
 function(key){
 var it=this.entrySet().iterator();
 if(key!=null){
@@ -75,7 +75,7 @@ return entry.getValue();
 }}
 }return null;
 },"~O");
-Clazz.overrideMethod(c$,"hashCode",
+$_V(c$,"hashCode",
 function(){
 var result=0;
 var it=this.entrySet().iterator();
@@ -84,33 +84,27 @@ result+=it.next().hashCode();
 }
 return result;
 });
-Clazz.overrideMethod(c$,"isEmpty",
+$_V(c$,"isEmpty",
 function(){
 return this.size()==0;
 });
-Clazz.overrideMethod(c$,"keySet",
+$_V(c$,"keySet",
 function(){
 if(this.$keySet==null){
-this.$keySet=((Clazz.isClassDefined("java.util.AbstractMap$1")?0:java.util.AbstractMap.$AbstractMap$1$()),Clazz.innerTypeInstance(java.util.AbstractMap$1,this,null));
+this.$keySet=(($_D("java.util.AbstractMap$1")?0:java.util.AbstractMap.$AbstractMap$1$()),$_N(java.util.AbstractMap$1,this,null));
 }return this.$keySet;
 });
-Clazz.overrideMethod(c$,"put",
+$_V(c$,"put",
 function(key,value){
 throw new UnsupportedOperationException();
 },"~O,~O");
-Clazz.overrideMethod(c$,"putAll",
-function(map){
-  this.putAllAM(map);
-},"java.util.Map");
-
-Clazz.overrideMethod(c$,"putAllAM",
+$_V(c$,"putAll",
 function(map){
 for(var entry,$entry=map.entrySet().iterator();$entry.hasNext()&&((entry=$entry.next())||true);){
 this.put(entry.getKey(),entry.getValue());
 }
 },"java.util.Map");
-
-Clazz.overrideMethod(c$,"remove",
+$_V(c$,"remove",
 function(key){
 var it=this.entrySet().iterator();
 if(key!=null){
@@ -129,11 +123,11 @@ return entry.getValue();
 }}
 }return null;
 },"~O");
-Clazz.overrideMethod(c$,"size",
+$_V(c$,"size",
 function(){
 return this.entrySet().size();
 });
-Clazz.overrideMethod(c$,"toString",
+$_V(c$,"toString",
 function(){
 if(this.isEmpty()){
 return"{}";
@@ -159,105 +153,99 @@ buffer.append(", ");
 buffer.append('}');
 return buffer.toString();
 });
-Clazz.overrideMethod(c$,"values",
+$_V(c$,"values",
 function(){
 if(this.valuesCollection==null){
-this.valuesCollection=((Clazz.isClassDefined("java.util.AbstractMap$2")?0:java.util.AbstractMap.$AbstractMap$2$()),Clazz.innerTypeInstance(java.util.AbstractMap$2,this,null));
+this.valuesCollection=(($_D("java.util.AbstractMap$2")?0:java.util.AbstractMap.$AbstractMap$2$()),$_N(java.util.AbstractMap$2,this,null));
 }return this.valuesCollection;
 });
-Clazz.defineMethod(c$,"clone",
+$_M(c$,"clone",
 function(){
-return  this.cloneAM();
-});
-
-Clazz.defineMethod(c$,"cloneAM",
-function(){
-var result = Clazz.clone(this);
+var result=$_U(this,java.util.AbstractMap,"clone",[]);
 result.$keySet=null;
 result.valuesCollection=null;
 return result;
 });
-
 c$.$AbstractMap$1$=function(){
-Clazz.pu$h(self.c$);
-c$=Clazz.declareAnonymous(java.util,"AbstractMap$1",java.util.AbstractSet);
-Clazz.overrideMethod(c$,"contains",
+$_H();
+c$=$_W(java.util,"AbstractMap$1",java.util.AbstractSet);
+$_V(c$,"contains",
 function(object){
 return this.b$["java.util.AbstractMap"].containsKey(object);
 },"~O");
-Clazz.overrideMethod(c$,"size",
+$_V(c$,"size",
 function(){
 return this.b$["java.util.AbstractMap"].size();
 });
-Clazz.overrideMethod(c$,"iterator",
+$_V(c$,"iterator",
 function(){
-return((Clazz.isClassDefined("java.util.AbstractMap$1$1")?0:java.util.AbstractMap.$AbstractMap$1$1$()),Clazz.innerTypeInstance(java.util.AbstractMap$1$1,this,null));
+return(($_D("java.util.AbstractMap$1$1")?0:java.util.AbstractMap.$AbstractMap$1$1$()),$_N(java.util.AbstractMap$1$1,this,null));
 });
-c$=Clazz.p0p();
+c$=$_P();
 };
 c$.$AbstractMap$1$1$=function(){
-Clazz.pu$h(self.c$);
-c$=Clazz.decorateAsClass(function(){
-Clazz.prepareCallback(this,arguments);
+$_H();
+c$=$_C(function(){
+$_B(this,arguments);
 this.setIterator=null;
-Clazz.instantialize(this,arguments);
+$_Z(this,arguments);
 },java.util,"AbstractMap$1$1",null,java.util.Iterator);
-Clazz.prepareFields(c$,function(){
+$_Y(c$,function(){
 this.setIterator=this.b$["java.util.AbstractMap"].entrySet().iterator();
 });
-Clazz.overrideMethod(c$,"hasNext",
+$_V(c$,"hasNext",
 function(){
 return this.setIterator.hasNext();
 });
-Clazz.overrideMethod(c$,"next",
+$_V(c$,"next",
 function(){
 return this.setIterator.next().getKey();
 });
-Clazz.overrideMethod(c$,"remove",
+$_V(c$,"remove",
 function(){
 this.setIterator.remove();
 });
-c$=Clazz.p0p();
+c$=$_P();
 };
 c$.$AbstractMap$2$=function(){
-Clazz.pu$h(self.c$);
-c$=Clazz.declareAnonymous(java.util,"AbstractMap$2",java.util.AbstractCollection);
-Clazz.overrideMethod(c$,"size",
+$_H();
+c$=$_W(java.util,"AbstractMap$2",java.util.AbstractCollection);
+$_V(c$,"size",
 function(){
 return this.b$["java.util.AbstractMap"].size();
 });
-Clazz.overrideMethod(c$,"contains",
+$_V(c$,"contains",
 function(object){
 return this.b$["java.util.AbstractMap"].containsValue(object);
 },"~O");
-Clazz.overrideMethod(c$,"iterator",
+$_V(c$,"iterator",
 function(){
-return((Clazz.isClassDefined("java.util.AbstractMap$2$1")?0:java.util.AbstractMap.$AbstractMap$2$1$()),Clazz.innerTypeInstance(java.util.AbstractMap$2$1,this,null));
+return(($_D("java.util.AbstractMap$2$1")?0:java.util.AbstractMap.$AbstractMap$2$1$()),$_N(java.util.AbstractMap$2$1,this,null));
 });
-c$=Clazz.p0p();
+c$=$_P();
 };
 c$.$AbstractMap$2$1$=function(){
-Clazz.pu$h(self.c$);
-c$=Clazz.decorateAsClass(function(){
-Clazz.prepareCallback(this,arguments);
+$_H();
+c$=$_C(function(){
+$_B(this,arguments);
 this.setIterator=null;
-Clazz.instantialize(this,arguments);
+$_Z(this,arguments);
 },java.util,"AbstractMap$2$1",null,java.util.Iterator);
-Clazz.prepareFields(c$,function(){
+$_Y(c$,function(){
 this.setIterator=this.b$["java.util.AbstractMap"].entrySet().iterator();
 });
-Clazz.overrideMethod(c$,"hasNext",
+$_V(c$,"hasNext",
 function(){
 return this.setIterator.hasNext();
 });
-Clazz.overrideMethod(c$,"next",
+$_V(c$,"next",
 function(){
 return this.setIterator.next().getValue();
 });
-Clazz.overrideMethod(c$,"remove",
+$_V(c$,"remove",
 function(){
 this.setIterator.remove();
 });
-c$=Clazz.p0p();
+c$=$_P();
 };
 });

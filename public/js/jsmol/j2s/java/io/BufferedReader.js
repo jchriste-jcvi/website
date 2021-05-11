@@ -10,24 +10,24 @@ this.skipLF = false;
 this.markedSkipLF = false;
 Clazz.instantialize (this, arguments);
 }, java.io, "BufferedReader", java.io.Reader);
-Clazz.defineMethod (c$, "setSize", 
- function (sz) {
+$_M(c$, "setSize", 
+($fz = function (sz) {
 if (sz <= 0) throw  new IllegalArgumentException ("Buffer size <= 0");
 this.cb =  Clazz.newCharArray (sz, '\0');
 this.nextChar = this.nChars = 0;
-}, "~N");
+}, $fz.isPrivate = true, $fz), "~N");
 Clazz.makeConstructor (c$, 
 function ($in) {
 Clazz.superConstructor (this, java.io.BufferedReader, [$in]);
 this.$in = $in;
-this.setSize (8192);
+this.setSize (java.io.BufferedReader.defaultCharBufferSize);
 }, "java.io.Reader");
-Clazz.defineMethod (c$, "ensureOpen", 
- function () {
+$_M(c$, "ensureOpen", 
+($fz = function () {
 if (this.$in == null) throw  new java.io.IOException ("Stream closed");
-});
-Clazz.defineMethod (c$, "fill", 
- function () {
+}, $fz.isPrivate = true, $fz));
+$_M(c$, "fill", 
+($fz = function () {
 var dst;
 if (this.markedChar <= -1) {
 dst = 0;
@@ -56,9 +56,9 @@ n = this.$in.read (this.cb, dst, this.cb.length - dst);
 if (n > 0) {
 this.nChars = dst + n;
 this.nextChar = dst;
-}});
-Clazz.defineMethod (c$, "read1", 
- function (cbuf, off, len) {
+}}, $fz.isPrivate = true, $fz));
+$_M(c$, "read1", 
+($fz = function (cbuf, off, len) {
 if (this.nextChar >= this.nChars) {
 if (len >= this.cb.length && this.markedChar <= -1 && !this.skipLF) {
 return this.$in.read (cbuf, off, len);
@@ -74,8 +74,8 @@ if (this.nextChar >= this.nChars) return -1;
 System.arraycopy (this.cb, this.nextChar, cbuf, off, n);
 this.nextChar += n;
 return n;
-}, "~A,~N,~N");
-Clazz.defineMethod (c$, "read", 
+}, $fz.isPrivate = true, $fz), "~A,~N,~N");
+$_M(c$, "read", 
 function (cbuf, off, len) {
 {
 this.ensureOpen ();
@@ -92,8 +92,8 @@ n += n1;
 }
 return n;
 }}, "~A,~N,~N");
-Clazz.defineMethod (c$, "readLine1", 
- function (ignoreLF) {
+$_M(c$, "readLine1", 
+($fz = function (ignoreLF) {
 var s = null;
 var startChar;
 {
@@ -129,15 +129,15 @@ str = s.toString ();
 if (c == '\r') {
 this.skipLF = true;
 }return str;
-}if (s == null) s = JU.SB.newN (80);
+}if (s == null) s = JU.SB.newN (java.io.BufferedReader.defaultExpectedLineLength);
 s.appendCB (this.cb, startChar, i - startChar);
 }
-}}, "~B");
-Clazz.defineMethod (c$, "readLine", 
+}}, $fz.isPrivate = true, $fz), "~B");
+$_M(c$, "readLine", 
 function () {
 return this.readLine1 (false);
 });
-Clazz.overrideMethod (c$, "skip", 
+$_V(c$, "skip", 
 function (n) {
 if (n < 0) {
 throw  new IllegalArgumentException ("skip value is negative");
@@ -161,7 +161,7 @@ this.nextChar = this.nChars;
 }
 return n - r;
 }}, "~N");
-Clazz.defineMethod (c$, "ready", 
+$_M(c$, "ready", 
 function () {
 {
 this.ensureOpen ();
@@ -173,11 +173,11 @@ if (this.cb[this.nextChar] == '\n') this.nextChar++;
 this.skipLF = false;
 }}return (this.nextChar < this.nChars) || this.$in.ready ();
 }});
-Clazz.overrideMethod (c$, "markSupported", 
+$_V(c$, "markSupported", 
 function () {
 return true;
 });
-Clazz.overrideMethod (c$, "mark", 
+$_V(c$, "mark", 
 function (readAheadLimit) {
 if (readAheadLimit < 0) {
 throw  new IllegalArgumentException ("Read-ahead limit < 0");
@@ -187,7 +187,7 @@ this.readAheadLimit = readAheadLimit;
 this.markedChar = this.nextChar;
 this.markedSkipLF = this.skipLF;
 }}, "~N");
-Clazz.overrideMethod (c$, "reset", 
+$_V(c$, "reset", 
 function () {
 {
 this.ensureOpen ();
@@ -195,7 +195,7 @@ if (this.markedChar < 0) throw  new java.io.IOException ((this.markedChar == -2)
 this.nextChar = this.markedChar;
 this.skipLF = this.markedSkipLF;
 }});
-Clazz.defineMethod (c$, "close", 
+$_M(c$, "close", 
 function () {
 {
 if (this.$in == null) return;
@@ -206,6 +206,6 @@ this.cb = null;
 Clazz.defineStatics (c$,
 "INVALIDATED", -2,
 "UNMARKED", -1,
-"DEFAULT_CHAR_BUFFER_SIZE", 8192,
-"DEFAULT_EXPECTED_LINE_LENGTH", 80);
+"defaultCharBufferSize", 8192,
+"defaultExpectedLineLength", 80);
 });

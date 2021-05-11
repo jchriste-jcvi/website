@@ -1,1 +1,1 @@
-Clazz.declareInterface(java.util,"Observer");
+$_I(java.util,"Observer");

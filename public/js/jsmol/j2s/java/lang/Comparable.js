@@ -1,1 +1,1 @@
-Clazz.declareInterface(java.lang,"Comparable");
+$_I(java.lang,"Comparable");

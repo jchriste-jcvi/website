@@ -9,22 +9,22 @@ Clazz.makeConstructor (c$,
 function () {
 Clazz.superConstructor (this, J.jvxl.readers.PolygonFileReader, []);
 });
-Clazz.defineMethod (c$, "init2PFR", 
+$_M(c$, "init2PFR", 
 function (sg, br) {
 this.init2SFR (sg, br);
 this.jvxlFileHeaderBuffer =  new JU.SB ();
 this.jvxlFileHeaderBuffer.append ("#created ").append ("" +  new java.util.Date ()).append ("\n");
 this.vertexDataOnly = true;
 }, "J.jvxl.readers.SurfaceGenerator,java.io.BufferedReader");
-Clazz.overrideMethod (c$, "readVolumeParameters", 
+$_V(c$, "readVolumeParameters", 
 function (isMapData) {
 return true;
 }, "~B");
-Clazz.overrideMethod (c$, "readVolumeData", 
+$_V(c$, "readVolumeData", 
 function (isMapData) {
 return true;
 }, "~B");
-Clazz.overrideMethod (c$, "readSurfaceData", 
+$_V(c$, "readSurfaceData", 
 function (isMapData) {
 this.getSurfaceData ();
 }, "~B");

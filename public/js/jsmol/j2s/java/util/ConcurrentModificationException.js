@@ -1,7 +1,7 @@
-Clazz.load(["java.lang.RuntimeException"],"java.util.ConcurrentModificationException",null,function(){
-c$=Clazz.declareType(java.util,"ConcurrentModificationException",RuntimeException);
-Clazz.makeConstructor(c$,
+$_L(["java.lang.RuntimeException"],"java.util.ConcurrentModificationException",null,function(){
+c$=$_T(java.util,"ConcurrentModificationException",RuntimeException);
+$_K(c$,
 function(){
-Clazz.superConstructor(this,java.util.ConcurrentModificationException,[]);
+$_R(this,java.util.ConcurrentModificationException,[]);
 });
 });

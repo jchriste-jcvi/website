@@ -1,5 +1,5 @@
 Clazz.declarePackage ("J.jvxl.readers");
-Clazz.load (["J.jvxl.readers.PolygonFileReader", "java.util.Hashtable", "JU.P3"], "J.jvxl.readers.NffReader", ["java.lang.Float", "JU.CU", "J.jvxl.data.JvxlCoder", "JU.Logger"], function () {
+Clazz.load (["J.jvxl.readers.PolygonFileReader", "java.util.Hashtable", "JU.P3"], "J.jvxl.readers.NffReader", ["java.lang.Float", "JU.CU", "J.jvxl.data.JvxlCoder", "J.util.Logger"], function () {
 c$ = Clazz.decorateAsClass (function () {
 this.nPolygons = 0;
 this.vertexMap = null;
@@ -14,25 +14,25 @@ Clazz.makeConstructor (c$,
 function () {
 Clazz.superConstructor (this, J.jvxl.readers.NffReader, []);
 });
-Clazz.overrideMethod (c$, "init2", 
+$_V(c$, "init2", 
 function (sg, br) {
 this.init2PFR (sg, br);
 }, "J.jvxl.readers.SurfaceGenerator,java.io.BufferedReader");
-Clazz.defineMethod (c$, "setHeader", 
+$_M(c$, "setHeader", 
 function () {
 this.jvxlFileHeaderBuffer.append ("NFF file format\nvertices and triangles only\n");
 J.jvxl.data.JvxlCoder.jvxlCreateHeaderWithoutTitleOrAtoms (this.volumeData, this.jvxlFileHeaderBuffer);
 });
-Clazz.overrideMethod (c$, "getSurfaceData", 
+$_V(c$, "getSurfaceData", 
 function () {
-if (this.readVerticesAndPolygons ()) JU.Logger.info ("NFF file contains " + this.nVertices + " vertices and " + this.nTriangles + " triangles");
- else JU.Logger.error (this.params.fileName + ": Error reading Nff data ");
+if (this.readVerticesAndPolygons ()) J.util.Logger.info ("NFF file contains " + this.nVertices + " vertices and " + this.nTriangles + " triangles");
+ else J.util.Logger.error (this.params.fileName + ": Error reading Nff data ");
 });
-Clazz.defineMethod (c$, "readVerticesAndPolygons", 
+$_M(c$, "readVerticesAndPolygons", 
 function () {
 var color = 0xFF0000;
 try {
-while (this.rd () != null) {
+while (this.readLine () != null) {
 if (this.line.length == 0) continue;
 var tokens = this.getTokens ();
 switch (this.line.charAt (0)) {
@@ -60,16 +60,16 @@ throw e;
 }
 return true;
 });
-Clazz.defineMethod (c$, "getVertex", 
- function () {
-var i = this.vertexMap.get (this.rd ());
+$_M(c$, "getVertex", 
+($fz = function () {
+var i = this.vertexMap.get (this.readLine ());
 if (i == null) {
 var tokens = this.getTokens ();
 this.pt.set (this.parseFloatStr (tokens[0]), this.parseFloatStr (tokens[1]), this.parseFloatStr (tokens[2]));
 if (!Float.isNaN (this.params.scale)) this.pt.scale (this.params.scale);
 if (this.isAnisotropic) this.setVertexAnisotropy (this.pt);
-i = Integer.$valueOf (this.addVertexCopy (this.pt, 0, this.nVertices++, true));
+i = Integer.$valueOf (this.addVertexCopy (this.pt, 0, this.nVertices++));
 this.vertexMap.put (this.line, i);
 }return i.intValue ();
-});
+}, $fz.isPrivate = true, $fz));
 });

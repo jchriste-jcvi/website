@@ -1,18 +1,18 @@
-Clazz.load(null,"java.util.EventObject",["java.lang.IllegalArgumentException"],function(){
-c$=Clazz.decorateAsClass(function(){
+$_L(null,"java.util.EventObject",["java.lang.IllegalArgumentException"],function(){
+c$=$_C(function(){
 this.source=null;
-Clazz.instantialize(this,arguments);
+$_Z(this,arguments);
 },java.util,"EventObject",null,java.io.Serializable);
-Clazz.makeConstructor(c$,
+$_K(c$,
 function(source){
 if(source!=null)this.source=source;
 else throw new IllegalArgumentException();
 },"~O");
-Clazz.defineMethod(c$,"getSource",
+$_M(c$,"getSource",
 function(){
 return this.source;
 });
-Clazz.overrideMethod(c$,"toString",
+$_V(c$,"toString",
 function(){
 return this.getClass().getName()+"[source="+String.valueOf(this.source)+']';
 });

@@ -1,29 +1,39 @@
 Clazz.declarePackage ("J.adapter.readers.xml");
-Clazz.load (["J.adapter.readers.xml.XmlReader"], "J.adapter.readers.xml.XmlMagResReader", ["JU.Logger"], function () {
-c$ = Clazz.declareType (J.adapter.readers.xml, "XmlMagResReader", J.adapter.readers.xml.XmlReader);
+Clazz.load (["J.adapter.readers.xml.XmlReader"], "J.adapter.readers.xml.XmlMagResReader", ["J.util.Logger"], function () {
+c$ = Clazz.decorateAsClass (function () {
+this.myAttributes = null;
+Clazz.instantialize (this, arguments);
+}, J.adapter.readers.xml, "XmlMagResReader", J.adapter.readers.xml.XmlReader);
+Clazz.prepareFields (c$, function () {
+this.myAttributes = [];
+});
 Clazz.makeConstructor (c$, 
 function () {
 Clazz.superConstructor (this, J.adapter.readers.xml.XmlMagResReader, []);
 });
-Clazz.overrideMethod (c$, "processXml", 
+$_V(c$, "getDOMAttributes", 
+function () {
+return this.myAttributes;
+});
+$_V(c$, "processXml", 
 function (parent, saxReader) {
 parent.doProcessLines = true;
-this.processXml2 (parent, saxReader);
+this.PX (parent, saxReader);
 }, "J.adapter.readers.xml.XmlReader,~O");
-Clazz.overrideMethod (c$, "processStartElement", 
-function (localName, nodeName) {
-if (this.debugging) JU.Logger.debug ("xmlmagres: start " + localName);
+$_V(c$, "processStartElement", 
+function (localName) {
+if (J.util.Logger.debugging) J.util.Logger.debug ("xmlmagres: start " + localName);
 if (!this.parent.continuing) return;
 if ("calculation".equals (localName)) {
-this.setKeepChars (true);
+this.keepChars = true;
 return;
 }if ("atoms".equals (localName)) {
-this.setKeepChars (true);
+this.keepChars = true;
 return;
-}}, "~S,~S");
-Clazz.overrideMethod (c$, "processEndElement", 
+}}, "~S");
+$_V(c$, "processEndElement", 
 function (localName) {
-if (this.debugging) JU.Logger.debug ("xmlmagres: end " + localName);
+if (J.util.Logger.debugging) J.util.Logger.debug ("xmlmagres: end " + localName);
 while (true) {
 if ("calculation".equals (localName)) {
 break;
@@ -32,6 +42,7 @@ if ("atoms".equals (localName)) {
 break;
 }return;
 }
-this.setKeepChars (false);
+this.chars = null;
+this.keepChars = false;
 }, "~S");
 });

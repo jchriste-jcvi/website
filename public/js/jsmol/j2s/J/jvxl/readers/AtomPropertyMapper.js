@@ -1,5 +1,5 @@
 Clazz.declarePackage ("J.jvxl.readers");
-Clazz.load (["J.jvxl.readers.AtomDataReader"], "J.jvxl.readers.AtomPropertyMapper", ["java.lang.Float", "J.api.Interface", "JU.Logger"], function () {
+Clazz.load (["J.jvxl.readers.AtomDataReader"], "J.jvxl.readers.AtomPropertyMapper", ["java.lang.Float", "J.api.Interface", "J.util.Logger"], function () {
 c$ = Clazz.decorateAsClass (function () {
 this.mepCalc = null;
 this.mepType = null;
@@ -14,12 +14,12 @@ Clazz.makeConstructor (c$,
 function () {
 Clazz.superConstructor (this, J.jvxl.readers.AtomPropertyMapper, []);
 });
-Clazz.overrideMethod (c$, "init", 
+$_V(c$, "init", 
 function (sg) {
 this.initADR (sg);
 this.mepType = sg.getReaderData ();
 }, "J.jvxl.readers.SurfaceGenerator");
-Clazz.overrideMethod (c$, "setup", 
+$_V(c$, "setup", 
 function (isMapData) {
 this.setup2 ();
 this.haveSurfaceAtoms = true;
@@ -38,16 +38,16 @@ this.smoothingPower = (this.smoothingPower - 11) / 2;
 if (this.mepType != null) {
 this.doSmoothProperty = true;
 if (this.params.mep_calcType >= 0) this.calcType = this.params.mep_calcType;
-this.mepCalc = J.api.Interface.getOption ("quantum." + this.mepType + "Calculation", this.sg.atomDataServer, "file");
+this.mepCalc = J.api.Interface.getOptionInterface ("quantum." + this.mepType + "Calculation");
 }if (!this.doSmoothProperty && this.maxDistance == 2147483647) this.maxDistance = 5;
-this.getAtoms (this.params.bsSelected, this.doAddHydrogens, true, false, false, true, false, NaN, null);
+this.getAtoms (this.params.bsSelected, this.doAddHydrogens, true, false, false, true, false, NaN);
 if (this.meshDataServer != null) this.meshDataServer.fillMeshData (this.meshData, 1, null);
 if (!this.doSmoothProperty && this.meshData.vertexSource != null) {
 this.hasColorData = true;
-for (var i = this.meshData.vc; --i >= 0; ) {
+for (var i = this.meshData.vertexCount; --i >= 0; ) {
 var iAtom = this.meshData.vertexSource[i];
 if (iAtom >= 0) {
-this.meshData.vvs[i] = this.params.theProperty[iAtom];
+this.meshData.vertexValues[i] = this.params.theProperty[iAtom];
 } else {
 this.hasColorData = false;
 break;
@@ -56,43 +56,43 @@ break;
 this.setRanges (this.params.solvent_ptsPerAngstrom, this.params.solvent_gridMax, 0);
 this.params.cutoff = 0;
 }, "~B");
-Clazz.overrideMethod (c$, "setVolumeData", 
+$_V(c$, "setVolumeData", 
 function () {
 if (this.params.thePlane != null) this.setVolumeDataADR ();
 });
-Clazz.overrideMethod (c$, "initializeMapping", 
+$_V(c$, "initializeMapping", 
 function () {
-if (this.params.showTiming) JU.Logger.startTimer ("property mapping");
+if (this.params.showTiming) J.util.Logger.startTimer ("property mapping");
 if (this.bsNearby != null) this.bsMySelected.or (this.bsNearby);
-this.iter = this.sg.atomDataServer.getSelectedAtomIterator (this.bsMySelected, false, false, false);
+this.iter = this.atomDataServer.getSelectedAtomIterator (this.bsMySelected, false, false, false);
 });
-Clazz.overrideMethod (c$, "finalizeMapping", 
+$_V(c$, "finalizeMapping", 
 function () {
 this.iter.release ();
 this.iter = null;
-if (this.params.showTiming) JU.Logger.checkTimer ("property mapping", false);
+if (this.params.showTiming) J.util.Logger.checkTimer ("property mapping", false);
 });
-Clazz.overrideMethod (c$, "generateCube", 
+$_V(c$, "generateCube", 
 function () {
 });
-Clazz.overrideMethod (c$, "getSurfaceAtomIndex", 
+$_V(c$, "getSurfaceAtomIndex", 
 function () {
 return this.iAtomSurface;
 });
-Clazz.overrideMethod (c$, "getValueAtPoint", 
+$_V(c$, "getValueAtPoint", 
 function (pt, getSource) {
 if (this.haveOneProperty && !getSource) return this.theProperty;
 var dmin = 3.4028235E38;
 var dminNearby = 3.4028235E38;
 var value = (this.doSmoothProperty ? 0 : NaN);
 var vdiv = 0;
-this.sg.atomDataServer.setIteratorForPoint (this.iter, this.modelIndex, pt, this.maxDistance);
+this.atomDataServer.setIteratorForPoint (this.iter, this.modelIndex, pt, this.maxDistance);
 this.iAtomSurface = -1;
 while (this.iter.hasNext ()) {
 var ia = this.iter.next ();
 var myAtom = this.myIndex[ia];
 var isNearby = (myAtom >= this.firstNearbyAtom);
-var ptA = this.atomXyzTruncated[myAtom];
+var ptA = this.atomXyz[myAtom];
 var p = this.atomProp[myAtom];
 if (Float.isNaN (p)) continue;
 var d2 = pt.distanceSquared (ptA);
@@ -114,5 +114,5 @@ vdiv += d2;
 value += d2 * p;
 }}
 return (this.mepCalc != null ? value : this.doSmoothProperty ? (vdiv == 0 || dminNearby < dmin ? NaN : value / vdiv) : value);
-}, "JU.T3,~B");
+}, "JU.P3,~B");
 });

@@ -1,11 +1,11 @@
 Clazz.declarePackage ("JSV.dialog");
-Clazz.load (["JSV.api.AnnotationData", "JSV.common.Annotation"], "JSV.dialog.JSVDialog", ["java.lang.Double", "JU.DF", "$.PT", "JSV.common.IntegralData", "$.PeakData", "JSV.dialog.DialogManager"], function () {
+Clazz.load (["JSV.api.AnnotationData", "JSV.common.Annotation"], "JSV.dialog.JSVDialog", ["java.lang.Double", "JU.DF", "$.PT", "JSV.common.IntegralData", "$.PeakData"], function () {
 c$ = Clazz.decorateAsClass (function () {
 this.optionKey = null;
 this.options = null;
 this.type = null;
 this.title = null;
-this.vwr = null;
+this.viewer = null;
 this.$spec = null;
 this.manager = null;
 this.dialog = null;
@@ -40,15 +40,10 @@ this.iRowSelected = -1;
 this.iColSelected = -1;
 Clazz.instantialize (this, arguments);
 }, JSV.dialog, "JSVDialog", JSV.common.Annotation, JSV.api.AnnotationData);
-Clazz.overrideMethod (c$, "isDialog", 
-function () {
-return true;
-});
-Clazz.defineMethod (c$, "setParams", 
+$_M(c$, "setParams", 
 function (title, viewer, spec) {
-title = JSV.dialog.DialogManager.fixTitle (title);
 this.title = title;
-this.vwr = viewer;
+this.viewer = viewer;
 this.$spec = spec;
 this.manager = viewer.getDialogManager ();
 this.jsvp = viewer.selectedPanel;
@@ -91,15 +86,15 @@ break;
 }
 this.initDialog ();
 return this;
-}, "~S,JSV.common.JSViewer,JSV.common.Spectrum");
-Clazz.defineMethod (c$, "initDialog", 
- function () {
+}, "~S,JSV.common.JSViewer,JSV.common.JDXSpectrum");
+$_M(c$, "initDialog", 
+($fz = function () {
 this.dialog = this.manager.getDialog (this);
 this.restoreDialogPosition (this.jsvp, this.getPosXY ());
 this.dialog.setTitle (this.title);
 this.layoutDialog ();
-});
-Clazz.defineMethod (c$, "layoutDialog", 
+}, $fz.isPrivate = true, $fz));
+$_M(c$, "layoutDialog", 
 function () {
 this.dialog.startLayout ();
 this.addUniqueControls ();
@@ -113,11 +108,9 @@ if (this.addClearBtn) this.dialog.addButton ("btnClear", "Clear");
 this.checkEnables ();
 this.dialog.setVisible (this.defaultVisible);
 });
-Clazz.defineMethod (c$, "callbackAD", 
+$_M(c$, "callbackAD", 
 function (id, msg) {
-if (id.equals ("FOCUS")) {
-this.eventFocus ();
-} else if (id.equals ("tableSelect")) {
+if (id.equals ("tableSelect")) {
 this.tableSelect (msg);
 } else if (id.equals ("btnClear")) {
 this.clear ();
@@ -136,93 +129,93 @@ return true;
 }if (this.jsvp != null) this.jsvp.doRepaint (true);
 return true;
 }, "~S,~S");
-Clazz.defineMethod (c$, "addUniqueControls", 
+$_M(c$, "addUniqueControls", 
 function (dialogHelper) {
 }, "JSV.dialog.DialogManager");
-Clazz.overrideMethod (c$, "getAType", 
+$_V(c$, "getAType", 
 function () {
 return this.type;
 });
-Clazz.overrideMethod (c$, "getGraphSetKey", 
+$_V(c$, "getGraphSetKey", 
 function () {
 return this.graphSetKey;
 });
-Clazz.overrideMethod (c$, "setGraphSetKey", 
+$_V(c$, "setGraphSetKey", 
 function (key) {
 this.graphSetKey = key;
 }, "~S");
-Clazz.overrideMethod (c$, "getSpectrum", 
+$_V(c$, "getSpectrum", 
 function () {
 return this.$spec;
 });
-Clazz.overrideMethod (c$, "getState", 
+$_V(c$, "getState", 
 function () {
 return this.isON;
 });
-Clazz.overrideMethod (c$, "setState", 
+$_V(c$, "setState", 
 function (b) {
 this.isON = b;
 }, "~B");
-Clazz.defineMethod (c$, "checkEnables", 
+$_M(c$, "checkEnables", 
 function () {
 var isShow = this.checkVisible ();
 this.dialog.setText (this.showHideButton, isShow ? "Hide" : "Show");
 });
-Clazz.defineMethod (c$, "createTable", 
+$_M(c$, "createTable", 
 function (data, header, widths) {
 this.tableData = data;
 this.dialog.createTable (data, header, widths);
 }, "~A,~A,~A");
-Clazz.defineMethod (c$, "setTableSelectionEnabled", 
+$_M(c$, "setTableSelectionEnabled", 
 function (enabled) {
 this.dialog.setCellSelectionEnabled (enabled);
 }, "~B");
-Clazz.defineMethod (c$, "getParameters", 
+$_M(c$, "getParameters", 
 function () {
 return this.myParams;
 });
-Clazz.defineMethod (c$, "showMessage", 
+$_M(c$, "showMessage", 
 function (msg, title, msgType) {
 this.manager.showMessageDialog (this.dialog, msg, title, msgType);
 }, "~S,~S,~N");
-Clazz.defineMethod (c$, "setThreshold", 
+$_M(c$, "setThreshold", 
 function (y) {
 this.dialog.setText (this.txt1, this.getThreasholdText (y));
 }, "~N");
-Clazz.defineMethod (c$, "setComboSelected", 
+$_M(c$, "setComboSelected", 
 function (i) {
 this.dialog.setSelectedIndex (this.combo1, i);
 }, "~N");
-Clazz.defineMethod (c$, "applyFromFields", 
+$_M(c$, "applyFromFields", 
 function () {
 this.apply (null);
 });
-Clazz.defineMethod (c$, "reEnable", 
+$_M(c$, "reEnable", 
 function () {
 this.paramsReEnable ();
 return this;
 });
-Clazz.defineMethod (c$, "dispose", 
+$_M(c$, "dispose", 
 function () {
 this.dialog.dispose ();
 });
-Clazz.defineMethod (c$, "setVisible", 
+$_M(c$, "setVisible", 
 function (visible) {
 this.dialog.setVisible (visible);
 }, "~B");
-Clazz.overrideMethod (c$, "isVisible", 
+$_V(c$, "isVisible", 
 function () {
 return this.dialog.isVisible ();
 });
-Clazz.defineMethod (c$, "selectTableRow", 
+$_M(c$, "selectTableRow", 
 function (i) {
 this.dialog.selectTableRow (i);
 }, "~N");
-Clazz.defineMethod (c$, "repaint", 
+$_M(c$, "repaint", 
 function () {
 this.dialog.repaint ();
 });
-Clazz.defineMethod (c$, "setFields", 
+$_M(c$, "setFields", 
 function () {
 switch (this.type) {
 case JSV.common.Annotation.AType.Integration:
@@ -243,11 +236,7 @@ case JSV.common.Annotation.AType.Views:
 break;
 }
 });
-Clazz.defineMethod (c$, "setFocus", 
-function (tf) {
-this.dialog.setFocus (tf);
-}, "~B");
-Clazz.defineMethod (c$, "update", 
+$_M(c$, "update", 
 function (clicked, xRange, yOffset) {
 this.selectTableRow (-1);
 switch (this.type) {
@@ -285,28 +274,28 @@ case JSV.common.Annotation.AType.Views:
 break;
 }
 }, "JSV.common.Coordinate,~N,~N");
-Clazz.defineMethod (c$, "getPeakData", 
+$_M(c$, "getPeakData", 
 function () {
 var md =  new JSV.common.PeakData (JSV.common.Annotation.AType.PeakList, this.$spec);
 md.setPeakList (this.myParams, this.precision, this.jsvp.getPanelData ().getView ());
 this.xyData = md;
 return null;
 });
-Clazz.overrideMethod (c$, "getData", 
+$_V(c$, "getData", 
 function () {
 if (this.xyData == null) this.createData ();
 return this.xyData;
 });
-Clazz.defineMethod (c$, "setData", 
+$_M(c$, "setData", 
 function (data) {
 this.myParams = data.getParameters ();
 this.xyData = data;
 }, "JSV.api.AnnotationData");
-Clazz.overrideMethod (c$, "setSpecShift", 
+$_V(c$, "setSpecShift", 
 function (dx) {
 if (this.xyData != null) this.xyData.setSpecShift (dx);
 }, "~N");
-Clazz.defineMethod (c$, "setType", 
+$_M(c$, "setType", 
 function (type) {
 this.type = type;
 switch (type) {
@@ -325,7 +314,7 @@ case JSV.common.Annotation.AType.NONE:
 break;
 }
 }, "JSV.common.Annotation.AType");
-Clazz.defineMethod (c$, "apply", 
+$_M(c$, "apply", 
 function (objects) {
 try {
 switch (this.type) {
@@ -350,7 +339,6 @@ break;
 case JSV.common.Annotation.AType.OverlayLegend:
 break;
 case JSV.common.Annotation.AType.Views:
-this.vwr.parameters.viewOffset = Double.parseDouble (objects[0]);
 break;
 }
 this.loadData ();
@@ -363,7 +351,7 @@ throw e;
 }
 }
 }, "~A");
-Clazz.defineMethod (c$, "done", 
+$_M(c$, "done", 
 function () {
 if (this.jsvp != null && this.$spec != null) this.jsvp.getPanelData ().removeDialog (this);
 if (this.xyData != null) this.xyData.setState (this.isON);
@@ -371,19 +359,19 @@ this.saveDialogPosition (this.getPosXY ());
 this.dispose ();
 this.jsvp.doRepaint (true);
 });
-Clazz.defineMethod (c$, "restoreDialogPosition", 
- function (panel, posXY) {
+$_M(c$, "restoreDialogPosition", 
+($fz = function (panel, posXY) {
 if (panel != null) {
 if (posXY[0] == -2147483648) {
 posXY[0] = 0;
 posXY[1] = -20;
 }var pt = this.manager.getLocationOnScreen (panel);
 var height = panel.getHeight ();
-this.loc =  Clazz.newIntArray (-1, [Math.max (0, pt[0] + posXY[0]), Math.max (0, pt[1] + height + posXY[1])]);
+this.loc = [Math.max (0, pt[0] + posXY[0]), Math.max (0, pt[1] + height + posXY[1])];
 this.dialog.setIntLocation (this.loc);
-}}, "JSV.api.JSVPanel,~A");
-Clazz.defineMethod (c$, "saveDialogPosition", 
- function (posXY) {
+}}, $fz.isPrivate = true, $fz), "JSV.api.JSVPanel,~A");
+$_M(c$, "saveDialogPosition", 
+($fz = function (posXY) {
 try {
 var pt = this.manager.getLocationOnScreen (this.dialog);
 posXY[0] += pt[0] - this.loc[0];
@@ -394,9 +382,9 @@ if (Clazz.exceptionOf (e, Exception)) {
 throw e;
 }
 }
-}, "~A");
-Clazz.defineMethod (c$, "getThreasholdText", 
- function (y) {
+}, $fz.isPrivate = true, $fz), "~A");
+$_M(c$, "getThreasholdText", 
+($fz = function (y) {
 if (Double.isNaN (y)) {
 var pd = this.jsvp.getPanelData ();
 var f = (pd.getSpectrum ().isInverted () ? 0.1 : 0.9);
@@ -404,41 +392,18 @@ var c = pd.getClickedCoordinate ();
 y = (c == null ? (pd.getView ().minYOnScale * f + pd.getView ().maxYOnScale) * (1 - f) : c.getYVal ());
 }var sy = JU.DF.formatDecimalDbl (y, y < 1000 ? 2 : -2);
 return " " + sy;
-}, "~N");
-Clazz.defineMethod (c$, "checkVisible", 
- function () {
-return this.vwr.pd ().getShowAnnotation (this.type);
-});
-Clazz.defineMethod (c$, "getUnitOptions", 
- function () {
+}, $fz.isPrivate = true, $fz), "~N");
+$_M(c$, "checkVisible", 
+($fz = function () {
+return this.viewer.selectedPanel.getPanelData ().getShowAnnotation (this.type);
+}, $fz.isPrivate = true, $fz));
+$_M(c$, "getUnitOptions", 
+($fz = function () {
 var key = this.optionKey + "_format";
 var format = this.options.get (key);
 if (format == null) this.options.put (key, format = Integer.$valueOf (this.formatOptions[this.unitPtr == null ? 0 : this.unitPtr.intValue ()]));
-});
-Clazz.defineMethod (c$, "eventFocus", 
-function () {
-if (this.$spec != null) this.jsvp.getPanelData ().jumpToSpectrum (this.$spec);
-switch (this.type) {
-case JSV.common.Annotation.AType.Integration:
-if (this.iRowSelected >= 0) {
-this.iRowSelected++;
-this.tableCellSelect (-1, -1);
-}break;
-case JSV.common.Annotation.AType.Measurements:
-break;
-case JSV.common.Annotation.AType.NONE:
-break;
-case JSV.common.Annotation.AType.PeakList:
-this.createData ();
-this.skipCreate = true;
-break;
-case JSV.common.Annotation.AType.OverlayLegend:
-break;
-case JSV.common.Annotation.AType.Views:
-break;
-}
-});
-Clazz.defineMethod (c$, "eventApply", 
+}, $fz.isPrivate = true, $fz));
+$_M(c$, "eventApply", 
 function () {
 switch (this.type) {
 case JSV.common.Annotation.AType.Integration:
@@ -458,22 +423,22 @@ break;
 }
 this.applyFromFields ();
 });
-Clazz.defineMethod (c$, "eventShowHide", 
- function (isShow) {
+$_M(c$, "eventShowHide", 
+($fz = function (isShow) {
 this.isON = isShow;
 if (isShow) this.eventApply ();
 this.jsvp.doRepaint (true);
 this.checkEnables ();
-}, "~B");
-Clazz.defineMethod (c$, "clear", 
- function () {
+}, $fz.isPrivate = true, $fz), "~B");
+$_M(c$, "clear", 
+($fz = function () {
 this.setState (true);
 if (this.xyData != null) {
 this.xyData.clear ();
 this.applyFromFields ();
-}});
-Clazz.defineMethod (c$, "paramsReEnable", 
- function () {
+}}, $fz.isPrivate = true, $fz));
+$_M(c$, "paramsReEnable", 
+($fz = function () {
 switch (this.type) {
 case JSV.common.Annotation.AType.Integration:
 break;
@@ -492,24 +457,23 @@ break;
 this.setVisible (true);
 this.isON = true;
 this.applyFromFields ();
-});
-Clazz.defineMethod (c$, "tableCellSelect", 
- function (iRow, iCol) {
-System.out.println (iRow + " jSVDial " + iCol);
-if (iRow < 0) {
-iRow = Clazz.doubleToInt (this.iRowColSelected / 1000);
-iCol = this.iRowColSelected % 1000;
-this.iRowColSelected = -1;
-}var value = this.tableData[iRow][1];
-var icolrow = iRow * 1000 + iCol;
+}, $fz.isPrivate = true, $fz));
+$_M(c$, "tableCellSelect", 
+($fz = function (iRow, iCol) {
+var value = this.tableData[iRow][1];
+var icolrow = this.iRowSelected * 1000 + this.iColSelected;
 if (icolrow == this.iRowColSelected) return;
 this.iRowColSelected = icolrow;
-System.out.println ("Setting rc = " + this.iRowColSelected + " " + this.$spec);
 this.selectTableRow (this.iRowSelected);
 try {
 switch (this.type) {
 case JSV.common.Annotation.AType.Integration:
-this.callback ("SHOWSELECTION", value.toString ());
+for (var i = 0; i < this.xyData.size (); i++) if (JU.DF.formatDecimalDbl (this.xyData.get (i).getXVal (), 2).equals (value)) {
+this.iSelected = i;
+this.jsvp.getPanelData ().setXPointers (this.$spec, this.xyData.get (i).getXVal (), this.$spec, this.xyData.get (i).getXVal2 ());
+this.jsvp.doRepaint (true);
+break;
+}
 this.checkEnables ();
 break;
 case JSV.common.Annotation.AType.Measurements:
@@ -550,8 +514,8 @@ if (Clazz.exceptionOf (e, Exception)) {
 throw e;
 }
 }
-}, "~N,~N");
-Clazz.defineMethod (c$, "loadData", 
+}, $fz.isPrivate = true, $fz), "~N,~N");
+$_M(c$, "loadData", 
 function () {
 var data;
 var header;
@@ -562,14 +526,14 @@ if (this.xyData == null) this.createData ();
 this.iSelected = -1;
 data = (this.xyData).getMeasurementListArray (null);
 header = this.xyData.getDataHeader ();
-widths =  Clazz.newIntArray (-1, [40, 65, 65, 50]);
+widths = [40, 65, 65, 50];
 this.createTable (data, header, widths);
 break;
 case JSV.common.Annotation.AType.Measurements:
 if (this.xyData == null) return;
 data = this.xyData.getMeasurementListArray (this.dialog.getSelectedItem (this.combo1).toString ());
 header = this.xyData.getDataHeader ();
-widths =  Clazz.newIntArray (-1, [40, 65, 65, 50]);
+widths = [40, 65, 65, 50];
 this.createTable (data, header, widths);
 break;
 case JSV.common.Annotation.AType.NONE:
@@ -578,14 +542,14 @@ case JSV.common.Annotation.AType.PeakList:
 if (this.xyData == null) this.createData ();
 data = (this.xyData).getMeasurementListArray (null);
 header = (this.xyData).getDataHeader ();
-widths =  Clazz.newIntArray (-1, [40, 65, 50, 50, 50, 50, 50]);
+widths = [40, 65, 50, 50, 50, 50, 50];
 this.createTable (data, header, widths);
 this.setTableSelectionEnabled (true);
 break;
 case JSV.common.Annotation.AType.OverlayLegend:
-header =  Clazz.newArray (-1, ["No.", "Plot Color", "Title"]);
-data = this.vwr.selectedPanel.getPanelData ().getOverlayLegendData ();
-widths =  Clazz.newIntArray (-1, [30, 60, 250]);
+header = ["No.", "Plot Color", "Title"];
+data = this.viewer.selectedPanel.getPanelData ().getOverlayLegendData ();
+widths = [30, 60, 250];
 this.createTable (data, header, widths);
 this.setTableSelectionEnabled (true);
 break;
@@ -593,8 +557,8 @@ case JSV.common.Annotation.AType.Views:
 break;
 }
 });
-Clazz.defineMethod (c$, "createData", 
- function () {
+$_M(c$, "createData", 
+($fz = function () {
 switch (this.type) {
 case JSV.common.Annotation.AType.Integration:
 this.xyData =  new JSV.common.IntegralData (this.$spec, this.myParams);
@@ -626,17 +590,16 @@ break;
 case JSV.common.Annotation.AType.Views:
 break;
 }
-});
-Clazz.defineMethod (c$, "setPrecision", 
- function (i) {
+}, $fz.isPrivate = true, $fz));
+$_M(c$, "setPrecision", 
+($fz = function (i) {
 this.precision = this.formatOptions[i];
-}, "~N");
-Clazz.defineMethod (c$, "tableSelect", 
- function (url) {
+}, $fz.isPrivate = true, $fz), "~N");
+$_M(c$, "tableSelect", 
+($fz = function (url) {
 var isAdjusting = "true".equals (this.getField (url, "adjusting"));
 if (isAdjusting) {
 this.iColSelected = this.iRowSelected = -1;
-System.out.println ("adjusting" + url);
 return;
 }var index = JU.PT.parseInt (this.getField (url, "index"));
 switch ("ROW COL ROWCOL".indexOf (this.getField (url, "selector"))) {
@@ -644,21 +607,19 @@ case 8:
 this.iColSelected = JU.PT.parseInt (this.getField (url, "index2"));
 case 0:
 this.iRowSelected = index;
-System.out.println ("r set to " + index);
 break;
 case 4:
 this.iColSelected = index;
-System.out.println ("c set to " + index);
 break;
 }
 if (this.iColSelected >= 0 && this.iRowSelected >= 0) {
 this.tableCellSelect (this.iRowSelected, this.iColSelected);
-}}, "~S");
-Clazz.defineMethod (c$, "getField", 
- function (url, name) {
+}}, $fz.isPrivate = true, $fz), "~S");
+$_M(c$, "getField", 
+($fz = function (url, name) {
 url += "&";
 var key = "&" + name + "=";
 var pt = url.indexOf (key);
 return (pt < 0 ? null : url.substring (pt + key.length, url.indexOf ("&", pt + 1)));
-}, "~S,~S");
+}, $fz.isPrivate = true, $fz), "~S,~S");
 });

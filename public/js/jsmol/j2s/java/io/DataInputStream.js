@@ -11,11 +11,11 @@ this.bytearr =  Clazz.newByteArray (80, 0);
 this.chararr =  Clazz.newCharArray (80, '\0');
 this.readBuffer =  Clazz.newByteArray (8, 0);
 });
-Clazz.defineMethod (c$, "read", 
+$_V(c$, "read", 
 function (b, off, len) {
 return this.$in.read (b, off, len);
 }, "~A,~N,~N");
-Clazz.defineMethod (c$, "readFully", 
+$_M(c$, "readFully", 
 function (b, off, len) {
 if (len < 0) throw  new IndexOutOfBoundsException ();
 var n = 0;
@@ -25,7 +25,7 @@ if (count < 0) throw  new java.io.EOFException ();
 n += count;
 }
 }, "~A,~N,~N");
-Clazz.overrideMethod (c$, "skipBytes", 
+$_V(c$, "skipBytes", 
 function (n) {
 var total = 0;
 var cur = 0;
@@ -34,72 +34,68 @@ total += cur;
 }
 return total;
 }, "~N");
-Clazz.overrideMethod (c$, "readBoolean", 
+$_V(c$, "readBoolean", 
 function () {
 var ch = this.$in.readByteAsInt ();
 if (ch < 0) throw  new java.io.EOFException ();
 return (ch != 0);
 });
-Clazz.overrideMethod (c$, "readByte", 
+$_V(c$, "readByte", 
 function () {
 var ch = this.$in.readByteAsInt ();
 if (ch < 0) throw  new java.io.EOFException ();
 return (ch);
 });
-Clazz.overrideMethod (c$, "readUnsignedByte", 
+$_V(c$, "readUnsignedByte", 
 function () {
 var ch = this.$in.readByteAsInt ();
 if (ch < 0) throw  new java.io.EOFException ();
 return ch;
 });
-Clazz.overrideMethod (c$, "readShort", 
+$_V(c$, "readShort", 
 function () {
 var ch1 = this.$in.readByteAsInt ();
 var ch2 = this.$in.readByteAsInt ();
 if ((ch1 | ch2) < 0) throw  new java.io.EOFException ();
-var n = ((ch1 << 8) + (ch2 << 0));
-{
-return (n > 0x7FFF ? n - 0x10000 : n);
-}});
-Clazz.defineMethod (c$, "readUnsignedShort", 
+return ((ch1 << 8) + (ch2 << 0));
+});
+$_M(c$, "readUnsignedShort", 
 function () {
 var ch1 = this.$in.readByteAsInt ();
 var ch2 = this.$in.readByteAsInt ();
 if ((ch1 | ch2) < 0) throw  new java.io.EOFException ();
 return (ch1 << 8) + (ch2 << 0);
 });
-Clazz.overrideMethod (c$, "readChar", 
+$_V(c$, "readChar", 
 function () {
 var ch1 = this.$in.readByteAsInt ();
 var ch2 = this.$in.readByteAsInt ();
 if ((ch1 | ch2) < 0) throw  new java.io.EOFException ();
 return String.fromCharCode ((ch1 << 8) + (ch2 << 0));
 });
-Clazz.overrideMethod (c$, "readInt", 
+$_V(c$, "readInt", 
 function () {
 var ch1 = this.$in.readByteAsInt ();
 var ch2 = this.$in.readByteAsInt ();
 var ch3 = this.$in.readByteAsInt ();
 var ch4 = this.$in.readByteAsInt ();
 if ((ch1 | ch2 | ch3 | ch4) < 0) throw  new java.io.EOFException ();
-var n = ((ch1 << 24) + (ch2 << 16) + (ch3 << 8) + (ch4 << 0));
-{
-return (n > 0x7FFFFFFF ? n - 0x100000000 : n);
-}});
-Clazz.overrideMethod (c$, "readLong", 
+return ((ch1 << 24) + (ch2 << 16) + (ch3 << 8) + (ch4 << 0));
+});
+$_V(c$, "readLong", 
 function () {
 this.readFully (this.readBuffer, 0, 8);
 return ((this.readBuffer[0] << 56) + ((this.readBuffer[1] & 255) << 48) + ((this.readBuffer[2] & 255) << 40) + ((this.readBuffer[3] & 255) << 32) + ((this.readBuffer[4] & 255) << 24) + ((this.readBuffer[5] & 255) << 16) + ((this.readBuffer[6] & 255) << 8) + ((this.readBuffer[7] & 255) << 0));
 });
-Clazz.overrideMethod (c$, "readFloat", 
+$_V(c$, "readFloat", 
 function () {
 return Float.intBitsToFloat (this.readInt ());
 });
-Clazz.overrideMethod (c$, "readDouble", 
+$_V(c$, "readDouble", 
 function () {
 return Double.longBitsToDouble (this.readLong ());
 });
-Clazz.overrideMethod (c$, "readLine", 
+$_V(c$, "readLine", 
 function () {
 var buf = this.lineBuffer;
 if (buf == null) {
@@ -133,11 +129,11 @@ if ((c == -1) && (offset == 0)) {
 return null;
 }return String.copyValueOf (buf, 0, offset);
 });
-Clazz.overrideMethod (c$, "readUTF", 
+$_V(c$, "readUTF", 
 function () {
 return java.io.DataInputStream.readUTFBytes (this, -1);
 });
-c$.readUTFBytes = Clazz.defineMethod (c$, "readUTFBytes", 
+c$.readUTFBytes = $_M(c$, "readUTFBytes", 
 function ($in, utflen) {
 var isByteArray = (utflen >= 0);
 if (!isByteArray) utflen = $in.readUnsignedShort ();

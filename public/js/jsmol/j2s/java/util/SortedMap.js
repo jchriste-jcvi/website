@@ -1,3 +1,3 @@
-Clazz.load(["java.util.Map"],"java.util.SortedMap",null,function(){
-Clazz.declareInterface(java.util,"SortedMap",java.util.Map);
+$_L(["java.util.Map"],"java.util.SortedMap",null,function(){
+$_I(java.util,"SortedMap",java.util.Map);
 });

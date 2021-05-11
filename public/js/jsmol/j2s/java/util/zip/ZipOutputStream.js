@@ -1,5 +1,5 @@
 Clazz.declarePackage ("java.util.zip");
-Clazz.load (["java.util.zip.DeflaterOutputStream", "$.ZipConstants", "java.util.Hashtable", "java.util.zip.CRC32", "JU.Lst"], "java.util.zip.ZipOutputStream", ["JU.ZStream", "java.io.IOException", "java.lang.Boolean", "$.IllegalArgumentException", "$.IndexOutOfBoundsException", "$.Long", "java.util.zip.Deflater", "$.ZipException"], function () {
+Clazz.load (["java.util.zip.DeflaterOutputStream", "$.ZipConstants", "java.util.Hashtable", "java.util.zip.CRC32", "JU.List"], "java.util.zip.ZipOutputStream", ["JZ.ZStream", "java.io.IOException", "java.lang.Boolean", "$.IllegalArgumentException", "$.IndexOutOfBoundsException", "$.Long", "java.util.zip.Deflater", "$.ZipException"], function () {
 c$ = Clazz.decorateAsClass (function () {
 this.current = null;
 this.xentries = null;
@@ -14,12 +14,12 @@ this.$closed = false;
 Clazz.instantialize (this, arguments);
 }, java.util.zip, "ZipOutputStream", java.util.zip.DeflaterOutputStream, java.util.zip.ZipConstants);
 Clazz.prepareFields (c$, function () {
-this.xentries =  new JU.Lst ();
+this.xentries =  new JU.List ();
 this.names =  new java.util.Hashtable ();
 this.crc =  new java.util.zip.CRC32 ();
 });
-c$.version = Clazz.defineMethod (c$, "version", 
- function (e) {
+c$.version = $_M(c$, "version", 
+($fz = function (e) {
 switch (e.method) {
 case 8:
 return 20;
@@ -28,32 +28,32 @@ return 10;
 default:
 throw  new java.util.zip.ZipException ("unsupported compression method");
 }
-}, "java.util.zip.ZipEntry");
-Clazz.defineMethod (c$, "ensureOpen", 
- function () {
+}, $fz.isPrivate = true, $fz), "java.util.zip.ZipEntry");
+$_M(c$, "ensureOpen", 
+($fz = function () {
 if (this.$closed) {
 throw  new java.io.IOException ("Stream closed");
-}});
+}}, $fz.isPrivate = true, $fz));
 Clazz.makeConstructor (c$, 
 function () {
 Clazz.superConstructor (this, java.util.zip.ZipOutputStream, []);
 });
-Clazz.defineMethod (c$, "setZOS", 
+$_M(c$, "setZOS", 
 function (out) {
 this.setDOS (out, java.util.zip.ZipOutputStream.newDeflater ());
 return this;
 }, "java.io.OutputStream");
-c$.newDeflater = Clazz.defineMethod (c$, "newDeflater", 
- function () {
+c$.newDeflater = $_M(c$, "newDeflater", 
+($fz = function () {
 return ( new java.util.zip.Deflater (2147483647)).init (-1, 0, true);
-});
-Clazz.defineMethod (c$, "setComment", 
+}, $fz.isPrivate = true, $fz));
+$_M(c$, "setComment", 
 function (comment) {
 if (comment != null) {
-this.comment = JU.ZStream.getBytes (comment);
+this.comment = JZ.ZStream.getBytes (comment);
 if (this.comment.length > 0xffff) throw  new IllegalArgumentException ("ZIP file comment too long.");
 }}, "~S");
-Clazz.defineMethod (c$, "putNextEntry", 
+$_M(c$, "putNextEntry", 
 function (e) {
 this.ensureOpen ();
 if (this.current != null) {
@@ -89,7 +89,7 @@ this.current.offset = this.written;
 this.xentries.addLast (this.current);
 this.writeLOC (this.current);
 }, "java.util.zip.ZipEntry");
-Clazz.defineMethod (c$, "closeEntry", 
+$_M(c$, "closeEntry", 
 function () {
 this.ensureOpen ();
 if (this.current != null) {
@@ -125,7 +125,7 @@ throw  new java.util.zip.ZipException ("invalid compression method");
 this.crc.reset ();
 this.current = null;
 }});
-Clazz.defineMethod (c$, "write", 
+$_M(c$, "write", 
 function (b, off, len) {
 this.ensureOpen ();
 if (off < 0 || len < 0 || off > b.length - len) {
@@ -150,7 +150,7 @@ throw  new java.util.zip.ZipException ("invalid compression method");
 }
 this.crc.update (b, off, len);
 }, "~A,~N,~N");
-Clazz.defineMethod (c$, "finish", 
+$_M(c$, "finish", 
 function () {
 this.ensureOpen ();
 if (this.finished) {
@@ -163,14 +163,14 @@ for (var xentry, $xentry = this.xentries.iterator (); $xentry.hasNext () && ((xe
 this.writeEND (off, this.written - off);
 this.finished = true;
 });
-Clazz.defineMethod (c$, "close", 
+$_M(c$, "close", 
 function () {
 if (!this.$closed) {
 Clazz.superCall (this, java.util.zip.ZipOutputStream, "close", []);
 this.$closed = true;
 }});
-Clazz.defineMethod (c$, "writeLOC", 
- function (entry) {
+$_M(c$, "writeLOC", 
+($fz = function (entry) {
 var e = entry;
 var flag = e.flag;
 var elen = (e.extra != null) ? e.extra.length : 0;
@@ -201,7 +201,7 @@ elen += 20;
 } else {
 this.writeInt (e.csize);
 this.writeInt (e.size);
-}}var nameBytes = JU.ZStream.getBytes (e.name);
+}}var nameBytes = JZ.ZStream.getBytes (e.name);
 this.writeShort (nameBytes.length);
 this.writeShort (elen);
 this.writeBytes (nameBytes, 0, nameBytes.length);
@@ -213,9 +213,9 @@ this.writeLong (e.csize);
 }if (e.extra != null) {
 this.writeBytes (e.extra, 0, e.extra.length);
 }this.locoff = this.written;
-}, "java.util.zip.ZipEntry");
-Clazz.defineMethod (c$, "writeEXT", 
- function (e) {
+}, $fz.isPrivate = true, $fz), "java.util.zip.ZipEntry");
+$_M(c$, "writeEXT", 
+($fz = function (e) {
 this.writeInt (134695760);
 this.writeInt (e.crc);
 if (e.csize >= 4294967295 || e.size >= 4294967295) {
@@ -224,9 +224,9 @@ this.writeLong (e.size);
 } else {
 this.writeInt (e.csize);
 this.writeInt (e.size);
-}}, "java.util.zip.ZipEntry");
-Clazz.defineMethod (c$, "writeCEN", 
- function (entry) {
+}}, $fz.isPrivate = true, $fz), "java.util.zip.ZipEntry");
+$_M(c$, "writeCEN", 
+($fz = function (entry) {
 var e = entry;
 var flag = e.flag;
 var version = java.util.zip.ZipOutputStream.version (e);
@@ -260,7 +260,7 @@ this.writeInt (e.time);
 this.writeInt (e.crc);
 this.writeInt (csize);
 this.writeInt (size);
-var nameBytes = JU.ZStream.getBytes (e.name);
+var nameBytes = JZ.ZStream.getBytes (e.name);
 this.writeShort (nameBytes.length);
 if (hasZip64) {
 this.writeShort (e64len + 4 + (e.extra != null ? e.extra.length : 0));
@@ -268,7 +268,7 @@ this.writeShort (e64len + 4 + (e.extra != null ? e.extra.length : 0));
 this.writeShort (e.extra != null ? e.extra.length : 0);
 }var commentBytes;
 if (e.comment != null) {
-commentBytes = JU.ZStream.getBytes (e.comment);
+commentBytes = JZ.ZStream.getBytes (e.comment);
 this.writeShort (Math.min (commentBytes.length, 0xffff));
 } else {
 commentBytes = null;
@@ -288,9 +288,9 @@ if (offset == 4294967295) this.writeLong (entry.offset);
 this.writeBytes (e.extra, 0, e.extra.length);
 }if (commentBytes != null) {
 this.writeBytes (commentBytes, 0, Math.min (commentBytes.length, 0xffff));
-}}, "java.util.zip.ZipEntry");
-Clazz.defineMethod (c$, "writeEND", 
- function (off, len) {
+}}, $fz.isPrivate = true, $fz), "java.util.zip.ZipEntry");
+$_M(c$, "writeEND", 
+($fz = function (off, len) {
 var hasZip64 = false;
 var xlen = len;
 var xoff = off;
@@ -332,17 +332,17 @@ this.writeShort (this.comment.length);
 this.writeBytes (this.comment, 0, this.comment.length);
 } else {
 this.writeShort (0);
-}}, "~N,~N");
-Clazz.defineMethod (c$, "writeShort", 
- function (v) {
+}}, $fz.isPrivate = true, $fz), "~N,~N");
+$_M(c$, "writeShort", 
+($fz = function (v) {
 var out = this.out;
 {
 out.writeByteAsInt((v >>> 0) & 0xff);
 out.writeByteAsInt((v >>> 8) & 0xff);
 }this.written += 2;
-}, "~N");
-Clazz.defineMethod (c$, "writeInt", 
- function (v) {
+}, $fz.isPrivate = true, $fz), "~N");
+$_M(c$, "writeInt", 
+($fz = function (v) {
 var out = this.out;
 {
 out.writeByteAsInt((v >>> 0) & 0xff);
@@ -350,9 +350,9 @@ out.writeByteAsInt((v >>> 8) & 0xff);
 out.writeByteAsInt((v >>> 16) & 0xff);
 out.writeByteAsInt((v >>> 24) & 0xff);
 }this.written += 4;
-}, "~N");
-Clazz.defineMethod (c$, "writeLong", 
- function (v) {
+}, $fz.isPrivate = true, $fz), "~N");
+$_M(c$, "writeLong", 
+($fz = function (v) {
 var out = this.out;
 {
 out.writeByteAsInt((v >>> 0) & 0xff);
@@ -364,12 +364,12 @@ out.writeByteAsInt(0);
 out.writeByteAsInt(0);
 out.writeByteAsInt(0);
 }this.written += 8;
-}, "~N");
-Clazz.defineMethod (c$, "writeBytes", 
- function (b, off, len) {
+}, $fz.isPrivate = true, $fz), "~N");
+$_M(c$, "writeBytes", 
+($fz = function (b, off, len) {
 this.out.write (b, off, len);
 this.written += len;
-}, "~A,~N,~N");
+}, $fz.isPrivate = true, $fz), "~A,~N,~N");
 Clazz.defineStatics (c$,
 "STORED", 0,
 "DEFLATED", 8);

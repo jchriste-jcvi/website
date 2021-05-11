@@ -1,2 +1,2 @@
-Clazz.declareInterface(java.util,"Map");
-Clazz.declareInterface(java.util.Map,"Entry");
+$_I(java.util,"Map");
+$_I(java.util.Map,"Entry");

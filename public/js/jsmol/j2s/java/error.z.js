@@ -1,34 +1,34 @@
-c$=Clazz.decorateAsClass(function(){
+c$=$_C(function(){
 this.detailMessage=null;
 this.cause=null;
 this.stackTrace=null;
-Clazz.instantialize(this,arguments);
+$_Z(this,arguments);
 },java.lang,"Throwable",null,java.io.Serializable);
-Clazz.prepareFields(c$,function(){
+$_Y(c$,function(){
 this.cause=this;
 });
-Clazz.makeConstructor(c$,
+$_K(c$,
 function(){
 this.fillInStackTrace();
 });
-Clazz.makeConstructor(c$,
+$_K(c$,
 function(message){
 this.fillInStackTrace();
 this.detailMessage=message;
 },"~S");
-Clazz.makeConstructor(c$,
+$_K(c$,
 function(message,cause){
 this.fillInStackTrace();
 this.detailMessage=message;
 this.cause=cause;
 },"~S,Throwable");
-Clazz.makeConstructor(c$,
+$_K(c$,
 function(cause){
 this.fillInStackTrace();
 this.detailMessage=(cause==null?null:cause.toString());
 this.cause=cause;
 },"Throwable");
-Clazz.defineMethod(c$,"getMessage",
+$_M(c$,"getMessage",
 function(){
 {
 if(typeof this.message!="undefined"){
@@ -36,28 +36,28 @@ return this.message;
 }
 }return this.detailMessage;
 });
-Clazz.defineMethod(c$,"getLocalizedMessage",
+$_M(c$,"getLocalizedMessage",
 function(){
 return this.getMessage();
 });
-Clazz.defineMethod(c$,"getCause",
+$_M(c$,"getCause",
 function(){
 return(this.cause===this?null:this.cause);
 });
-Clazz.defineMethod(c$,"initCause",
+$_M(c$,"initCause",
 function(cause){
 if(this.cause!==this)throw new IllegalStateException("Can't overwrite cause");
 if(cause===this)throw new IllegalArgumentException("Self-causation not permitted");
 this.cause=cause;
 return this;
 },"Throwable");
-Clazz.overrideMethod(c$,"toString",
+$_V(c$,"toString",
 function(){
 var s=this.getClass().getName();
 var message=this.getLocalizedMessage();
 return(message!=null)?(s+": "+message):s;
 });
-Clazz.defineMethod(c$,"printStackTrace",
+$_M(c$,"printStackTrace",
 function(){
 System.err.println(this);
 for(var i=0;i<this.stackTrace.length;i++){
@@ -70,15 +70,15 @@ System.err.println(t);
 }
 }
 });
-Clazz.defineMethod(c$,"printStackTrace",
+$_M(c$,"printStackTrace",
 function(s){
 this.printStackTrace();
 },"java.io.PrintStream");
-Clazz.defineMethod(c$,"printStackTrace",
+$_M(c$,"printStackTrace",
 function(s){
 this.printStackTrace();
 },"java.io.PrintWriter");
-Clazz.defineMethod(c$,"fillInStackTrace",
+$_M(c$,"fillInStackTrace",
 function(){
 this.stackTrace=new Array();
 var caller=arguments.callee.caller;
@@ -89,7 +89,7 @@ var noLooping=true;
 while(index>-1||caller!=null){
 var clazzName=null;
 var nativeClazz=null;
-if(!noLooping||caller==Clazz.tryToSearchAndExecute||caller==Clazz.superCall||caller==null){
+if(!noLooping||caller==Clazz.tryToSearchAndExecute||caller==$_U||caller==null){
 if(index<0){
 break;
 }
@@ -131,7 +131,7 @@ caller=superCaller.arguments.callee.caller;
 Clazz.initializingException=false;
 return this;
 });
-Clazz.defineMethod(c$,"setStackTrace",
+$_M(c$,"setStackTrace",
 function(stackTrace){
 var defensiveCopy=stackTrace.clone();
 for(var i=0;i<defensiveCopy.length;i++)if(defensiveCopy[i]==null)throw new NullPointerException("stackTrace["+i+"]");
@@ -139,14 +139,14 @@ for(var i=0;i<defensiveCopy.length;i++)if(defensiveCopy[i]==null)throw new NullP
 this.stackTrace=defensiveCopy;
 },"~A");
 
-c$=Clazz.decorateAsClass(function(){
+c$=$_C(function(){
 this.declaringClass=null;
 this.methodName=null;
 this.fileName=null;
 this.lineNumber=0;
-Clazz.instantialize(this,arguments);
+$_Z(this,arguments);
 },java.lang,"StackTraceElement",null,java.io.Serializable);
-Clazz.makeConstructor(c$,
+$_K(c$,
 function(cls,method,file,line){
 if(cls==null||method==null){
 throw new NullPointerException();
@@ -155,9 +155,9 @@ this.methodName=method;
 this.fileName=file;
 this.lineNumber=line;
 },"~S,~S,~S,~N");
-Clazz.overrideMethod(c$,"equals",
+$_V(c$,"equals",
 function(obj){
-if(!(Clazz.instanceOf(obj,StackTraceElement))){
+if(!($_O(obj,StackTraceElement))){
 return false;
 }var castObj=obj;
 if((this.methodName==null)||(castObj.methodName==null)){
@@ -177,33 +177,33 @@ return false;
 return false;
 }return true;
 },"~O");
-Clazz.defineMethod(c$,"getClassName",
+$_M(c$,"getClassName",
 function(){
 return(this.declaringClass==null)?"<unknown class>":this.declaringClass;
 });
-Clazz.defineMethod(c$,"getFileName",
+$_M(c$,"getFileName",
 function(){
 return this.fileName;
 });
-Clazz.defineMethod(c$,"getLineNumber",
+$_M(c$,"getLineNumber",
 function(){
 return this.lineNumber;
 });
-Clazz.defineMethod(c$,"getMethodName",
+$_M(c$,"getMethodName",
 function(){
 return(this.methodName==null)?"<unknown method>":this.methodName;
 });
-Clazz.overrideMethod(c$,"hashCode",
+$_V(c$,"hashCode",
 function(){
 if(this.methodName==null){
 return 0;
 }return this.methodName.hashCode()^this.declaringClass.hashCode();
 });
-Clazz.defineMethod(c$,"isNativeMethod",
+$_M(c$,"isNativeMethod",
 function(){
 return this.lineNumber==-2;
 });
-Clazz.overrideMethod(c$,"toString",
+$_V(c$,"toString",
 function(){
 var buf=new StringBuilder(80);
 buf.append(this.getClassName());
@@ -226,363 +226,363 @@ buf.append(lineNum);
 }}return buf.toString();
 });
 
-c$=Clazz.declareType(java.lang,"Error",Throwable);
+c$=$_T(java.lang,"Error",Throwable);
 
-c$=Clazz.declareType(java.lang,"LinkageError",Error);
+c$=$_T(java.lang,"LinkageError",Error);
 
-c$=Clazz.declareType(java.lang,"IncompatibleClassChangeError",LinkageError);
+c$=$_T(java.lang,"IncompatibleClassChangeError",LinkageError);
 
-c$=Clazz.declareType(java.lang,"AbstractMethodError",IncompatibleClassChangeError);
+c$=$_T(java.lang,"AbstractMethodError",IncompatibleClassChangeError);
 
-c$=Clazz.declareType(java.lang,"AssertionError",Error);
-Clazz.makeConstructor(c$,
+c$=$_T(java.lang,"AssertionError",Error);
+$_K(c$,
 function(detailMessage){
-Clazz.superConstructor(this,AssertionError,[String.valueOf(detailMessage),(Clazz.instanceOf(detailMessage,Throwable)?detailMessage:null)]);
+$_R(this,AssertionError,[String.valueOf(detailMessage),($_O(detailMessage,Throwable)?detailMessage:null)]);
 },"~O");
-Clazz.makeConstructor(c$,
+$_K(c$,
 function(detailMessage){
 this.construct(String.valueOf(detailMessage));
 },"~B");
-Clazz.makeConstructor(c$,
+$_K(c$,
 function(detailMessage){
 this.construct(String.valueOf(detailMessage));
 },"~N");
-Clazz.makeConstructor(c$,
+$_K(c$,
 function(detailMessage){
 this.construct(Integer.toString(detailMessage));
 },"~N");
-Clazz.makeConstructor(c$,
+$_K(c$,
 function(detailMessage){
 this.construct(Long.toString(detailMessage));
 },"~N");
-Clazz.makeConstructor(c$,
+$_K(c$,
 function(detailMessage){
 this.construct(Float.toString(detailMessage));
 },"~N");
-Clazz.makeConstructor(c$,
+$_K(c$,
 function(detailMessage){
 this.construct(Double.toString(detailMessage));
 },"~N");
 
-c$=Clazz.declareType(java.lang,"ClassCircularityError",LinkageError);
+c$=$_T(java.lang,"ClassCircularityError",LinkageError);
 
-c$=Clazz.declareType(java.lang,"ClassFormatError",LinkageError);
+c$=$_T(java.lang,"ClassFormatError",LinkageError);
 
-c$=Clazz.decorateAsClass(function(){
+c$=$_C(function(){
 this.exception=null;
-Clazz.instantialize(this,arguments);
+$_Z(this,arguments);
 },java.lang,"ExceptionInInitializerError",LinkageError);
-Clazz.makeConstructor(c$,
+$_K(c$,
 function(){
-Clazz.superConstructor(this,ExceptionInInitializerError);
+$_R(this,ExceptionInInitializerError);
 this.initCause(null);
 });
-Clazz.makeConstructor(c$,
+$_K(c$,
 function(detailMessage){
-Clazz.superConstructor(this,ExceptionInInitializerError,[detailMessage]);
+$_R(this,ExceptionInInitializerError,[detailMessage]);
 this.initCause(null);
 },"~S");
-Clazz.makeConstructor(c$,
+$_K(c$,
 function(exception){
-Clazz.superConstructor(this,ExceptionInInitializerError);
+$_R(this,ExceptionInInitializerError);
 this.exception=exception;
 this.initCause(exception);
 },"Throwable");
-Clazz.defineMethod(c$,"getException",
+$_M(c$,"getException",
 function(){
 return this.exception;
 });
-Clazz.overrideMethod(c$,"getCause",
+$_V(c$,"getCause",
 function(){
 return this.exception;
 });
 
-c$=Clazz.declareType(java.lang,"IllegalAccessError",IncompatibleClassChangeError);
+c$=$_T(java.lang,"IllegalAccessError",IncompatibleClassChangeError);
 
-c$=Clazz.declareType(java.lang,"InstantiationError",IncompatibleClassChangeError);
+c$=$_T(java.lang,"InstantiationError",IncompatibleClassChangeError);
 
-c$=Clazz.declareType(java.lang,"VirtualMachineError",Error);
+c$=$_T(java.lang,"VirtualMachineError",Error);
 
-c$=Clazz.declareType(java.lang,"InternalError",VirtualMachineError);
+c$=$_T(java.lang,"InternalError",VirtualMachineError);
 
-c$=Clazz.declareType(java.lang,"NoClassDefFoundError",LinkageError);
+c$=$_T(java.lang,"NoClassDefFoundError",LinkageError);
 
-c$=Clazz.declareType(java.lang,"NoSuchFieldError",IncompatibleClassChangeError);
+c$=$_T(java.lang,"NoSuchFieldError",IncompatibleClassChangeError);
 
-c$=Clazz.declareType(java.lang,"NoSuchMethodError",IncompatibleClassChangeError);
+c$=$_T(java.lang,"NoSuchMethodError",IncompatibleClassChangeError);
 
-c$=Clazz.declareType(java.lang,"OutOfMemoryError",VirtualMachineError);
+c$=$_T(java.lang,"OutOfMemoryError",VirtualMachineError);
 
-c$=Clazz.declareType(java.lang,"StackOverflowError",VirtualMachineError);
+c$=$_T(java.lang,"StackOverflowError",VirtualMachineError);
 
-c$=Clazz.declareType(java.lang,"UnknownError",VirtualMachineError);
+c$=$_T(java.lang,"UnknownError",VirtualMachineError);
 
-c$=Clazz.declareType(java.lang,"UnsatisfiedLinkError",LinkageError);
+c$=$_T(java.lang,"UnsatisfiedLinkError",LinkageError);
 
-c$=Clazz.declareType(java.lang,"UnsupportedClassVersionError",ClassFormatError);
+c$=$_T(java.lang,"UnsupportedClassVersionError",ClassFormatError);
 
-c$=Clazz.declareType(java.lang,"VerifyError",LinkageError);
+c$=$_T(java.lang,"VerifyError",LinkageError);
 
-c$=Clazz.declareType(java.lang,"ThreadDeath",Error);
-Clazz.makeConstructor(c$,
+c$=$_T(java.lang,"ThreadDeath",Error);
+$_K(c$,
 function(){
-Clazz.superConstructor(this,ThreadDeath,[]);
+$_R(this,ThreadDeath,[]);
 });
 
-c$=Clazz.declareType(java.lang,"Exception",Throwable);
+c$=$_T(java.lang,"Exception",Throwable);
 
-c$=Clazz.declareType(java.lang,"RuntimeException",Exception);
+c$=$_T(java.lang,"RuntimeException",Exception);
 
-c$=Clazz.declareType(java.lang,"ArithmeticException",RuntimeException);
+c$=$_T(java.lang,"ArithmeticException",RuntimeException);
 
-c$=Clazz.declareType(java.lang,"IndexOutOfBoundsException",RuntimeException);
+c$=$_T(java.lang,"IndexOutOfBoundsException",RuntimeException);
 
-c$=Clazz.declareType(java.lang,"ArrayIndexOutOfBoundsException",IndexOutOfBoundsException);
-Clazz.makeConstructor(c$,
+c$=$_T(java.lang,"ArrayIndexOutOfBoundsException",IndexOutOfBoundsException);
+$_K(c$,
 function(index){
-Clazz.superConstructor(this,ArrayIndexOutOfBoundsException,["Array index out of range: "+index]);
+$_R(this,ArrayIndexOutOfBoundsException,["Array index out of range: "+index]);
 },"~N");
 
-c$=Clazz.declareType(java.lang,"ArrayStoreException",RuntimeException);
+c$=$_T(java.lang,"ArrayStoreException",RuntimeException);
 
-c$=Clazz.declareType(java.lang,"ClassCastException",RuntimeException);
+c$=$_T(java.lang,"ClassCastException",RuntimeException);
 
-c$=Clazz.decorateAsClass(function(){
+c$=$_C(function(){
 this.ex=null;
-Clazz.instantialize(this,arguments);
+$_Z(this,arguments);
 },java.lang,"ClassNotFoundException",Exception);
-Clazz.makeConstructor(c$,
+$_K(c$,
 function(){
-Clazz.superConstructor(this,ClassNotFoundException,[Clazz.castNullAs("Throwable")]);
+$_R(this,ClassNotFoundException,[Clazz.castNullAs("Throwable")]);
 });
-Clazz.makeConstructor(c$,
+$_K(c$,
 function(detailMessage){
-Clazz.superConstructor(this,ClassNotFoundException,[detailMessage,null]);
+$_R(this,ClassNotFoundException,[detailMessage,null]);
 },"~S");
-Clazz.makeConstructor(c$,
+$_K(c$,
 function(detailMessage,exception){
-Clazz.superConstructor(this,ClassNotFoundException,[detailMessage]);
+$_R(this,ClassNotFoundException,[detailMessage]);
 this.ex=exception;
 },"~S,Throwable");
-Clazz.defineMethod(c$,"getException",
+$_M(c$,"getException",
 function(){
 return this.ex;
 });
-Clazz.overrideMethod(c$,"getCause",
+$_V(c$,"getCause",
 function(){
 return this.ex;
 });
 
-c$=Clazz.declareType(java.lang,"CloneNotSupportedException",Exception);
+c$=$_T(java.lang,"CloneNotSupportedException",Exception);
 
-c$=Clazz.declareType(java.lang,"IllegalAccessException",Exception);
+c$=$_T(java.lang,"IllegalAccessException",Exception);
 
-c$=Clazz.declareType(java.lang,"IllegalArgumentException",RuntimeException);
-Clazz.makeConstructor(c$,
+c$=$_T(java.lang,"IllegalArgumentException",RuntimeException);
+$_K(c$,
 function(cause){
-Clazz.superConstructor(this,IllegalArgumentException,[(cause==null?null:cause.toString()),cause]);
+$_R(this,IllegalArgumentException,[(cause==null?null:cause.toString()),cause]);
 },"Throwable");
 
-c$=Clazz.declareType(java.lang,"IllegalMonitorStateException",RuntimeException);
+c$=$_T(java.lang,"IllegalMonitorStateException",RuntimeException);
 
-c$=Clazz.declareType(java.lang,"IllegalStateException",RuntimeException);
-Clazz.makeConstructor(c$,
+c$=$_T(java.lang,"IllegalStateException",RuntimeException);
+$_K(c$,
 function(cause){
-Clazz.superConstructor(this,IllegalStateException,[(cause==null?null:cause.toString()),cause]);
+$_R(this,IllegalStateException,[(cause==null?null:cause.toString()),cause]);
 },"Throwable");
 
-c$=Clazz.declareType(java.lang,"IllegalThreadStateException",IllegalArgumentException);
+c$=$_T(java.lang,"IllegalThreadStateException",IllegalArgumentException);
 
-c$=Clazz.declareType(java.lang,"InstantiationException",Exception);
+c$=$_T(java.lang,"InstantiationException",Exception);
 
-c$=Clazz.declareType(java.lang,"InterruptedException",Exception);
+c$=$_T(java.lang,"InterruptedException",Exception);
 
-c$=Clazz.declareType(java.lang,"NegativeArraySizeException",RuntimeException);
+c$=$_T(java.lang,"NegativeArraySizeException",RuntimeException);
 
-c$=Clazz.declareType(java.lang,"NoSuchFieldException",Exception);
+c$=$_T(java.lang,"NoSuchFieldException",Exception);
 
-c$=Clazz.declareType(java.lang,"NoSuchMethodException",Exception);
+c$=$_T(java.lang,"NoSuchMethodException",Exception);
 
-c$=Clazz.declareType(java.lang,"NullPointerException",RuntimeException);
+c$=$_T(java.lang,"NullPointerException",RuntimeException);
 
-c$=Clazz.declareType(java.lang,"NumberFormatException",IllegalArgumentException);
+c$=$_T(java.lang,"NumberFormatException",IllegalArgumentException);
 
-c$=Clazz.declareType(java.lang,"SecurityException",RuntimeException);
-Clazz.makeConstructor(c$,
+c$=$_T(java.lang,"SecurityException",RuntimeException);
+$_K(c$,
 function(cause){
-Clazz.superConstructor(this,SecurityException,[(cause==null?null:cause.toString()),cause]);
+$_R(this,SecurityException,[(cause==null?null:cause.toString()),cause]);
 },"Throwable");
 
-c$=Clazz.declareType(java.lang,"StringIndexOutOfBoundsException",IndexOutOfBoundsException);
-Clazz.makeConstructor(c$,
+c$=$_T(java.lang,"StringIndexOutOfBoundsException",IndexOutOfBoundsException);
+$_K(c$,
 function(index){
-Clazz.superConstructor(this,StringIndexOutOfBoundsException,["String index out of range: "+index]);
+$_R(this,StringIndexOutOfBoundsException,["String index out of range: "+index]);
 },"~N");
 
-c$=Clazz.declareType(java.lang,"UnsupportedOperationException",RuntimeException);
-Clazz.makeConstructor(c$,
+c$=$_T(java.lang,"UnsupportedOperationException",RuntimeException);
+$_K(c$,
 function(){
-Clazz.superConstructor(this,UnsupportedOperationException,[]);
+$_R(this,UnsupportedOperationException,[]);
 });
-Clazz.makeConstructor(c$,
+$_K(c$,
 function(cause){
-Clazz.superConstructor(this,UnsupportedOperationException,[(cause==null?null:cause.toString()),cause]);
+$_R(this,UnsupportedOperationException,[(cause==null?null:cause.toString()),cause]);
 },"Throwable");
 
-c$=Clazz.decorateAsClass(function(){
+c$=$_C(function(){
 this.target=null;
-Clazz.instantialize(this,arguments);
+$_Z(this,arguments);
 },java.lang.reflect,"InvocationTargetException",Exception);
-Clazz.makeConstructor(c$,
+$_K(c$,
 function(){
-Clazz.superConstructor(this,java.lang.reflect.InvocationTargetException,[Clazz.castNullAs("Throwable")]);
+$_R(this,java.lang.reflect.InvocationTargetException,[Clazz.castNullAs("Throwable")]);
 });
-Clazz.makeConstructor(c$,
+$_K(c$,
 function(exception){
-Clazz.superConstructor(this,java.lang.reflect.InvocationTargetException,[null,exception]);
+$_R(this,java.lang.reflect.InvocationTargetException,[null,exception]);
 this.target=exception;
 },"Throwable");
-Clazz.makeConstructor(c$,
+$_K(c$,
 function(exception,detailMessage){
-Clazz.superConstructor(this,java.lang.reflect.InvocationTargetException,[detailMessage,exception]);
+$_R(this,java.lang.reflect.InvocationTargetException,[detailMessage,exception]);
 this.target=exception;
 },"Throwable,~S");
-Clazz.defineMethod(c$,"getTargetException",
+$_M(c$,"getTargetException",
 function(){
 return this.target;
 });
-Clazz.overrideMethod(c$,"getCause",
+$_V(c$,"getCause",
 function(){
 return this.target;
 });
 
-c$=Clazz.decorateAsClass(function(){
+c$=$_C(function(){
 this.undeclaredThrowable=null;
-Clazz.instantialize(this,arguments);
+$_Z(this,arguments);
 },java.lang.reflect,"UndeclaredThrowableException",RuntimeException);
-Clazz.makeConstructor(c$,
+$_K(c$,
 function(exception){
-Clazz.superConstructor(this,java.lang.reflect.UndeclaredThrowableException);
+$_R(this,java.lang.reflect.UndeclaredThrowableException);
 this.undeclaredThrowable=exception;
 this.initCause(exception);
 },"Throwable");
-Clazz.makeConstructor(c$,
+$_K(c$,
 function(exception,detailMessage){
-Clazz.superConstructor(this,java.lang.reflect.UndeclaredThrowableException,[detailMessage]);
+$_R(this,java.lang.reflect.UndeclaredThrowableException,[detailMessage]);
 this.undeclaredThrowable=exception;
 this.initCause(exception);
 },"Throwable,~S");
-Clazz.defineMethod(c$,"getUndeclaredThrowable",
+$_M(c$,"getUndeclaredThrowable",
 function(){
 return this.undeclaredThrowable;
 });
-Clazz.overrideMethod(c$,"getCause",
+$_V(c$,"getCause",
 function(){
 return this.undeclaredThrowable;
 });
 
-c$=Clazz.declareType(java.io,"IOException",Exception);
+c$=$_T(java.io,"IOException",Exception);
 
-c$=Clazz.declareType(java.io,"CharConversionException",java.io.IOException);
+c$=$_T(java.io,"CharConversionException",java.io.IOException);
 
-c$=Clazz.declareType(java.io,"EOFException",java.io.IOException);
+c$=$_T(java.io,"EOFException",java.io.IOException);
 
-c$=Clazz.declareType(java.io,"FileNotFoundException",java.io.IOException);
+c$=$_T(java.io,"FileNotFoundException",java.io.IOException);
 
-c$=Clazz.decorateAsClass(function(){
+c$=$_C(function(){
 this.bytesTransferred=0;
-Clazz.instantialize(this,arguments);
+$_Z(this,arguments);
 },java.io,"InterruptedIOException",java.io.IOException);
 
-c$=Clazz.declareType(java.io,"ObjectStreamException",java.io.IOException);
+c$=$_T(java.io,"ObjectStreamException",java.io.IOException);
 
-c$=Clazz.decorateAsClass(function(){
+c$=$_C(function(){
 this.classname=null;
-Clazz.instantialize(this,arguments);
+$_Z(this,arguments);
 },java.io,"InvalidClassException",java.io.ObjectStreamException);
-Clazz.makeConstructor(c$,
+$_K(c$,
 function(className,detailMessage){
-Clazz.superConstructor(this,java.io.InvalidClassException,[detailMessage]);
+$_R(this,java.io.InvalidClassException,[detailMessage]);
 this.classname=className;
 },"~S,~S");
-Clazz.defineMethod(c$,"getMessage",
+$_M(c$,"getMessage",
 function(){
-var msg=Clazz.superCall(this,java.io.InvalidClassException,"getMessage",[]);
+var msg=$_U(this,java.io.InvalidClassException,"getMessage",[]);
 if(this.classname!=null){
 msg=this.classname+';' + ' '+msg;
 }return msg;
 });
 
-c$=Clazz.declareType(java.io,"InvalidObjectException",java.io.ObjectStreamException);
+c$=$_T(java.io,"InvalidObjectException",java.io.ObjectStreamException);
 
-c$=Clazz.declareType(java.io,"NotActiveException",java.io.ObjectStreamException);
+c$=$_T(java.io,"NotActiveException",java.io.ObjectStreamException);
 
-c$=Clazz.declareType(java.io,"NotSerializableException",java.io.ObjectStreamException);
+c$=$_T(java.io,"NotSerializableException",java.io.ObjectStreamException);
 
-c$=Clazz.decorateAsClass(function(){
+c$=$_C(function(){
 this.eof=false;
 this.length=0;
-Clazz.instantialize(this,arguments);
+$_Z(this,arguments);
 },java.io,"OptionalDataException",java.io.ObjectStreamException);
 
-c$=Clazz.declareType(java.io,"StreamCorruptedException",java.io.ObjectStreamException);
+c$=$_T(java.io,"StreamCorruptedException",java.io.ObjectStreamException);
 
-c$=Clazz.declareType(java.io,"SyncFailedException",java.io.IOException);
+c$=$_T(java.io,"SyncFailedException",java.io.IOException);
 
-c$=Clazz.declareType(java.io,"UnsupportedEncodingException",java.io.IOException);
+c$=$_T(java.io,"UnsupportedEncodingException",java.io.IOException);
 
-c$=Clazz.declareType(java.io,"UTFDataFormatException",java.io.IOException);
+c$=$_T(java.io,"UTFDataFormatException",java.io.IOException);
 
-c$=Clazz.decorateAsClass(function(){
+c$=$_C(function(){
 this.detail=null;
-Clazz.instantialize(this,arguments);
+$_Z(this,arguments);
 },java.io,"WriteAbortedException",java.io.ObjectStreamException);
-Clazz.makeConstructor(c$,
+$_K(c$,
 function(detailMessage,rootCause){
-Clazz.superConstructor(this,java.io.WriteAbortedException,[detailMessage]);
+$_R(this,java.io.WriteAbortedException,[detailMessage]);
 this.detail=rootCause;
 this.initCause(rootCause);
 },"~S,Exception");
-Clazz.defineMethod(c$,"getMessage",
+$_M(c$,"getMessage",
 function(){
-var msg=Clazz.superCall(this,java.io.WriteAbortedException,"getMessage",[]);
+var msg=$_U(this,java.io.WriteAbortedException,"getMessage",[]);
 if(this.detail!=null){
 msg=msg+"; "+this.detail.toString();
 }return msg;
 });
-Clazz.overrideMethod(c$,"getCause",
+$_V(c$,"getCause",
 function(){
 return this.detail;
 });
 
-c$=Clazz.declareType(java.util,"ConcurrentModificationException",RuntimeException);
-Clazz.makeConstructor(c$,
+c$=$_T(java.util,"ConcurrentModificationException",RuntimeException);
+$_K(c$,
 function(){
-Clazz.superConstructor(this,java.util.ConcurrentModificationException,[]);
+$_R(this,java.util.ConcurrentModificationException,[]);
 });
 
-c$=Clazz.declareType(java.util,"EmptyStackException",RuntimeException);
+c$=$_T(java.util,"EmptyStackException",RuntimeException);
 
-c$=Clazz.decorateAsClass(function(){
+c$=$_C(function(){
 this.className=null;
 this.key=null;
-Clazz.instantialize(this,arguments);
+$_Z(this,arguments);
 },java.util,"MissingResourceException",RuntimeException);
-Clazz.makeConstructor(c$,
+$_K(c$,
 function(detailMessage,className,resourceName){
-Clazz.superConstructor(this,java.util.MissingResourceException,[detailMessage]);
+$_R(this,java.util.MissingResourceException,[detailMessage]);
 this.className=className;
 this.key=resourceName;
 },"~S,~S,~S");
-Clazz.defineMethod(c$,"getClassName",
+$_M(c$,"getClassName",
 function(){
 return this.className;
 });
-Clazz.defineMethod(c$,"getKey",
+$_M(c$,"getKey",
 function(){
 return this.key;
 });
 
-c$=Clazz.declareType(java.util,"NoSuchElementException",RuntimeException);
+c$=$_T(java.util,"NoSuchElementException",RuntimeException);
 
-c$=Clazz.declareType(java.util,"TooManyListenersException",Exception);
+c$=$_T(java.util,"TooManyListenersException",Exception);

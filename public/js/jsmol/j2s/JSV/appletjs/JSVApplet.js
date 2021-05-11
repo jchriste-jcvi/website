@@ -1,5 +1,5 @@
 Clazz.declarePackage ("JSV.appletjs");
-Clazz.load (["javajs.api.JSInterface", "JSV.api.AppletFrame", "$.JSVAppletInterface"], "JSV.appletjs.JSVApplet", ["java.lang.Boolean", "java.net.URL", "java.util.Hashtable", "JU.PT", "JSV.app.JSVApp", "JSV.js2d.JsMainPanel", "$.JsPanel", "JU.Logger"], function () {
+Clazz.load (["JSV.api.AppletFrame", "$.JSVAppletInterface"], "JSV.appletjs.JSVApplet", ["java.lang.Boolean", "java.net.URL", "java.util.Hashtable", "JU.PT", "JSV.app.JSVApp", "JSV.common.JSVersion", "JSV.js2d.JsPanel", "$.JsViewPanel", "J.util.Logger"], function () {
 c$ = Clazz.decorateAsClass (function () {
 this.app = null;
 this.viewer = null;
@@ -7,7 +7,7 @@ this.isStandalone = false;
 this.viewerOptions = null;
 this.htParams = null;
 Clazz.instantialize (this, arguments);
-}, JSV.appletjs, "JSVApplet", null, [JSV.api.JSVAppletInterface, JSV.api.AppletFrame, javajs.api.JSInterface]);
+}, JSV.appletjs, "JSVApplet", null, [JSV.api.JSVAppletInterface, JSV.api.AppletFrame]);
 Clazz.makeConstructor (c$, 
 function (viewerOptions) {
 if (viewerOptions == null) viewerOptions =  new java.util.Hashtable ();
@@ -17,177 +17,169 @@ for (var entry, $entry = viewerOptions.entrySet ().iterator (); $entry.hasNext (
 
 this.init ();
 }, "java.util.Map");
-Clazz.defineMethod (c$, "init", 
+$_M(c$, "init", 
 function () {
 this.app =  new JSV.app.JSVApp (this, true);
 this.initViewer ();
-if (this.app.appletReadyCallbackFunctionName != null && this.viewer.fullName != null) this.callToJavaScript (this.app.appletReadyCallbackFunctionName,  Clazz.newArray (-1, [this.viewer.appletName, this.viewer.fullName, Boolean.TRUE, this]));
+if (this.app.appletReadyCallbackFunctionName != null && this.viewer.fullName != null) this.callToJavaScript (this.app.appletReadyCallbackFunctionName, [this.viewer.appletID, this.viewer.fullName, Boolean.TRUE, this]);
 });
-Clazz.defineMethod (c$, "initViewer", 
+$_M(c$, "initViewer", 
 function () {
-this.viewer = this.app.vwr;
+this.viewer = this.app.viewer;
 this.setLogging ();
 this.viewerOptions.remove ("debug");
 var o = this.viewerOptions.get ("display");
 {
 o = document.getElementById(o);
 }this.viewer.setDisplay (o);
-JU.Logger.info (this.getAppletInfo ());
+J.util.Logger.info (this.getAppletInfo ());
 });
-Clazz.defineMethod (c$, "setLogging", 
- function () {
+$_M(c$, "setLogging", 
+($fz = function () {
 var iLevel = (this.getValue ("logLevel", (this.getBooleanValue ("debug", false) ? "5" : "4"))).charCodeAt (0) - 48;
 if (iLevel != 4) System.out.println ("setting logLevel=" + iLevel + " -- To change, use script \"set logLevel [0-5]\"");
-JU.Logger.setLogLevel (iLevel);
-});
-Clazz.defineMethod (c$, "getParameter", 
+J.util.Logger.setLogLevel (iLevel);
+}, $fz.isPrivate = true, $fz));
+$_M(c$, "getParameter", 
 function (paramName) {
 var o = this.htParams.get (paramName.toLowerCase ());
 return (o == null ? null :  String.instantialize (o.toString ()));
 }, "~S");
-Clazz.defineMethod (c$, "getBooleanValue", 
- function (propertyName, defaultValue) {
+$_M(c$, "getBooleanValue", 
+($fz = function (propertyName, defaultValue) {
 var value = this.getValue (propertyName, defaultValue ? "true" : "");
 return (value.equalsIgnoreCase ("true") || value.equalsIgnoreCase ("on") || value.equalsIgnoreCase ("yes"));
-}, "~S,~B");
-Clazz.defineMethod (c$, "getValue", 
- function (propertyName, defaultValue) {
+}, $fz.isPrivate = true, $fz), "~S,~B");
+$_M(c$, "getValue", 
+($fz = function (propertyName, defaultValue) {
 var stringValue = this.getParameter (propertyName);
 System.out.println ("getValue " + propertyName + " = " + stringValue);
 if (stringValue != null) return stringValue;
 return defaultValue;
-}, "~S,~S");
-Clazz.overrideMethod (c$, "isPro", 
+}, $fz.isPrivate = true, $fz), "~S,~S");
+$_V(c$, "isPro", 
 function () {
 return this.app.isPro ();
 });
-Clazz.overrideMethod (c$, "isSigned", 
+$_V(c$, "isSigned", 
 function () {
 return this.app.isSigned ();
 });
-Clazz.overrideMethod (c$, "finalize", 
+$_V(c$, "finalize", 
 function () {
 System.out.println ("JSpecView " + this + " finalized");
 });
-Clazz.overrideMethod (c$, "destroy", 
+$_M(c$, "destroy", 
 function () {
 this.app.dispose ();
 this.app = null;
 });
-Clazz.defineMethod (c$, "getParameter", 
+$_M(c$, "getParameter", 
 function (key, def) {
 return this.isStandalone ? System.getProperty (key, def) : (this.getParameter (key) != null ? this.getParameter (key) : def);
 }, "~S,~S");
-Clazz.overrideMethod (c$, "getAppletInfo", 
+$_V(c$, "getAppletInfo", 
 function () {
-return JSV.app.JSVApp.getAppletInfo ();
+return "JSpecView Applet " + JSV.common.JSVersion.VERSION;
 });
-Clazz.overrideMethod (c$, "getSolnColour", 
+$_V(c$, "getSolnColour", 
 function () {
 return this.app.getSolnColour ();
 });
-Clazz.overrideMethod (c$, "getCoordinate", 
+$_V(c$, "getCoordinate", 
 function () {
 return this.app.getCoordinate ();
 });
-Clazz.overrideMethod (c$, "loadInline", 
+$_V(c$, "loadInline", 
 function (data) {
 this.app.loadInline (data);
 }, "~S");
-Clazz.defineMethod (c$, "$export", 
+$_M(c$, "$export", 
 function (type, n) {
 return this.app.exportSpectrum (type, n);
 }, "~S,~N");
-Clazz.overrideMethod (c$, "exportSpectrum", 
+$_V(c$, "exportSpectrum", 
 function (type, n) {
 return this.app.exportSpectrum (type, n);
 }, "~S,~N");
-Clazz.overrideMethod (c$, "setFilePath", 
+$_V(c$, "setFilePath", 
 function (tmpFilePath) {
 this.app.setFilePath (tmpFilePath);
 }, "~S");
-Clazz.overrideMethod (c$, "setSpectrumNumber", 
+$_V(c$, "setSpectrumNumber", 
 function (i) {
 this.app.setSpectrumNumber (i);
 }, "~N");
-Clazz.overrideMethod (c$, "toggleGrid", 
+$_V(c$, "toggleGrid", 
 function () {
 this.app.toggleGrid ();
 });
-Clazz.overrideMethod (c$, "toggleCoordinate", 
+$_V(c$, "toggleCoordinate", 
 function () {
 this.app.toggleCoordinate ();
 });
-Clazz.overrideMethod (c$, "togglePointsOnly", 
-function () {
-this.app.togglePointsOnly ();
-});
-Clazz.overrideMethod (c$, "toggleIntegration", 
+$_V(c$, "toggleIntegration", 
 function () {
 this.app.toggleIntegration ();
 });
-Clazz.overrideMethod (c$, "addHighlight", 
+$_V(c$, "addHighlight", 
 function (x1, x2, r, g, b, a) {
 this.app.addHighlight (x1, x2, r, g, b, a);
 }, "~N,~N,~N,~N,~N,~N");
-Clazz.overrideMethod (c$, "removeAllHighlights", 
+$_V(c$, "removeAllHighlights", 
 function () {
 this.app.removeAllHighlights ();
 });
-Clazz.overrideMethod (c$, "removeHighlight", 
+$_V(c$, "removeHighlight", 
 function (x1, x2) {
 this.app.removeHighlight (x1, x2);
 }, "~N,~N");
-Clazz.overrideMethod (c$, "reversePlot", 
+$_V(c$, "reversePlot", 
 function () {
 this.app.reversePlot ();
 });
-Clazz.defineMethod (c$, "script", 
+$_M(c$, "script", 
 function (script) {
 this.app.initParams (script);
 }, "~S");
-Clazz.overrideMethod (c$, "runScript", 
+$_V(c$, "runScript", 
 function (script) {
 this.app.runScript (script);
 }, "~S");
-Clazz.overrideMethod (c$, "syncScript", 
+$_V(c$, "syncScript", 
 function (peakScript) {
 this.app.syncScript (peakScript);
 }, "~S");
-Clazz.overrideMethod (c$, "writeStatus", 
+$_V(c$, "writeStatus", 
 function (msg) {
 this.app.writeStatus (msg);
 }, "~S");
-Clazz.overrideMethod (c$, "getPropertyAsJavaObject", 
+$_V(c$, "getPropertyAsJavaObject", 
 function (key) {
 return this.app.getPropertyAsJavaObject (key);
 }, "~S");
-Clazz.overrideMethod (c$, "getPropertyAsJSON", 
+$_V(c$, "getPropertyAsJSON", 
 function (key) {
 return this.app.getPropertyAsJSON (key);
 }, "~S");
-Clazz.overrideMethod (c$, "runScriptNow", 
+$_V(c$, "runScriptNow", 
 function (script) {
 return this.app.runScriptNow (script);
 }, "~S");
-Clazz.overrideMethod (c$, "print", 
-function (fileName) {
-return this.app.print (fileName);
-}, "~S");
-Clazz.overrideMethod (c$, "setDropTargetListener", 
+$_V(c$, "setDropTargetListener", 
 function (isSigned, viewer) {
 }, "~B,JSV.common.JSViewer");
-Clazz.overrideMethod (c$, "validateContent", 
+$_V(c$, "validateContent", 
 function (mode) {
 }, "~N");
-Clazz.overrideMethod (c$, "createMainPanel", 
+$_V(c$, "addNewPanel", 
 function (viewer) {
-viewer.mainPanel =  new JSV.js2d.JsMainPanel ();
+viewer.viewPanel =  new JSV.js2d.JsViewPanel ();
 }, "JSV.common.JSViewer");
-Clazz.overrideMethod (c$, "newWindow", 
+$_V(c$, "newWindow", 
 function (isSelected) {
 }, "~B");
-Clazz.overrideMethod (c$, "callToJavaScript", 
+$_V(c$, "callToJavaScript", 
 function (callback, data) {
 var tokens = JU.PT.split (callback, ".");
 {
@@ -201,17 +193,17 @@ return o(data[0],data[1],data[2],data[3],data[4],data[5],data[6],data[7],data[8]
 System.out.println(callback + " failed " + e);
 }
 }}, "~S,~A");
-Clazz.overrideMethod (c$, "setPanelVisible", 
+$_V(c$, "setPanelVisible", 
 function (b) {
 }, "~B");
-Clazz.overrideMethod (c$, "getJSVPanel", 
-function (viewer, specs) {
-return (specs == null ? JSV.js2d.JsPanel.getEmptyPanel (viewer) : JSV.js2d.JsPanel.getPanelMany (viewer, specs));
-}, "JSV.common.JSViewer,JU.Lst");
-Clazz.overrideMethod (c$, "setVisible", 
+$_V(c$, "getJSVPanel", 
+function (viewer, specs, initialStartIndex, initialEndIndex) {
+return JSV.js2d.JsPanel.getPanelMany (viewer, specs, initialStartIndex, initialEndIndex);
+}, "JSV.common.JSViewer,JU.List,~N,~N");
+$_V(c$, "setVisible", 
 function (b) {
 }, "~B");
-Clazz.overrideMethod (c$, "getDocumentBase", 
+$_V(c$, "getDocumentBase", 
 function () {
 try {
 return  new java.net.URL (Clazz.castNullAs ("java.net.URL"), this.viewerOptions.get ("documentBase"), null);
@@ -223,70 +215,17 @@ throw e;
 }
 }
 });
-Clazz.overrideMethod (c$, "repaint", 
+$_V(c$, "repaint", 
 function () {
 });
-Clazz.overrideMethod (c$, "validate", 
+$_V(c$, "validate", 
 function () {
 });
-Clazz.overrideMethod (c$, "doExitJmol", 
+$_V(c$, "doExitJmol", 
 function () {
 });
-Clazz.overrideMethod (c$, "getApp", 
+$_V(c$, "getApp", 
 function () {
 return this.app;
 });
-Clazz.overrideMethod (c$, "setStatusDragDropped", 
-function (mode, x, y, fileName) {
-return true;
-}, "~N,~N,~N,~S");
-Clazz.overrideMethod (c$, "cacheFileByName", 
-function (fileName, isAdd) {
-return 0;
-}, "~S,~B");
-Clazz.overrideMethod (c$, "cachePut", 
-function (key, data) {
-}, "~S,~O");
-Clazz.overrideMethod (c$, "getFullName", 
-function () {
-return this.app.vwr.fullName;
-});
-Clazz.overrideMethod (c$, "processMouseEvent", 
-function (id, x, y, modifiers, time) {
-return this.app.vwr.processMouseEvent (id, x, y, modifiers, time);
-}, "~N,~N,~N,~N,~N");
-Clazz.overrideMethod (c$, "setDisplay", 
-function (canvas) {
-this.app.vwr.setDisplay (canvas);
-}, "~O");
-Clazz.overrideMethod (c$, "startHoverWatcher", 
-function (enable) {
-}, "~B");
-Clazz.overrideMethod (c$, "update", 
-function () {
-this.app.vwr.updateJS ();
-});
-Clazz.defineMethod (c$, "openFile", 
-function (fileName) {
-this.app.vwr.openFile (fileName, true);
-return null;
-}, "~S");
-Clazz.overrideMethod (c$, "openFileAsyncSpecial", 
-function (fileName, flags) {
-this.app.vwr.openFileAsyncSpecial (fileName, flags);
-}, "~S,~N");
-Clazz.overrideMethod (c$, "processTwoPointGesture", 
-function (touches) {
-this.app.vwr.processTwoPointGesture (touches);
-}, "~A");
-Clazz.overrideMethod (c$, "setScreenDimension", 
-function (width, height) {
-this.app.vwr.setScreenDimension (width, height);
-}, "~N,~N");
-Clazz.overrideMethod (c$, "checkScript", 
-function (script) {
-var s = this.app.checkScript (script);
-if (s != null) System.out.println (s);
-return s;
-}, "~S");
 });

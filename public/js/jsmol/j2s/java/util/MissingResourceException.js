@@ -1,20 +1,20 @@
-Clazz.load(["java.lang.RuntimeException"],"java.util.MissingResourceException",null,function(){
-c$=Clazz.decorateAsClass(function(){
+$_L(["java.lang.RuntimeException"],"java.util.MissingResourceException",null,function(){
+c$=$_C(function(){
 this.className=null;
 this.key=null;
-Clazz.instantialize(this,arguments);
+$_Z(this,arguments);
 },java.util,"MissingResourceException",RuntimeException);
-Clazz.makeConstructor(c$,
+$_K(c$,
 function(detailMessage,className,resourceName){
-Clazz.superConstructor(this,java.util.MissingResourceException,[detailMessage]);
+$_R(this,java.util.MissingResourceException,[detailMessage]);
 this.className=className;
 this.key=resourceName;
 },"~S,~S,~S");
-Clazz.defineMethod(c$,"getClassName",
+$_M(c$,"getClassName",
 function(){
 return this.className;
 });
-Clazz.defineMethod(c$,"getKey",
+$_M(c$,"getKey",
 function(){
 return this.key;
 });

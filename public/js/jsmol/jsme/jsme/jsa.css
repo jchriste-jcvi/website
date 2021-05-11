@@ -17,7 +17,6 @@
 	outline: 0;
 	font-size: 100%;
 	vertical-align: baseline;
-	line-height: normal;
 }
 
 .gwt-DecoratedPopupPanel td,.gwt-MenuBarPopup td {
@@ -38,7 +37,6 @@
 	outline: 0;
 	font-size: 100%;
 	vertical-align: baseline;
-	line-height: normal;
 }
 
 .gwt-DecoratedPopupPanel tr,.gwt-MenuBarPopup tr {
@@ -59,7 +57,6 @@
 	outline: 0;
 	font-size: 100%;
 	vertical-align: baseline;
-	line-height: normal;
 }
 
 .gwt-DecoratedPopupPanel tbody,.gwt-MenuBarPopup tbody {
@@ -79,7 +76,6 @@
 	outline: 0;
 	font-size: 100%;
 	vertical-align: baseline;
-	line-height: normal;
 }
 
 
@@ -102,7 +98,6 @@
 	outline: 0;
 	font-size: 100%;
 	vertical-align: baseline;
-	line-height: normal;
 }
 
 .jsa-resetTable  td {
@@ -124,7 +119,6 @@
 	outline: 0;
 	font-size: 100%;
 	vertical-align: baseline;
-	line-height: normal;
 }
 
 .jsa-resetTable tr { 
@@ -145,7 +139,6 @@
 	outline: 0;
 	font-size: 100%;
 	vertical-align: baseline;
-	line-height: normal;
 }
 
 .jsa-resetDiv {
@@ -155,7 +148,7 @@
 	border-width: medium;
 	width: auto;
 	min-width: 0;
-	/*display:inline;*/
+	//display:inline;
 	height: auto;
 	min-height: 0;
 	background-color: transparent;
@@ -166,10 +159,9 @@
 	outline: 0;
 	font-size: 100%;
 	vertical-align: baseline;
-	line-height: normal;
 
 	
 }
 
 
-
+}

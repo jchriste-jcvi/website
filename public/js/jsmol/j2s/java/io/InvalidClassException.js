@@ -1,16 +1,16 @@
-Clazz.load(["java.io.ObjectStreamException"],"java.io.InvalidClassException",null,function(){
-c$=Clazz.decorateAsClass(function(){
+$_L(["java.io.ObjectStreamException"],"java.io.InvalidClassException",null,function(){
+c$=$_C(function(){
 this.classname=null;
-Clazz.instantialize(this,arguments);
+$_Z(this,arguments);
 },java.io,"InvalidClassException",java.io.ObjectStreamException);
-Clazz.makeConstructor(c$,
+$_K(c$,
 function(className,detailMessage){
-Clazz.superConstructor(this,java.io.InvalidClassException,[detailMessage]);
+$_R(this,java.io.InvalidClassException,[detailMessage]);
 this.classname=className;
 },"~S,~S");
-Clazz.defineMethod(c$,"getMessage",
+$_M(c$,"getMessage",
 function(){
-var msg=Clazz.superCall(this,java.io.InvalidClassException,"getMessage",[]);
+var msg=$_U(this,java.io.InvalidClassException,"getMessage",[]);
 if(this.classname!=null){
 msg=this.classname+';' + ' '+msg;
 }return msg;

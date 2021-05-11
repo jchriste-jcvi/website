@@ -1,3 +1,3 @@
-Clazz.load(["java.lang.Error"],"java.lang.VirtualMachineError",null,function(){
-c$=Clazz.declareType(java.lang,"VirtualMachineError",Error);
+$_L(["java.lang.Error"],"java.lang.VirtualMachineError",null,function(){
+c$=$_T(java.lang,"VirtualMachineError",Error);
 });

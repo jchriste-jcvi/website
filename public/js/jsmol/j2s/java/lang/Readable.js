@@ -1,1 +1,1 @@
-Clazz.declareInterface(java.lang,"Readable");
+$_I(java.lang,"Readable");

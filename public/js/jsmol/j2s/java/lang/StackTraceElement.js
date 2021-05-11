@@ -1,12 +1,12 @@
-Clazz.load(null,"java.lang.StackTraceElement",["java.lang.NullPointerException","$.StringBuilder"],function(){
-c$=Clazz.decorateAsClass(function(){
+$_L(null,"java.lang.StackTraceElement",["java.lang.NullPointerException","$.StringBuilder"],function(){
+c$=$_C(function(){
 this.declaringClass=null;
 this.methodName=null;
 this.fileName=null;
 this.lineNumber=0;
-Clazz.instantialize(this,arguments);
+$_Z(this,arguments);
 },java.lang,"StackTraceElement",null,java.io.Serializable);
-Clazz.makeConstructor(c$,
+$_K(c$,
 function(cls,method,file,line){
 if(cls==null||method==null){
 throw new NullPointerException();
@@ -15,9 +15,9 @@ this.methodName=method;
 this.fileName=file;
 this.lineNumber=line;
 },"~S,~S,~S,~N");
-Clazz.overrideMethod(c$,"equals",
+$_V(c$,"equals",
 function(obj){
-if(!(Clazz.instanceOf(obj,StackTraceElement))){
+if(!($_O(obj,StackTraceElement))){
 return false;
 }var castObj=obj;
 if((this.methodName==null)||(castObj.methodName==null)){
@@ -37,33 +37,33 @@ return false;
 return false;
 }return true;
 },"~O");
-Clazz.defineMethod(c$,"getClassName",
+$_M(c$,"getClassName",
 function(){
 return(this.declaringClass==null)?"<unknown class>":this.declaringClass;
 });
-Clazz.defineMethod(c$,"getFileName",
+$_M(c$,"getFileName",
 function(){
 return this.fileName;
 });
-Clazz.defineMethod(c$,"getLineNumber",
+$_M(c$,"getLineNumber",
 function(){
 return this.lineNumber;
 });
-Clazz.defineMethod(c$,"getMethodName",
+$_M(c$,"getMethodName",
 function(){
 return(this.methodName==null)?"<unknown method>":this.methodName;
 });
-Clazz.overrideMethod(c$,"hashCode",
+$_V(c$,"hashCode",
 function(){
 if(this.methodName==null){
 return 0;
 }return this.methodName.hashCode()^this.declaringClass.hashCode();
 });
-Clazz.defineMethod(c$,"isNativeMethod",
+$_M(c$,"isNativeMethod",
 function(){
 return this.lineNumber==-2;
 });
-Clazz.overrideMethod(c$,"toString",
+$_V(c$,"toString",
 function(){
 var buf=new StringBuilder(80);
 buf.append(this.getClassName());

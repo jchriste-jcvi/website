@@ -1,8 +1,8 @@
-Clazz.load(["java.io.IOException"],"java.util.InvalidPropertiesFormatException",["java.io.NotSerializableException"],function(){
-c$=Clazz.declareType(java.util,"InvalidPropertiesFormatException",java.io.IOException);
-Clazz.makeConstructor(c$,
+$_L(["java.io.IOException"],"java.util.InvalidPropertiesFormatException",["java.io.NotSerializableException"],function(){
+c$=$_T(java.util,"InvalidPropertiesFormatException",java.io.IOException);
+$_K(c$,
 function(c){
-Clazz.superConstructor(this,java.util.InvalidPropertiesFormatException,[]);
+$_R(this,java.util.InvalidPropertiesFormatException,[]);
 this.initCause(c);
 },"Throwable");
 });

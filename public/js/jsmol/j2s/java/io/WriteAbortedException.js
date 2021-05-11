@@ -1,22 +1,22 @@
-Clazz.load(["java.io.ObjectStreamException"],"java.io.WriteAbortedException",null,function(){
-c$=Clazz.decorateAsClass(function(){
+$_L(["java.io.ObjectStreamException"],"java.io.WriteAbortedException",null,function(){
+c$=$_C(function(){
 this.detail=null;
-Clazz.instantialize(this,arguments);
+$_Z(this,arguments);
 },java.io,"WriteAbortedException",java.io.ObjectStreamException);
-Clazz.makeConstructor(c$,
+$_K(c$,
 function(detailMessage,rootCause){
-Clazz.superConstructor(this,java.io.WriteAbortedException,[detailMessage]);
+$_R(this,java.io.WriteAbortedException,[detailMessage]);
 this.detail=rootCause;
 this.initCause(rootCause);
 },"~S,Exception");
-Clazz.defineMethod(c$,"getMessage",
+$_M(c$,"getMessage",
 function(){
-var msg=Clazz.superCall(this,java.io.WriteAbortedException,"getMessage",[]);
+var msg=$_U(this,java.io.WriteAbortedException,"getMessage",[]);
 if(this.detail!=null){
 msg=msg+"; "+this.detail.toString();
 }return msg;
 });
-Clazz.overrideMethod(c$,"getCause",
+$_V(c$,"getCause",
 function(){
 return this.detail;
 });

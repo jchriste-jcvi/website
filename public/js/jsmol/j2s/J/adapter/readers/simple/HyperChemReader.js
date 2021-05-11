@@ -2,9 +2,10 @@ Clazz.declarePackage ("J.adapter.readers.simple");
 Clazz.load (["J.adapter.smarter.AtomSetCollectionReader"], "J.adapter.readers.simple.HyperChemReader", ["java.lang.Exception"], function () {
 c$ = Clazz.decorateAsClass (function () {
 this.atomIndex = 0;
+this.baseAtomIndex = 0;
 Clazz.instantialize (this, arguments);
 }, J.adapter.readers.simple, "HyperChemReader", J.adapter.smarter.AtomSetCollectionReader);
-Clazz.overrideMethod (c$, "checkLine", 
+$_V(c$, "checkLine", 
 function () {
 if (this.line.length == 0 || this.line.charAt (0) == ';') return true;
 if (this.line.startsWith ("mol ")) {
@@ -20,26 +21,26 @@ this.applySymmetryAndSetTrajectory ();
 return true;
 }return true;
 });
-Clazz.defineMethod (c$, "processMol", 
- function () {
-this.asc.newAtomSet ();
+$_M(c$, "processMol", 
+($fz = function () {
+this.atomSetCollection.newAtomSet ();
 var molName = this.getMolName ();
-this.asc.setAtomSetName (molName);
+this.atomSetCollection.setAtomSetName (molName);
 this.atomIndex = 0;
-this.baseAtomIndex = this.asc.ac;
-});
-Clazz.defineMethod (c$, "getMolName", 
- function () {
+this.baseAtomIndex = this.atomSetCollection.getAtomCount ();
+}, $fz.isPrivate = true, $fz));
+$_M(c$, "getMolName", 
+($fz = function () {
 this.parseTokenStr (this.line);
 this.parseToken ();
 return this.parseToken ();
-});
-Clazz.defineMethod (c$, "processAtom", 
- function () {
+}, $fz.isPrivate = true, $fz));
+$_M(c$, "processAtom", 
+($fz = function () {
 var fileAtomNumber = this.parseIntAt (this.line, 5);
 if (fileAtomNumber - 1 != this.atomIndex) {
 throw  new Exception ("bad atom number sequence ... expected:" + (this.atomIndex + 1) + " found:" + fileAtomNumber);
-}var atom = this.asc.addNewAtom ();
+}var atom = this.atomSetCollection.addNewAtom ();
 this.parseToken ();
 atom.elementSymbol = this.parseToken ();
 this.parseToken ();
@@ -68,8 +69,8 @@ break;
 default:
 throw  new Exception ("unrecognized bond type:" + bondTypeToken + " atom #" + fileAtomNumber);
 }
-this.asc.addNewBondWithOrder (this.baseAtomIndex + this.atomIndex, this.baseAtomIndex + otherAtomNumber - 1, bondOrder);
+this.atomSetCollection.addNewBondWithOrder (this.baseAtomIndex + this.atomIndex, this.baseAtomIndex + otherAtomNumber - 1, bondOrder);
 }
 ++this.atomIndex;
-});
+}, $fz.isPrivate = true, $fz));
 });

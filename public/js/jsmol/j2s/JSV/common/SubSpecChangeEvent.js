@@ -9,15 +9,15 @@ function (isub, title) {
 this.isub = isub;
 this.title = title;
 }, "~N,~S");
-Clazz.defineMethod (c$, "isValid", 
+$_M(c$, "isValid", 
 function () {
 return (this.title != null);
 });
-Clazz.defineMethod (c$, "getSubIndex", 
+$_M(c$, "getSubIndex", 
 function () {
 return this.isub;
 });
-Clazz.overrideMethod (c$, "toString", 
+$_V(c$, "toString", 
 function () {
 return this.title;
 });
